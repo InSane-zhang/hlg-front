@@ -57,7 +57,34 @@ KISSY.add('page/templet-init',function (S,O) {
 	                } 
 	                window.location.href = CodeUrl;
 				})
-		
+				Event.on('#J_HangYe','mouseenter mouseleave',function(ev){
+					if(ev.type == 'mouseenter'){
+						DOM.show('#J_HangYeContent');
+					}else{
+						DOM.hide('#J_HangYeContent');
+					}
+				})
+				Event.on('#J_TypeChoose','mouseenter mouseleave',function(ev){
+					if(ev.type == 'mouseenter'){
+						DOM.show('#J_TypeContent');
+					}else{
+						DOM.hide('#J_TypeContent');
+					}
+				})
+				Event.on('#J_ColorChoose','mouseenter mouseleave',function(ev){
+					if(ev.type == 'mouseenter'){
+						DOM.show('#J_ColorContent');
+					}else{
+						DOM.hide('#J_ColorContent');
+					}
+				})
+				Event.on('#J_SortChoose','mouseenter mouseleave',function(ev){
+					if(ev.type == 'mouseenter'){
+						DOM.show('#J_SortContent');
+					}else{
+						DOM.hide('#J_SortContent');
+					}
+				})
 			
 		    },
 		    get: function(tid) {
@@ -124,10 +151,10 @@ KISSY.add('page/templet-init',function (S,O) {
 			},
 			design : function(id){
 				var tmpId = '';
-				var tempItems = document.getElementsByName('J_Mid_'+id);
-				for(var i=0;i<tempItems.length;i++){
-					if(tempItems[i].checked){
-						tmpId = tempItems[i].value;
+				var tempItems = DOM.query('.J_Width_'+id);
+				for(var i=0,len =tempItems.length;i<len;i++){
+					if(DOM.hasClass(tempItems[i],'current')){
+						tmpId = DOM.attr(tempItems[i],'data');
 						break;
 					}
 				}
@@ -136,10 +163,10 @@ KISSY.add('page/templet-init',function (S,O) {
 			},
 			designOld : function(id){
 				var tmpId = '';
-				var tempItems = document.getElementsByName('J_Mid_'+id);
-				for(var i=0;i<tempItems.length;i++){
-					if(tempItems[i].checked){
-						tmpId = tempItems[i].value;
+				var tempItems = DOM.query('.J_Width_'+id);
+				for(var i=0,len =tempItems.length;i<len;i++){
+					if(DOM.hasClass(tempItems[i],'current')){
+						tmpId = DOM.attr(tempItems[i],'data');
 						break;
 					}
 				}
@@ -147,7 +174,8 @@ KISSY.add('page/templet-init',function (S,O) {
 				window.open(uri, "_blank");
 			},
 			turn : function(id, tmpId,num){
-				
+				DOM.removeClass(DOM.query('.J_Width_'+id),'current');
+				DOM.addClass(DOM.get('#J_ForLabel_'+tmpId),'current');
 				var submitHandle = function(o) {
 		    		DOM.html("#J_Content_"+id, o.payload);
 		    		DOM.html("#J_TempletIdBox"+id, tmpId);

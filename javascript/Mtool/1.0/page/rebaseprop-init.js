@@ -11,13 +11,14 @@ KISSY.add(function(S,showPages){
 	    	msg : null,
 			checkBoxs : null,  	
 	    	init : function() {	
-			
+				
 				rebaseprop.searchTbItems();	
 				Event.on('#J_SelectItemCid',"change",function(S){
 					rebaseprop.searchTbItems();
-				})
+				});
 				Event.on('#J_SearchBtn','click',rebaseprop.searchTbItems); //活动中宝贝全选   	 
-			    Event.on('#J_TCheckAll','click',rebaseprop.CheckAll); //活动中宝贝全选   	    
+			    Event.on('#J_TCheckAll','click',rebaseprop.CheckAll); //活动中宝贝全选  
+			    
 	        },
      		searchTbItems : function() {
 	            var submitHandle = function(o) {
@@ -35,6 +36,25 @@ KISSY.add(function(S,showPages){
 						DOM.css(DOM.query(".J_ControlBtm") , 'display' , 'none');
 					}
 					DOM.html('#J_PromotionItemList' ,o.payload.body);
+					//修改前信息——详情
+					Event.on('.propDetail','mouseenter mouseleave', function(ev) {
+						var data = DOM.attr(ev.target,'data');
+						if(ev.type  == "mouseenter"){
+				    		rebaseprop.basepropDetail(data);
+				    	}else if(ev.type == "mouseleave"){
+				    		rebaseprop.closeDetialPop(data);
+				    	}
+				    });
+					//查看修改后信息
+					Event.on('.viewBaseprop','mouseenter mouseleave', function(ev) {
+						var data = DOM.attr(ev.target,'data');
+						if(ev.type  == "mouseenter"){
+				    		rebaseprop.viewBaseprop(data);
+				    	}else if(ev.type == "mouseleave"){
+				    		rebaseprop.closeViewPop(data);
+				    	}
+				    });
+					
 					var oTriggers = DOM.query('#J_PromotionItemList .J_CheckBox');
 					selectItemNum = 0;
 	                Event.on(oTriggers, "click", function(ev){
@@ -201,7 +221,7 @@ KISSY.add(function(S,showPages){
 		           
 		        });
 			},
-			//原基本信息——详情——弹窗
+			//修改前信息——详情——弹窗
 			basepropDetail : function(id){
 				if(!showPermissions('editor_tool','工具箱')){return ;}
 				if(isVersionPer('tool')){return ;}	
@@ -248,7 +268,7 @@ KISSY.add(function(S,showPages){
 			closeDetialPop : function(id){
 				DOM.css('#J_BasepropDetial_'+id,'visibility','hidden');
 			},
-			//查看现基本信息——弹窗
+			//查看修改后信息——弹窗
 			viewBaseprop : function(id){
 				if(!showPermissions('editor_tool','工具箱')){return ;}
 				if(isVersionPer('tool')){return ;}	

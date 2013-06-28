@@ -140,7 +140,11 @@ KISSY.add(function (S) {
 					DOM.html(DOM.get('#J_Zs_NumFirst'), len);
 		
 				});				
-				
+				S.each(DOM.query('.J_CheckBox'),function(item){
+					if(DOM.prop(item,'checked')){
+						Event.fire(item,'click');
+					}
+				})
 			},
 			add: function (textarea, rangeData, text) {
 				var oValue, nValue, oR, sR, nStart, nEnd, st;
@@ -376,7 +380,7 @@ KISSY.add(function (S) {
 //					alert(content)
 					listPar.is_checked = DOM.prop(DOM.get('.J_CheckBox', item),'checked')? "1":"0";
 //					listPar.content = encodeURIComponent(CareControl.strProcess(content));
-					listPar.content = DOM.html(DOM.get('.J_Content', item));
+					listPar.content = encodeURIComponent(CareControl.strProcess(DOM.html(DOM.get('.J_Content', item))));
 					listPar.templet_id = DOM.val(DOM.get('.J_TempletId', item));
 					listPar.care_time = DOM.val(DOM.get('.J_StartDate', item));
 					postListParams.push(listPar);

@@ -12,7 +12,7 @@ KISSY.add(function (S,showPages) {
 	    	msg : null,
 	    	url : '',
 	    	init : function(){
-		
+			
 			if(htmlType == 'index'){
 				ratesendControl.checkCpAgreement();
 				Event.on('#J_sure','click',ratesendControl.open);
@@ -20,7 +20,13 @@ KISSY.add(function (S,showPages) {
 				
 				ratesendControl.searchTbItems();
 			}
-				
+			Event.on('#J_open','click',function(){
+				new H.widget.msgBox({
+					title:"温馨提示",
+				    content:'亲，只要开启后订单中宝贝全部好评就会赠送彩票哦！',
+				    type:"info", 
+				});
+			});	
 			},
 			/*是否签订彩票协议*/
 			checkCpAgreement : function(el){
@@ -105,6 +111,7 @@ KISSY.add(function (S,showPages) {
 			    };
 			    if(DOM.get('#J_open').checked == true){
 			    	var sureUrl = openUrl;
+			    	
 			    }else if(DOM.get('#J_closed').checked == true){
 			    	var sureUrl = closeUrl;
 			    }

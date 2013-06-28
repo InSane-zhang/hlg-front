@@ -1,8 +1,14 @@
+/*
+combined files : 
+
+page/reprice-index-init
+
+*/
 /**
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,O) {
+KISSY.add('page/reprice-index-init',function (S,O) {
     // your code here
     var DOM = S.DOM, Event = S.Event;	
 	return reprice = {
