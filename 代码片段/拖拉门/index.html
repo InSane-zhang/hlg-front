@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<script src="js/jquery-1.3.1.min.js"></script>
+<script src="js/jquery.easing.1.3.js"></script>
+
+<script>
+
+$(document).ready(function() {
+
+	//Custom settings
+	var style_in = 'easeOutBounce';
+	var style_out = 'jswing';
+	var speed_in = 800;
+	var speed_out = 300;	
+
+	//Top and bottom
+	var	top = $('.qitem').height() * (-1); 
+	var	bottom = $('.qitem').height(); 
+
+	$('.qitem').each(function () {
+
+		//retrieve all the details of the image before removing it
+		url = $(this).find('a').attr('href');
+		img = $(this).find('img').attr('src');
+		alt = $(this).find('img').attr('img');
+		width = $(this).width() / 4; 
+		height = $(this).height(); 
+		
+		//remove the image and append 4 div into it
+		$('img', this).remove();
+		$(this).append('<div class="bar1"></div><div class="bar2"></div><div class="bar3"></div><div class="bar4"></div>');
+		
+		//set the image as background image to all the bars
+		$(this).children('div').css('background-image','url('+ img + ')');
+
+		//Divide the image into 4 bars and rebuild the image
+		$(this).find('div.bar1').css({top:0, left:0, width:width, height:height, backgroundPosition:'0 0' });	
+		$(this).find('div.bar2').css({top:0, left:width, width:width, height:height, backgroundPosition:(width*-1) + 'px 0' });	
+		$(this).find('div.bar3').css({bottom:0, left:width*2, width:width, height:height, backgroundPosition:(width*-2) + 'px 0' });	
+		$(this).find('div.bar4').css({bottom:0, left:width*3, width:width , height:height, backgroundPosition:(width*-3) + 'px 0' });
+
+	}).hover(function () {
+		
+		//Move those bar, 1st and 3rd move upward, 2nd and 4th move downward
+		$(this).find('div.bar1').stop(false, true).animate({top:top}, {duration:speed_out, easing:style_out});	
+		$(this).find('div.bar2').stop(false, true).animate({top:bottom}, {duration:speed_out, easing:style_out});	
+		$(this).find('div.bar3').stop(false, true).animate({top:top}, {duration:speed_out, easing:style_out});	
+		$(this).find('div.bar4').stop(false, true).animate({top:bottom}, {duration:speed_out, easing:style_out});	
+				
+	},
+	
+	function () {
+
+		//Back to default position
+		$(this).find('div.bar1').stop(false, true).animate({top:0}, {duration:speed_in, easing:style_in});	
+		$(this).find('div.bar2').stop(false, true).animate({top:0}, {duration:speed_in, easing:style_in});	
+		$(this).find('div.bar3').stop(false, true).animate({top:0}, {duration:speed_in, easing:style_in});	
+		$(this).find('div.bar4').stop(false, true).animate({top:0}, {duration:speed_in, easing:style_in});	
+	
+	}).click (function () {
+		
+		//make the whole box clickable
+		window.location = $(this).find('a').attr('href');	
+	});
+
+});
+
+</script>
+<style>
+
+body {
+	font-family:arial;	
+}
+
+.qitem {
+	width:140px;
+	height:140px;	
+	border:4px solid #222;	
+	margin:5px 5px 5px 0;
+	background: url('bg.gif') no-repeat;	
+	
+	/* required to hide the image after resized */
+	overflow:hidden;
+	
+	/* for child absolute position */
+	position:relative;
+	
+	/* display div in line */
+	float:left;
+	cursor:hand; cursor:pointer;
+}
+
+	.qitem img {
+		border:0;
+	
+		/* allow javascript moves the img position*/
+		position:absolute;
+		z-index:200;
+	}
+
+	.qitem .caption {
+		position:absolute;
+		z-index:0;	
+		color:#ccc;
+		display:block;
+	}
+
+		.qitem .caption h4 {
+			font-size:12px;
+			padding:10px 5px 0 8px;
+			margin:0;
+			color:#369ead;
+		}
+
+		.qitem .caption p {
+			font-size:10px;	
+			padding:3px 5px 0 8px;
+			margin:0;
+		}
+
+
+
+/* Setting for bars */
+.bar1, .bar2, .bar3, .bar4 {
+	position:absolute;
+	background-repeat: no-repeat; 
+	z-index:200;
+}
+
+.clear {
+	clear:both;	
+}
+</style>
+</head>
+
+<body>
+
+
+<div class="qitem">
+	<a href="http://www.google.com"><img src="1.gif" alt="Test 1" title="" width="140" height="140"/></a>
+	<span class="caption"><h4>Title1</h4><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p></span>
+</div>
+
+<div class="qitem">
+	<a href="http://www.google.com"><img src="2.gif" alt="Test 1" title="" width="140" height="140"/></a>
+	<span class="caption"><h4>Title2</h4><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p></span>
+</div>
+
+</body>
+
+</html>

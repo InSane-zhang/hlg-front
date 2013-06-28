@@ -1,0 +1,31 @@
+<script>
+var toHTML = {
+        on: function(str) {
+            var a = [],
+                    i = 0;
+            for (; i < str.length;) a[i] = str.charCodeAt(i++);
+            return "&#" + a.join(";&#") + ";"
+        },
+        un: function(str) {
+            return str.replace(/&#(x)?([^&]{1,5});?/g,
+                    function(a, b, c) {
+                        return String.fromCharCode(parseInt(c, b ? 16 : 10))
+                    })
+        }
+    };
+    alert(toHTML.on("多少是的"));
+    alert(toHTML.un(toHTML.on("多少是的")));
+    var toUN = {
+        on: function(str) {
+            var a = [],
+                    i = 0;
+            for (; i < str.length;) a[i] = ("00" + str.charCodeAt(i++).toString(16)).slice( - 4);
+            return "\\u" + a.join("\\u")
+        },
+        un: function(str) {
+            return unescape(str.replace(/\\/g, "%"))
+        }
+    };
+    alert(toUN.on("多少是的"));
+    alert(toUN.un(toUN.on("多少是的")));
+</script>
