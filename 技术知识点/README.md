@@ -5,6 +5,7 @@
   - [CSS解决方案](http://www.w3cplus.com/resources/css-solution.html)
   - [练习css3](http://css3please.com/)
   - [Raphaël](http://raphaeljs.com/)
+  - [Raphaël 中文文档](http://julying.com/lab/raphael-js/docs/)
   - [前端开发常用API-chm版](http://overapi.com/)
   - [html5基础知识](http://bbs.ambow.com/zhuanti/html5/)     
   
