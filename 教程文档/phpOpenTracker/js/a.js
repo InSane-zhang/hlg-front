@@ -39,7 +39,7 @@
    a.clk = function(e,a,c) {
       var u=encodeURIComponent || escape;
       (new Image).src=[
-         location.protocol+'//'+location.host+'/pot.php?a=c',
+         location.protocol+'//'+location.host+'/phpOpenTracker/php/pot.php?a=c',
          't='+a.nodeName.toLowerCase(),
          'c='+c,
          'i='+u(a.id),
@@ -75,5 +75,5 @@
       for(var y in x){
          a.register('click',x[y],a.clk,x[y],y);
       }
-   });   
+   });  
 })();

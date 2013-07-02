@@ -272,17 +272,18 @@ KISSY.add('page/list-init',function (S,showPages) {
 					 }else{
 						var url = DOM.attr(e.currentTarget,"data-url");
 						if(isVersionPer('material',false)){
-							new H.widget.msgBox({
-								    title:"温馨提示",
-								    content:'只提供制作体验，尊享版才能享受素材投放功能',
-								    type:"info",
-									buttons: [{ value: "继续体验" }, { value: "关闭" }],
-									success: function (result) {
-									        if (result == "继续体验") {
-												window.location.href = url;
-									        }
-				    				}
-								});
+//							new H.widget.msgBox({
+//								    title:"温馨提示",
+//								    content:'只提供制作体验，尊享版才能享受素材投放功能',
+//								    type:"info",
+//									buttons: [{ value: "继续体验" }, { value: "关闭" }],
+//									success: function (result) {
+//									        if (result == "继续体验") {
+//												window.location.href = url;
+//									        }
+//				    				}
+//								});
+							isVersionPer('material')
 							return 
 						}else{
 							window.location.href = url;

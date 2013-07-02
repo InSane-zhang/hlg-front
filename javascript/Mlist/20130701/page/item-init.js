@@ -249,6 +249,9 @@ KISSY.add('page/item-init',function (S,showPages) {
 		
 				var timeFunName = null;
 		        Event.delegate(document,'click dblclick','.J_TopAddToPromo',function(ev){
+		        	if(isVersionPer('material')){
+		                    return ;
+		            }
 		        	var id = DOM.attr(ev.currentTarget,'data');
 		        	if(ev.type == 'click'){
 			        	 clearTimeout(timeFunName);

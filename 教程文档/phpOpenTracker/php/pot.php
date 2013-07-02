@@ -33,7 +33,11 @@
  */
 
 if ($_GET['a'] == 'c') {
-    $mysqli = new MySQLi(POT_DB_HOST, POT_DB_USER, POT_DB_PASS, POT_DB);
+    
+	var_dump($_GET['i']);
+	
+	return ;
+	$mysqli = new MySQLi(POT_DB_HOST, POT_DB_USER, POT_DB_PASS, POT_DB);
 
     $stmt = $mysqli->prepare(
       'INSERT INTO clicks
