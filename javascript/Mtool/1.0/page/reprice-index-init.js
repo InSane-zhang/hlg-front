@@ -377,11 +377,12 @@ KISSY.add(function (S,O) {
 			    	
 						new H.widget.msgBox({
 									    title:"错误提示",
-									    content:'请选择要修改的分类！',
+									    content:'请选择要修改的范围！',
 									    type:"error",
 										autoClose:true,
 										timeOut :2000
-									});alert("选择要修改的范围！");
+									});
+//						alert("选择要修改的范围！");
 			    	return false;
 			    }
 			    

@@ -1,9 +1,767 @@
+/*
+combined files : 
+
+utils/showPages/index
+page/mods/item-handle
+page/Copy of item-init
+
+*/
+/**
+ * @分页组件
+ * @author  
+ */
+KISSY.add('utils/showPages/index',function (S) {
+	var DOM = S.DOM, Event = S.Event, doc = document;
+  
+	function showPages(name) { //初始化属性 
+		var self = this; 
+        if (!(self instanceof showPages)) { 
+        	return new showPages(name); 
+        } 	
+		this.pageNum = 4 ;   
+		this.name = name;      //对象名称
+        this.page = 1;         //当前页数
+        this.pageCount = 200;    //总页数
+        this.argName = 'page'; //参数名	
+  	}
+
+	S.mix(showPages.prototype,{
+		jump: function() {
+	        return undefined;
+	  	},
+		
+	    //进行当前页数和总页数的验证
+        checkPages: function() { 
+	     	if (isNaN(parseInt(this.page))) this.page = 1;
+		 	if (isNaN(parseInt(this.pageCount))) this.pageCount = 1;
+		 	if (this.page < 1) this.page = 1;
+		 	if (this.pageCount < 1) this.pageCount = 1;
+		 	if (this.page > this.pageCount) this.page = this.pageCount;
+		 	this.page = parseInt(this.page);
+		 	this.pageCount = parseInt(this.pageCount);
+     	},
+		
+		//生成html代码	  
+     	_createHtml: function(mode) { 
+	   
+         	var self = this, strHtml = '', prevPage = this.page - 1, nextPage = this.page + 1;   
+            if (mode == '' || typeof(mode) == 'undefined') mode = 1;
+		
+            switch (mode) {
+				case 1: 
+					//模式1 (页数)
+                    /* strHtml += '<span class="count">Pages: ' + this.page + ' / ' + this.pageCount + '</span>';*/
+                    strHtml += '<span class="number">';
+                    if (this.page != 1) {
+						strHtml += '<span title="Page 1"><a href="javascript:' + self.name  + '.toPage(1);">1</a></span>';
+				    }
+                    if (this.page >= 5) {
+				   		strHtml += '<span>...</span>';
+				    }
+				    if (this.pageCount > this.page + 2) {
+                   		var endPage = this.page + 2;
+                    } else {
+                        var endPage = this.pageCount; 
+                      }
+                    for (var i = this.page - 2; i <= endPage; i++) {
+					if (i > 0) {
+						if (i == this.page) {
+							strHtml += '<span title="Page ' + i + '">' + i + '</span>';
+						} else {
+							if (i != 1 && i != this.pageCount) {
+								strHtml += '<span title="Page ' + i + '"><a href="javascript:' + self.name + '.toPage(' + i + ');">' + i + '</a></span>';
+							}
+				          }
+                    }
+                    }
+                    if (this.page + 3 < this.pageCount) {
+						strHtml += '<span>...</span>';
+					}
+                    if (this.page != this.pageCount) {
+						strHtml += '<span title="Page ' + this.pageCount + '"><a href="javascript:' + self.name + '.toPage(' + this.pageCount + ');">' + this.pageCount + '</a></span>';
+					}
+					strHtml += '</span><br />';
+                    break;
+								 
+				case 2: 
+					//模式2 (前后缩略,页数,首页,前页,后页,尾页)
+					
+					if(this.pageCount > 1){
+	                    strHtml += '<div class="page-bottom"> <div class="sabrosus">';
+	                    if (prevPage < 1) {
+	                        strHtml += '<span class="pre-none page-pic-no"></span>';
+	                    } else {
+	                        strHtml += '<a class="" href="javascript:' + self.name + '.toPage(' + prevPage + ');" title="上一页"><span class="pre page-pic-no"></span></a>';
+	                      }
+	                    if (this.page != 1) {
+							//strHtml += ' <a class="a-padding" href="javascript:' + self.name  + '.toPage(1);">1</a>';
+						}
+						if(this.page - 2<=0){
+							var start = 1;
+								if (this.pageCount > this.page + 4) {
+	                           		var endPage = this.page + 4;
+	                           } else {
+	                             	var endPage = this.pageCount; 
+	                            }
+						}else if(this.page + 2>=this.pageCount){
+							var start = this.pageCount-4;
+							if (this.pageCount > this.page + 4) {
+	                       		var endPage = this.page + 4;
+	                        } else {
+	                         	var endPage = this.pageCount; 
+	                        }
+						}else {
+							var start = this.page - 2;
+							if (this.pageCount > this.page + 2) {
+		                           		var endPage = this.page + 2;
+		                           } else {
+		                             	var endPage = this.pageCount; 
+		                             }
+						}
+	                    for (var i = start; i <= endPage; i++) {
+	                    if (i > 0) {
+	                       	if (i == this.page) {
+	                           	strHtml += '<span class="current a-padding">'+ i + '</span>';
+	                        } else {
+	                           // if (i != 1 && i != this.pageCount) {
+	                              	strHtml += '<a class="a-padding" href="javascript:' + self.name + '.toPage(' + i + ');">' + i + '</a>';
+	                           // }
+						      }
+	                    }
+	                    }
+	                    if (this.page + 5 < this.pageCount) {
+							strHtml += '<a class="a-padding" title="" href="javascript:' + self.name + '.toPage(' + (this.page + 3) + ');">...</a>';
+						}
+				  	    if (this.page != this.pageCount) {
+							//strHtml += '<span title="Page ' + this.pageCount + '"><a href="javascript:' + self.name + '.toPage(' + this.pageCount + ');">' + this.pageCount + '</a></span>';
+						}
+						if (nextPage > this.pageCount) {
+	                    	strHtml += '<span class="next-none page-pic-no"></span>';
+	                    } else {
+	                        strHtml += '<a class="" href="javascript:' + self.name + '.toPage(' + nextPage + ');" title="下一页"><span class="next page-pic-no"></span></a>';
+	                      }
+						 if (this.pageCount > 5) {
+			   					strHtml += '<font class="number">';
+			   					strHtml += '共'+this.pageCount+'页&nbsp;到第&nbsp;';
+			   					if(this.page>=this.pageCount){
+			   						strHtml += '<input style="" type="text" class="page-pic-no w-30 bg-img" id="pageInput' + self.name + '"  value="' + this.pageCount + '" onkeypress="return window.' + self.name + '.formatInputPage(event);" onfocus="this.select()">&nbsp;页';
+			   					}else{
+			   						strHtml += '<input style="" type="text" class="page-pic-no w-30 bg-img" id="pageInput' + self.name + '"  value="' + (this.page+1) + '" onkeypress="return window.' + self.name + '.formatInputPage(event);" onfocus="this.select()">&nbsp;页';
+			   					}
+			   					strHtml += '<input type="button" value="" class="page-pic-no gray-btm-h-go w-30 btm-go" onclick="javascript:var page = document.getElementById(\'pageInput' + self.name + '\').value; if(isNaN(Number(page))|| Number(page)==0) { var turnTo = 1;} else if(page>'+this.pageCount+'){ var turnTo = '+this.pageCount+';} else{var turnTo = page;}  window.' + self.name + '.toPage(turnTo);">';
+			   					strHtml += '</font>';	
+			   					}
+	                   strHtml += '<div style="clear:both"></div></div></div> ';
+					}
+                   break;
+			   case 3 :
+				   strHtml += '<div class="page-top"><div class="sabrosus"><span class="count">' + this.page + ' / ' + this.pageCount + '</span>';
+                   if (prevPage < 1) {
+                       strHtml += ' <span class="pre-none page-pic-no"></span>';
+                   } else {
+                       strHtml += '<a class="border-left-dedede" href="javascript:' + self.name + '.toPage(' + prevPage + ');" title="上一页"><span class="pre page-pic-no"></span></a>';
+                     }
+                   if (nextPage > this.pageCount) {
+                   	strHtml += '<span class="next-none page-pic-no"></span>';
+                   } else {
+                       strHtml += '<a href="javascript:' + self.name + '.toPage(' + nextPage + ');" title="下一页"><span class="next page-pic-no"></span></a>';
+                     }
+                  strHtml += '<div style="clear:both"></div></div></div>';
+                  break;
+					
+			}
+		    return strHtml;
+			   
+		},
+		 //限定输入页数格式
+		formatInputPage : function(e){
+			var ie = navigator.appName=="Microsoft Internet Explorer"?true:false;
+			if(!ie) var key = e.which;
+			else var key = event.keyCode;
+			if (key == 8 || key == 46 || (key >= 48 && key <= 57)) return true;
+			return false;
+		},
+      
+	    //页面跳转 返回将跳转的页数
+		toPage: function( page ,flag) { 
+        	var turnTo = 1;
+			var self = this;    
+            if (typeof(page) == 'object') {
+            	turnTo = page.options[page.selectedIndex].value;
+            } else {
+               	turnTo = page;
+              }
+			
+            self.jump(turnTo,flag,'');
+			  
+		},
+			  
+        //显示html代码
+	    printHtml: function(contian, mode) {  
+			this.checkPages();
+            DOM.html(contian,this._createHtml(mode));
+			return this;
+		},
+				   
+	    //设置总页数			  
+	    setPageCount: function( pagecount ) {
+			this.pageCount=pagecount;
+	 	    return this;
+		},			    
+	    
+		getPageCount: function() {
+            return this.pageCount;
+	    },
+	    
+		//设置跳转 执行函数
+        setRender: function(fn) {
+			this.jump = fn;
+			return this;
+		},	
+     	setPageNum:function(page_num){
+	        this.pageNum = page_num;
+		    return this;
+		 },
+		setPage:function(page){
+		    this.page = page;  
+		    return this; 
+	    }   	   
+
+		  	   
+	});
+
+	return showPages;
+  
+});
+/**
+ * @fileOverview 
+ * @author  
+ */
+KISSY.add('page/mods/item-handle',function (S) {
+    // your code here
+    return itemHandle = {
+		
+			strProcess : function(str) {
+				return str.replace(/\\/g, '\\\\').replace(/\"/g, '\\"').replace(/[\t\n&]/g, '%26');
+			},
+			
+			checkPrice : function(v){
+				if (KISSY.isNumber(v) === false || v<=0) {
+					return false;
+				} else {
+					return true;
+				}
+			},
+			isNull : function(str){
+				if(str == null ||str == ""){
+					return true;
+				}else{
+					return false;
+				}
+			},
+			
+			isDate : function(str){
+				if (str == null)
+				{
+					return false;
+				}
+				if (str.length != 19 ){
+					return false;
+				}
+				var yearStr = str.substring(0,4);
+				var monthStr = str.substring(5,7);
+				var dayStr = str.substring(8,10);
+				var hour = str.substring(11,13);
+				var mins = str.substring(14,16);
+				var sec = str.substring(17,19);
+				if(parseInt(yearStr)<2011)
+				{
+					return false;
+				 }
+				y = parseInt(yearStr,10);
+				d = parseInt(dayStr,10);
+				switch(monthStr){
+					case '01':
+					case '03':
+					case '05':
+					case '07':
+					case '08':
+					case '10':
+					case '12':
+					 if(d>31){
+					return false;
+					 }
+					 break;
+					case '02':
+					 if((y%4==0 && d>29) || ((y%4!=0 && d>28))){
+					return false;
+					}
+					 break;
+					case '04':
+					case '06':
+					case '09':
+					case '11':
+					 if(d>30){
+					return false;
+					}
+					 break;
+					default:
+					 return false;
+				}
+				if(parseInt(hour)>23 || parseInt(mins)>59 || parseInt(sec)>59){
+					return false;
+				}
+				if(str.substring(4,5) != '-' || str.substring(7,8) != '-' || str.substring(13,14) != ':' || str.substring(16,17) != ':'){
+					return false;
+				}	
+		        return true;
+			},
+			generalTgParams : function(id, error) {
+				var r = [];
+				var params = [];
+				//获取定向营销活动参数
+				result = itemHandle._generalTbSpecParams(id, error);
+				
+				paramsGeneral = result[0];
+				var promoType = paramsGeneral[0];
+				var promoValue = paramsGeneral[1];
+				var decreaseNum = paramsGeneral[2];
+				var error = result[1];
+				if (error) {
+					DOM.addClass(DOM.get('#J_PromoValue_'+id), 'text-error');
+				} else {
+					params.push(promoType);
+					params.push(promoValue);
+					var  promoStartTime = DOM.val(DOM.get('#J_Promo_Start_Time'));
+					var  promoEndTime = DOM.val(DOM.get('#J_Promo_End_Time'));
+					var  startNum = Number(DOM.val(DOM.get('#J_ItemParam_startNum_'+id)));
+					var  minNum = Number(DOM.val(DOM.get('#J_ItemParam_minNum_'+id)));
+					var  maxNum = Number(DOM.val(DOM.get('#J_ItemParam_maxNum_'+id)));
+					var  maxBuy = Number(DOM.val(DOM.get('#J_ItemParam_maxBuy_'+id)));
+					var  startAt = DOM.val(DOM.get('#J_ItemParam_startAt_'+id));
+					var  EndAt = DOM.val(DOM.get('#J_ItemParam_endAt_'+id));
+					var  lastBuy = DOM.val(DOM.get('#J_ItemParam_lastBuy_'+id));
+					var  timeInterval = DOM.val(DOM.get('#J_ItemParam_time_interval_'+id));
+					var tgType = DOM.val(DOM.get('#J_ItemParam_tgtype_'+id));
+					if(!KISSY.isNumber(startNum) || startNum <0 ){
+						new H.widget.msgBox({
+						    title:"错误提示",
+						    content:'团购初始参团人数必须大于等于0！',
+						    type:"error"
+						});
+						DOM.get('#J_ItemParam_startNum_'+id).focus();
+						DOM.addClass(DOM.get('#J_ItemParam_startNum_'+id), 'text-error');
+						error = true;
+					}else if(!KISSY.isNumber(minNum) || minNum <0 ){
+						new H.widget.msgBox({
+									    title:"错误提示",
+									    content:'最少参团人数必须大于0！',
+									    type:"error"
+									
+									});
+						DOM.get('#J_ItemParam_minNum_'+id).focus();
+						DOM.addClass(DOM.get('#J_ItemParam_minNum_'+id), 'text-error');
+						error = true;
+					}else if(!KISSY.isNumber(maxNum) || maxNum <0 || maxNum<minNum ){
+						new H.widget.msgBox({
+									    title:"错误提示",
+									    content:'最大参团人数必须大于0且大于等于最小参团人数！',
+									    type:"error"
+									
+									});
+						DOM.get('#J_ItemParam_maxNum_'+id).focus();
+						DOM.addClass(DOM.get('#J_ItemParam_maxNum_'+id), 'text-error');
+						error = true;
+					}else if(!KISSY.isNumber(maxBuy) || maxBuy <0 ){
+						new H.widget.msgBox({
+									    title:"错误提示",
+									    content:'每人最大购买量必须大于0！',
+									    type:"error"
+									
+									});
+						DOM.get('#J_ItemParam_maxBuy_'+id).focus();
+						DOM.addClass(DOM.get('#J_ItemParam_maxBuy_'+id), 'text-error');
+						error = true;
+					}else if(itemHandle.isNull(startAt)||!itemHandle.isDate(startAt)){
+						new H.widget.msgBox({
+									    title:"错误提示",
+									    content:'团购开始时间必须为日期格式(例2010-01-01 18:00:00！',
+									    type:"error"
+									
+									});
+						DOM.get('#J_ItemParam_startAt_'+id).focus();
+						DOM.addClass(DOM.get('#J_ItemParam_startAt_'+id), 'text-error');
+						error = true;
+					}else if(itemHandle.isNull(EndAt)||!itemHandle.isDate(EndAt)){
+						new H.widget.msgBox({
+									    title:"错误提示",
+									    content:'团购结束时间必须为日期格式(例2010-01-01 18:00:00)）！',
+									    type:"error"
+									
+									});
+						DOM.get('#J_ItemParam_endAt_'+id).focus();
+						DOM.addClass(DOM.get('#J_ItemParam_endAt_'+id), 'text-error');
+						error = true;
+					}else if(itemHandle.isNull(lastBuy)||!itemHandle.isDate(lastBuy)){
+						new H.widget.msgBox({
+									    title:"错误提示",
+									    content:'付款截至时间必须为日期格式！',
+									    type:"error"
+									
+									});
+						DOM.get('#J_ItemParam_lastBuy_'+id).focus();
+						DOM.addClass(DOM.get('#J_ItemParam_lastBuy_'+id), 'text-error');
+						error = true;
+					}else if(startAt < promoStartTime){
+						new H.widget.msgBox({
+									    title:"错误提示",
+									    content:'团购开始时间不能早于活动开始时间'+promoStartTime+'！',
+									    type:"error"
+									
+									});
+						DOM.get('#J_ItemParam_startAt_'+id).focus();
+						DOM.addClass(DOM.get('#J_ItemParam_startAt_'+id), 'text-error');
+						error = true;
+					}
+				}
+				params.push(startNum);
+				params.push(minNum);
+				params.push(maxNum);
+				params.push(maxBuy);
+				params.push(lastBuy);
+				params.push(startAt);
+				params.push(EndAt);
+				params.push(decreaseNum);
+				params.push(tgType);
+				params.push(timeInterval);
+				r.push(error);
+				r.push(params);
+				return r;
+			},
+			/**
+			 * 定向营销参数
+			 */
+			_generalTbSpecParams : function (id, error) {
+				var params = [];
+				var isInt = DOM.get('#J_IsInt_'+id).value;
+				var specPrice = Number(DOM.val(DOM.get('#J_SpecPrice_'+id)));
+				var origPrice = Number(DOM.val(DOM.get('#J_ItemPrice_'+id)));
+				var decreaseNum = Number(DOM.attr(DOM.get('#J_DecreaseNum_'+id),'title'));
+				var isSku = Number(DOM.val(DOM.get('#J_IsSku_'+id)));
+				//店铺折扣
+				var storeDiscount = DOM.val(DOM.get('#J_Discount'));
+				//最低折扣，减钱
+				var minPromoValue = DOM.val('#J_minPrivilege');
+				var joinType = DOM.val(DOM.get('#J_joinType'));
+				
+				var promoValue = 0;
+				
+				if(isSku == 1){
+					var promoType = '1';
+					promoValue = Number(DOM.val(DOM.get('#J_PromoValue_'+id)));
+				}else{
+					if (isInt != 0 || Number(DOM.val(DOM.get('#J_FinalType_'+id))) == 3) {
+						var promoType = '0';
+						promoValue = Number((origPrice - specPrice).toFixed(2));
+					} else {
+						var promoType = Number(DOM.get('#J_PromoType_'+id).value);
+						
+						if (promoType == '0') {
+							promoValue = Number((origPrice - specPrice).toFixed(2));
+						} else {
+							promoValue = Number(DOM.val(DOM.get('#J_PromoValue_'+id)));						
+						}
+					}
+				}
+				if (specPrice >= origPrice || itemHandle.checkPrice(promoValue) === false || itemHandle.checkPrice(specPrice) == false) {
+					new H.widget.msgBox({
+					    title:"错误提示",
+					    content:'特价金额有误（特价必须小于原价），请检查后再加入！',
+					    type:"error"
+					});
+    				error = true;
+    			}
+				
+				if (promoType == '0') {
+					
+					//判断优惠内容 “元”
+					if (type == 'tbspec'||type == 'onetbspec' || type == 'tbspec_buyerLimit' || type == "tg" || type == "jtj " || type == "onetbspec") {
+
+						if(joinType == 'all'){
+							var minimum = minPromoValue;
+						}else{
+							var minimum = promoValue;
+						}
+						if(promoValue > Number((origPrice*((10 - storeDiscount)/10)).toFixed(2))){
+							new H.widget.msgBox({
+				                title: "加入活动失败",
+				                content: '最低折扣率为  <em class="color-red">'+ (10 - (promoValue/origPrice)*10).toFixed(2) +'</em> 折，您的店铺最低折扣为 <em class="color-red" id="J_latest">'+ storeDiscount +'</em> 折，请修改您的店铺最低折扣后再重试！',
+				                type: "confirm",
+				                buttons: [{ value: "立即修改" }],
+				                success: function (result) {
+				                    if (result == "立即修改"){
+				                        window.open('http://ecrm.taobao.com/promotion/show_other_activity.htm');
+				                        promotionControl.getLowestDisAdd();
+				                    }
+				                }
+				            });	
+							error = true;
+						}
+					}
+					
+					//if (type == 'tbspec' && isUmp ==1 ){
+					if (type == 'tbspec' || type == 'tbspec_buyerLimit' || type == 'onetbspec' || type == 'tg'){
+							
+					}else{
+						if(promoValue >Number((origPrice*0.3).toFixed(2))){
+							new H.widget.msgBox({
+								    title:"错误提示",
+								    content:'优惠金额有误，折扣有效范围在 7.00~9.99之间！',
+								    type:"error"
+								
+								});
+							error = true;
+						}
+						
+					}
+					
+				} else {
+					//自动取整或着设置只有一件优惠，促销设置转成"元"无须判断
+					
+					//判断优惠内容 “折”
+					if (type == 'tbspec'||type == 'onetbspec' || type == 'tbspec_buyerLimit' || type == "tg" || type == "jtj " || type == "onetbspec") {
+						if(joinType == 'all'){
+							var minimum = minPromoValue;
+						}else{
+							var minimum = promoValue;
+						}
+						if(promoValue < storeDiscount){
+							new H.widget.msgBox({
+				                title: "加入活动失败",
+				                content: '您设置的宝贝最低折扣为 <em class="color-red">'+ minimum +'</em> 折，您的店铺最低折扣为 <em class="color-red" id="J_latest">'+ storeDiscount +'</em> 折请修改店铺最低折扣后重新加入活动！',
+				                type: "confirm",
+				                buttons: [{ value: "立即修改" }],
+				                success: function (result) {
+				                    if (result == "立即修改"){
+				                        window.open('http://ecrm.taobao.com/promotion/show_other_activity.htm'); 
+				                        promotionControl.getLowestDisAdd();
+				                    }
+				                }
+				            });
+							error = true;
+						}
+					}	
+					
+					//促销方式折七折以上限制
+					if (type == 'tbspec' || type == 'tbspec_buyerLimit' ||  type == 'tg' || type == 'onetbspec') {
+						//限购 不限制折扣
+					}else {
+						if (!KISSY.isNumber(promoValue) || promoValue < 7 || promoValue >= 10) {
+							//DOM.get('#J_PromoValue_'+id).value = '';
+							//DOM.get('#J_PromoValue_'+id).focus();
+							new H.widget.msgBox({
+							    title:"错误提示",
+							    content:'传入了不合法或不正确的参数,有效范围在 7.00~9.99之间！',
+							    type:"error"
+							
+							});
+							DOM.addClass(DOM.get('#J_PromoValue_' + id), 'text-error');
+							error = true;
+						}
+						else {
+							var re = /(^[0-9]([.][0-9]{1,2})?$)|(^1[0-9]([.][0-9]{1,2})?$)|(^2[0-3]([.][0-9]{1,2})?$)|(^10([.]0{1,2})?$)/;
+							if (!re.test(promoValue)) {
+								//DOM.get('#J_PromoValue_'+id).value = '';
+								//DOM.get('#J_PromoValue_'+id).focus();
+								new H.widget.msgBox({
+								    title:"错误提示",
+								    content:'传入了不合法或不正确的参数,有效范围在 7.00~9.99之间！',
+								    type:"error"
+								
+								});
+								DOM.addClass(DOM.get('#J_PromoValue_' + id), 'text-error');
+								error = true;
+							}
+						}
+					}
+						
+				}
+				promoValue.toFixed(2);
+				params.push(promoType);
+				params.push(promoValue);
+				params.push(decreaseNum);
+				return [params,error];
+			},
+			generalSpecParams : function(id, error) {
+				var r = [];
+				var params = [];
+				//特价
+				var promoPrice = Number(DOM.val(DOM.get('#J_PromoPrice_'+id)));
+				if (itemHandle.checkPrice(promoPrice) === false) {
+    				error = true;
+    				DOM.addClass(DOM.get('#J_PromoPrice_'+id), 'text-error');
+    			}
+				params.push(promoPrice);
+    			//skus特价
+				if (DOM.get('#J_ItemSkus_'+id) == null) {
+					params.push('');
+					r.push(error);
+					r.push(params);
+					return r;
+				}
+				var skusProperties = DOM.val(DOM.get('#J_ItemSkus_'+id));
+				var skusPropName = DOM.val(DOM.get('#J_PropsName_'+id));
+				var skusPropValue = DOM.val(DOM.get('#J_PropsValue_'+id));
+
+				var skus = [];
+				var skuOrigPrices = '';
+				var skuPromoPrices = '';
+				var origPriceEls = DOM.query('#J_SkuTable_'+id+' .J_SkuOrigPrice');
+				var promoPriceEls = DOM.query('#J_SkuTable_'+id+' .J_SkuPromoPrice');
+				var len = origPriceEls.length;
+				for (var i=0; i<len ;i++) {
+    				spp = Number(promoPriceEls[i].value);
+    				sop = Number(origPriceEls[i].value);
+    				if (itemHandle.checkPrice(spp) === false) {
+    					DOM.addClass(promoPriceEls[i], 'text-error');
+    					error = true;
+        			} else {
+    					DOM.removeClass(promoPriceEls[i], 'text-error');
+            		}
+					skuPromoPrices += promoPriceEls[i].value + ',';
+					skuOrigPrices += origPriceEls[i].value + ',';
+				}
+				
+				skuOrigPrices = skuOrigPrices.substring(0, (skuOrigPrices.length-1));
+				skuPromoPrices = skuPromoPrices.substring(0, (skuPromoPrices.length-1));
+    			
+				skus.push(skuOrigPrices);
+				skus.push(skuPromoPrices);
+				skus.push(skusProperties);
+				skus.push(skusPropName);
+				skus.push(skusPropValue);
+
+				params.push(skus);
+
+				r.push(error);
+				r.push(params);
+				return r;
+			},
+			generalTbSpecParams : function(id, error) {
+				var r = [];
+				var params = [];
+				//获取定向营销活动参数
+				result = itemHandle._generalTbSpecParams(id, error);
+				params = result[0];
+				var error = result[1];
+				if (error) {
+					DOM.addClass(DOM.get('#J_PromoValue_'+id), 'text-error');
+				}
+				r.push(error);
+				r.push(params);
+				return r;
+			},
+			/**
+			 * 阶梯价
+			 */
+			generalJtjParams : function(id, error){
+				var params = [];
+				var isSku = DOM.val('#J_IsSku_'+id);
+				var origPrice = Number(DOM.val(DOM.get('#J_ItemPrice_'+id)));
+				var promoType = DOM.query('#J_PromoType_'+id+' .J_promoType');
+				var promoValue = DOM.query('#J_PromoType_'+id+' .J_PromoValue');
+				var promoIsInt = DOM.query('#J_PromoType_'+id+' .J_PromoIsInt');
+				if(promoIsInt.length<=0){
+					var isInt = DOM.get('#J_IsInt_'+id).value;
+				}
+				var len = promoValue.length;
+				for(var m = 0; m<len;m++){
+					if(promoIsInt.length>0){
+						var isInt = Number(DOM.val(promoIsInt[m]));
+					}
+					if (isInt != 0) {
+						var newType = '0';
+						var idd = promoValue[m].id.replace('PromoValue', 'SpecPrice');
+						var specPrice = Number(DOM.val(DOM.get('#'+idd)));
+						newValue = Number((origPrice - specPrice).toFixed(2));
+					}else{
+						var newType = Number(DOM.val(promoType[m]));
+						
+						if (newType == '0') {
+							var idd = promoValue[m].id.replace('PromoValue', 'SpecPrice');
+							var specPrice = Number(DOM.val(DOM.get('#'+idd)));
+							newValue = Number((origPrice - specPrice).toFixed(2));
+						} else {
+							newValue = Number(DOM.val(promoValue[m]));						
+						}
+					}
+					if ( specPrice >= origPrice) {
+	    				DOM.addClass(promoValue[m], 'text-error');
+						new H.widget.msgBox({
+									    title:"错误提示",
+									    content:'特价金额有误（特价必须小于原价），请检查后再加入！',
+									    type:"error"
+									
+									});
+						error = true;
+    				}	
+					
+					
+					//促销方式折七折以上限制
+					if(isSku == '1' || newType == '1'){
+						if(!KISSY.isNumber(newValue) || newValue <= 0 || newValue >=10){
+							DOM.addClass(promoValue[m], 'text-error');
+								new H.widget.msgBox({
+									    title:"错误提示",
+									    content:'传入了不合法或不正确的参数,有效范围在 0.00~9.99之间！',
+									    type:"error"
+									
+									});
+							error = true;
+						} else {
+							var re = /(^[0-9]([.][0-9]{1,2})?$)|(^1[0-9]([.][0-9]{1,2})?$)|(^2[0-3]([.][0-9]{1,2})?$)|(^10([.]0{1,2})?$)/;
+							if(!re.test(newValue)){
+								new H.widget.msgBox({
+									    title:"错误提示",
+									    content:'传入了不合法或不正确的参数,有效范围在 0.00~9.99之间！',
+									    type:"error"
+									
+									});
+								//DOM.get('#J_PromoValue_'+id).value = '';
+								//DOM.get('#J_PromoValue_'+id).focus();
+								DOM.addClass(promoValue[m], 'text-error');
+								error = true;
+							}	
+						}
+					}else{
+						if (itemHandle.checkPrice(newValue) === false) {
+							DOM.addClass(promoValue[m], 'text-error');
+		    				error = true;
+		    			}
+					}
+					if(error == true){
+						break;
+					}
+					param = [newType,newValue];
+					params.push(param);
+				}
+				
+				return [error,params];
+				
+			}
+		
+	}
+	
+	
+}, {
+    requires: []
+});
 
 /**
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,showPages,itemHandle) {
+KISSY.add('page/Copy of item-init',function (S,showPages,itemHandle) {
     // your code here
       var DOM = S.DOM, Event = S.Event;
 	
@@ -24,13 +782,14 @@ KISSY.add(function (S,showPages,itemHandle) {
 	    	msg : null,
 	    	bd : null,
 	    	tabs : null,
+	    	
 	    	init : function() {
+				
 				   var timeFunName = null;
-				   
-
+				  
 				    /*加入宝贝授权*/
 					Event.delegate(document,'click dblclick','.J_AddToPromo',function(ev){
-						promotionControl.processStatus = 0;
+					    promotionControl.processStatus = 0;
 						if(!showPermissions('editor_promotion',"编辑促销活动")){
 							promotionControl.processStatus = 1;
 				   			return ;
@@ -39,42 +798,153 @@ KISSY.add(function (S,showPages,itemHandle) {
 						var id = DOM.attr(ev.currentTarget,'data');
 						if(id == 1 ){
 							DOM.val('#J_ExpiredActionType','addItems');
-							DOM.val('#J_joinType','all');
 						}else{
 							DOM.val('#J_ExpiredActionType','addItem');
 							DOM.attr('#J_ExpiredActionType','data',id);
-							DOM.val('#J_joinType',id);
 						}
-						DOM.removeAttr('#J_joinType','item-id');
+	        			promotionControl.getPromoItemNum();
 						if(ev.type == 'click'){
 							 clearTimeout(timeFunName);
 				        	 timeFunName = setTimeout(function () {
 				        		var sucess = function(o){
-				        			if(o.payload >= 150 && !KISSY.inArray(typeId,['130','10','22','2','32','107','105','207'])){
-		        			        	promotionControl.addAfter();
-										new H.widget.msgBox({
-										    title:"温馨提示",
-										    content:'非全店活动宝贝数量不能大于150个，现在已经加入'+o.payload+'请删除多余的宝贝，或酌情分多次活动创建',
-										    type:"info"
-										});
-										promotionControl.processStatus = 2;
-		        			        }else{
-		        			        	var diff  = IsExpired();
-						       			if(diff > -5000 ){
-					      					var sucessHandle = function(o) {
-					      						promotionControl.joinLowestDis(id);
-					      			 		};
-					      			 		var errorHandle = function(o){
-					      			 			KISSY.Event.fire('.J_TopExpired','click');
-									 			promotionControl.addAfter();
-									 			promotionControl.processStatus = 3;
-					      			 		};
-					      			 		var data = '';
-					      			  	    new H.widget.asyncRequest().setURI(isExpiredUrl).setMethod("GET").setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
-						      			}else{
-						      				promotionControl.joinLowestDis(id);
-						      			}
-		        			        }
+				        			DOM.val('#J_TotalPromoItems',o.payload);
+				        			var storeDiscount = DOM.val('#J_storeDiscount');
+				        			
+				        			if(id == 1){
+					        			checkBoxs = DOM.query('#J_TbItemList .J_CheckBox');
+					        			var len = checkBoxs.length;
+					        			for(i=0; i<len; i++){
+					        			    var iid = checkBoxs[i].value;
+					        			    if(checkBoxs[i].disabled) continue;
+					        			    if(checkBoxs[i].checked == true){
+					        			        var discount_rate = DOM.val('#J_PromoValue_'+iid);
+					        			        if(DOM.val('#J_storeDiscount') > discount_rate){
+					        			        	promotionControl.addAfter();
+					        			        	new H.widget.msgBox({
+					        			                title: "加入活动失败",
+					        			                content: '您设置的宝贝最低折扣为 <em class="color-red">'+ discount_rate +'</em> 折，您的店铺最低折扣为 <em class="color-red">'+ DOM.val('#J_storeDiscount') +'</em> 折请修改店铺最低折扣后重新加入活动',
+					        			                type: "confirm",
+					        			                buttons: [{ value: "立即修改" }, { value: "取消" }],
+					        			                success: function (result) {
+					        			                    if (result == "立即修改"){
+					        			                        window.open('http://ecrm.taobao.com/promotion/show_other_activity.htm');
+					        			                            
+					        			                        //重新加入活动
+					        			                        new H.widget.msgBox({
+					        			                            title: "加入活动",
+					        			                            content: '我已经修改完折扣，重新加入活动？',
+					        			                            type: "confirm",
+					        			                            buttons: [{ value: "重新加入" }, { value: "取消" }],
+					        			                            success: function (result) {
+					        			                                if (result == "重新加入") {
+					        			                                    Event.fire('#J_TopAddToPromo','click');
+					        			                                }
+					        			                            }
+					        			                        });
+					        			                        
+					        			                    }
+					        			                }
+					        			            });	
+					        			            promotionControl.processStatus = 2;
+					        			            return true;
+					        			        }else if(o.payload >= 150 && !KISSY.inArray(typeId,['130','10','22','2','32','107','105','207'])){
+					        			        	promotionControl.addAfter();
+													new H.widget.msgBox({
+													    title:"温馨提示",
+													    content:'非全店活动宝贝数量不能大于150个，现在已经加入'+o.payload+'请删除多余的宝贝，或酌情分多次活动创建',
+													    type:"info"
+													});
+													promotionControl.processStatus = 2;
+					        			        }else{
+					        			        	var diff  = IsExpired();
+									       			if(diff > -5000 ){
+								      					var sucessHandle = function(o) {
+								      						if(id == '1'){
+																promotionControl.addSelectItemsToPromotion();
+															}else{
+																promotionControl.addSelectItemsToPromotion(id);
+															}
+								      			 		};
+								      			 		var errorHandle = function(o){
+								      			 			KISSY.Event.fire('.J_TopExpired','click');
+												 			promotionControl.addAfter();
+												 			promotionControl.processStatus = 3;
+								      			 		};
+								      			 		var data = '';
+								      			  	    new H.widget.asyncRequest().setURI(isExpiredUrl).setMethod("GET").setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
+									      			}else{
+									      				if(id == '1'){
+															promotionControl.addSelectItemsToPromotion();
+														}else{
+															promotionControl.addSelectItemsToPromotion(id);
+														}
+									      			}
+					        			        }
+					        			    }
+					        			};					        				
+				        			}else{
+				        				var discount_rate = DOM.val('#J_PromoValue_'+id); 
+				        				if(storeDiscount > discount_rate){
+				        					promotionControl.addAfter();
+			        			        	new H.widget.msgBox({
+			        			                title: "加入活动失败",
+			        			                content: '您设置的宝贝最低折扣为 <em class="color-red">'+ discount_rate +'</em> 折，您的店铺最低折扣为 <em class="color-red">'+ DOM.val('#J_storeDiscount') +'</em> 折请修改店铺最低折扣后重新加入活动',
+			        			                type: "confirm",
+			        			                buttons: [{ value: "立即修改" }, { value: "取消" }],
+			        			                success: function (result) {
+			        			                    if (result == "立即修改"){
+			        			                        window.open('http://ecrm.taobao.com/promotion/show_other_activity.htm');
+			        			                            
+			        			                        //重新加入活动
+			        			                        new H.widget.msgBox({
+			        			                            title: "加入活动",
+			        			                            content: '我已经修改完折扣，重新加入活动？',
+			        			                            type: "confirm",
+			        			                            buttons: [{ value: "重新加入" }, { value: "取消" }],
+			        			                            success: function (result) {
+			        			                                if (result == "重新加入") {
+			        			                                    Event.fire('#J_AddToPromo'+id,'click');
+			        			                                }
+			        			                            }
+			        			                        });
+			        			                    }
+			        			                }
+			        			            });	
+			        			            promotionControl.processStatus = 2;
+				        				}else if(o.payload >= 150 && !KISSY.inArray(typeId,['130','10','22','2','32','107','105','207'])){
+			        			        	promotionControl.addAfter();
+											new H.widget.msgBox({
+											    title:"温馨提示",
+											    content:'非全店活动宝贝数量不能大于150个，现在已经加入'+o.payload+'请删除多余的宝贝，或酌情分多次活动创建',
+											    type:"info"
+											});
+											promotionControl.processStatus = 2;
+			        			        }else{
+			        			        	var diff  = IsExpired();
+							       			if(diff > -5000 ){
+						      					var sucessHandle = function(o) {
+						      						if(id == '1'){
+														promotionControl.addSelectItemsToPromotion();
+													}else{
+														promotionControl.addSelectItemsToPromotion(id);
+													}
+						      			 		};
+						      			 		var errorHandle = function(o){
+						      			 			KISSY.Event.fire('.J_TopExpired','click');
+										 			promotionControl.addAfter();
+										 			promotionControl.processStatus = 3;
+						      			 		};
+						      			 		var data = '';
+						      			  	    new H.widget.asyncRequest().setURI(isExpiredUrl).setMethod("GET").setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
+							      			}else{
+							      				if(id == '1'){
+													promotionControl.addSelectItemsToPromotion();
+												}else{
+													promotionControl.addSelectItemsToPromotion(id);
+												}
+							      			}
+			        			        }
+				        			};
 				        			
 	                         	};
 						 		var error = function(o){
@@ -93,31 +963,144 @@ KISSY.add(function (S,showPages,itemHandle) {
 			        	 if(ev.type == 'dblclick'){
 							 clearTimeout(timeFunName);
 							 var sucess = function(o){
-			        			if(o.payload >= 150 && !KISSY.inArray(typeId,['130','10','22','2','32','107','105','207'])){
-	        			        	promotionControl.addAfter();
-									new H.widget.msgBox({
-									    title:"温馨提示",
-									    content:'非全店活动宝贝数量不能大于150个，现在已经加入'+o.payload+'请删除多余的宝贝，或酌情分多次活动创建',
-									    type:"info"
-									});
-									promotionControl.processStatus = 2;
-	        			        }else{
-	        			        	var diff  = IsExpired();
-					       			if(diff > -5000 ){
-				      					var sucessHandle = function(o) {
-				      						promotionControl.joinLowestDis(id);
-				      			 		};
-				      			 		var errorHandle = function(o){
-				      			 			KISSY.Event.fire('.J_TopExpired','click');
-								 			promotionControl.addAfter();
-								 			promotionControl.processStatus = 3;
-				      			 		};
-				      			 		var data = '';
-				      			  	    new H.widget.asyncRequest().setURI(isExpiredUrl).setMethod("GET").setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
-					      			}else{
-					      				promotionControl.joinLowestDis(id);
-					      			}
-	        			        }
+			        			DOM.val('#J_TotalPromoItems',o.payload);
+			        			var storeDiscount = DOM.val('#J_storeDiscount');
+			        			
+			        			if(id == 1){
+				        			checkBoxs = DOM.query('#J_TbItemList .J_CheckBox');
+				        			var len = checkBoxs.length;
+				        			for(i=0; i<len; i++){
+				        			    var iid = checkBoxs[i].value;
+				        			    if(checkBoxs[i].disabled) continue;
+				        			    if(checkBoxs[i].checked == true){
+				        			        var discount_rate = DOM.val('#J_PromoValue_'+iid);
+				        			        if(DOM.val('#J_storeDiscount') > discount_rate){
+				        			        	promotionControl.addAfter();
+				        			        	new H.widget.msgBox({
+				        			                title: "加入活动失败",
+				        			                content: '您设置的宝贝最低折扣为 <em class="color-red">'+ discount_rate +'</em> 折，您的店铺最低折扣为 <em class="color-red">'+ DOM.val('#J_storeDiscount') +'</em> 折请修改店铺最低折扣后重新加入活动',
+				        			                type: "confirm",
+				        			                buttons: [{ value: "立即修改" }, { value: "取消" }],
+				        			                success: function (result) {
+				        			                    if (result == "立即修改"){
+				        			                        window.open('http://ecrm.taobao.com/promotion/show_other_activity.htm');
+				        			                            
+				        			                        //重新加入活动
+				        			                        new H.widget.msgBox({
+				        			                            title: "加入活动",
+				        			                            content: '我已经修改完折扣，重新加入活动？',
+				        			                            type: "confirm",
+				        			                            buttons: [{ value: "重新加入" }, { value: "取消" }],
+				        			                            success: function (result) {
+				        			                                if (result == "重新加入") {
+				        			                                    Event.fire('#J_TopAddToPromo','click');
+				        			                                }
+				        			                            }
+				        			                        });
+				        			                        
+				        			                    }
+				        			                }
+				        			            });	
+				        			            promotionControl.processStatus = 2;
+				        			            return true;
+				        			        }else if(o.payload >= 150 && !KISSY.inArray(typeId,['130','10','22','2','32','107','105','207'])){
+				        			        	promotionControl.addAfter();
+												new H.widget.msgBox({
+												    title:"温馨提示",
+												    content:'非全店活动宝贝数量不能大于150个，现在已经加入'+o.payload+'请删除多余的宝贝，或酌情分多次活动创建',
+												    type:"info"
+												});
+												promotionControl.processStatus = 2;
+				        			        }else{
+				        			        	var diff  = IsExpired();
+								       			if(diff > -5000 ){
+							      					var sucessHandle = function(o) {
+							      						if(id == '1'){
+															promotionControl.addSelectItemsToPromotion();
+														}else{
+															promotionControl.addSelectItemsToPromotion(id);
+														}
+							      			 		};
+							      			 		var errorHandle = function(o){
+							      			 			KISSY.Event.fire('.J_TopExpired','click');
+											 			promotionControl.addAfter();
+											 			promotionControl.processStatus = 3;
+							      			 		};
+							      			 		var data = '';
+							      			  	    new H.widget.asyncRequest().setURI(isExpiredUrl).setMethod("GET").setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
+								      			}else{
+								      				if(id == '1'){
+														promotionControl.addSelectItemsToPromotion();
+													}else{
+														promotionControl.addSelectItemsToPromotion(id);
+													}
+								      			}
+				        			        }
+				        			    }
+				        			};					        				
+			        			}else{
+			        				var discount_rate = DOM.val('#J_PromoValue_'+id); 
+			        				if(storeDiscount > discount_rate){
+			        					promotionControl.addAfter();
+		        			        	new H.widget.msgBox({
+		        			                title: "加入活动失败",
+		        			                content: '您设置的宝贝最低折扣为 <em class="color-red">'+ discount_rate +'</em> 折，您的店铺最低折扣为 <em class="color-red">'+ DOM.val('#J_storeDiscount') +'</em> 折请修改店铺最低折扣后重新加入活动',
+		        			                type: "confirm",
+		        			                buttons: [{ value: "立即修改" }, { value: "取消" }],
+		        			                success: function (result) {
+		        			                    if (result == "立即修改"){
+		        			                        window.open('http://ecrm.taobao.com/promotion/show_other_activity.htm');
+		        			                            
+		        			                        //重新加入活动
+		        			                        new H.widget.msgBox({
+		        			                            title: "加入活动",
+		        			                            content: '我已经修改完折扣，重新加入活动？',
+		        			                            type: "confirm",
+		        			                            buttons: [{ value: "重新加入" }, { value: "取消" }],
+		        			                            success: function (result) {
+		        			                                if (result == "重新加入") {
+		        			                                    Event.fire('#J_AddToPromo'+id,'click');
+		        			                                }
+		        			                            }
+		        			                        });
+		        			                    }
+		        			                }
+		        			            });	
+		        			            promotionControl.processStatus = 2;
+			        				}else if(o.payload >= 150 && !KISSY.inArray(typeId,['130','10','22','2','32','107','105','207'])){
+		        			        	promotionControl.addAfter();
+										new H.widget.msgBox({
+										    title:"温馨提示",
+										    content:'非全店活动宝贝数量不能大于150个，现在已经加入'+o.payload+'请删除多余的宝贝，或酌情分多次活动创建',
+										    type:"info"
+										});
+										promotionControl.processStatus = 2;
+		        			        }else{
+		        			        	var diff  = IsExpired();
+						       			if(diff > -5000 ){
+					      					var sucessHandle = function(o) {
+					      						if(id == '1'){
+													promotionControl.addSelectItemsToPromotion();
+												}else{
+													promotionControl.addSelectItemsToPromotion(id);
+												}
+					      			 		};
+					      			 		var errorHandle = function(o){
+					      			 			KISSY.Event.fire('.J_TopExpired','click');
+									 			promotionControl.addAfter();
+									 			promotionControl.processStatus = 3;
+					      			 		};
+					      			 		var data = '';
+					      			  	    new H.widget.asyncRequest().setURI(isExpiredUrl).setMethod("GET").setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
+						      			}else{
+						      				if(id == '1'){
+												promotionControl.addSelectItemsToPromotion();
+											}else{
+												promotionControl.addSelectItemsToPromotion(id);
+											}
+						      			}
+		        			        } 
+			        			};
 			        			
                          	};
 					 		var error = function(o){
@@ -132,36 +1115,6 @@ KISSY.add(function (S,showPages,itemHandle) {
 					  	    new H.widget.asyncRequest().setURI(getPromoItemNumUrl).setMethod("GET").setHandle(sucess).setErrorHandle(error).setData(data).send();
 			        	 }; 
 					});
-					
-					/*更新店铺折扣*/
-					promotionControl.getLowestDis();
-					Event.on('#J_updateDiscount','click',function(){
-						DOM.val('#J_isDiscount','1');
-						var diff  = IsExpired();
-		    			if(diff > -5000 ){
-							var sucessHandle = function(o) {
-								promotionControl.getLowestDis();
-					 		};
-					 		var errorHandle = function(o){
-					 			KISSY.Event.fire('.J_TopExpired','click');
-					 		};
-					 		var data = '';
-					  	    new H.widget.asyncRequest().setURI(isExpiredUrl).setMethod("GET").setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
-			   			}else{
-			   				promotionControl.getLowestDis();
-			   			}
-					});	
-					
-				//编辑活动中的宝贝折扣获取id
-				Event.delegate(document,'click','.J_isEdit',function(ev){
-				   var id = DOM.attr(ev.currentTarget,'pid');
-				   var item_id = DOM.attr(ev.currentTarget,'item-id');
-				   DOM.val('#J_joinType',id);
-				   DOM.attr('#J_joinType',{'item-id':item_id});
-			    });
-				Event.on('#J_EditPromoItem','click',function(){
-					DOM.val('#J_joinType','all');
-				});	
 
 				/*编辑宝贝授权 重启宝贝。批量编辑*/
 				Event.delegate(document,'click dblclick','.J_removeToPromo',function(ev){
@@ -182,17 +1135,17 @@ KISSY.add(function (S,showPages,itemHandle) {
 				    var diff  = IsExpired();
 	       			 if(diff > -5000 ){
 	      					var sucessHandle = function(o) {
-      						    if(type == 'editorOne'){
-								   promotionControl.editItem(idd);
-								}else if(type == 'editorAll'){
-									promotionControl.editPromoItem();
-								}else if(type == 'restartOne'){
-									 promotionControl.restartPromotionItemHandle(idd,pidd)
-								}else if(type == 'restartAll' ){
-									promotionControl.restartPromotionItemHandle();
-								}else if(type == 'batchRetryAll'){
-									promotionControl.batchRetry();
-								}
+	      						    if(type == 'editorOne'){
+									   promotionControl.editItem(idd);
+									}else if(type == 'editorAll'){
+										promotionControl.editPromoItem();
+									}else if(type == 'restartOne'){
+										 promotionControl.restartPromotionItemHandle(idd,pidd)
+									}else if(type == 'restartAll' ){
+										promotionControl.restartPromotionItemHandle();
+									}else if(type == 'batchRetryAll'){
+										promotionControl.batchRetry();
+									}
 	      			 		};
 	      			 		var errorHandle = function(o){
 	      			 			KISSY.Event.fire('.J_TopExpired','click');
@@ -293,11 +1246,11 @@ KISSY.add(function (S,showPages,itemHandle) {
 					DOM.hide(box);
 				    var submitHandle = function(o) {
 						new H.widget.msgBox({
-						    title:"温馨提示",
-						    content:'同步数据请求成功，请点击搜索查看宝贝。如无法显示请过1分钟左右再查看！',
-						    type:"info"
-						
-						});
+									    title:"温馨提示",
+									    content:'同步数据请求成功，请点击搜索查看宝贝。如无法显示请过1分钟左右再查看！',
+									    type:"info"
+									
+									});
 						KISSY.later(function(box){DOM.show(box);},60000,false,null,box)
 			        }
 					var data = "";
@@ -326,130 +1279,20 @@ KISSY.add(function (S,showPages,itemHandle) {
 			   
 	        },
 	        
-	        //宝贝加入活动获取店铺折扣判断
-	        joinLowestDis : function(id){
+	        //获取店铺设置的折扣
+	        getPromoItemNum : function(discount){
 	        	var sucess = function(o){
-	        		DOM.hide('#J_loadingDiscount');
-	        		DOM.show('#J_storeDiscount');
-	        		DOM.val('#J_Discount',o.payload);
-	        		DOM.text('#J_storeDiscount',o.payload+' 折');
-	        		if(id == '1'){
-						promotionControl.addSelectItemsToPromotion();
-					}else{
-						promotionControl.addSelectItemsToPromotion(id);
-					}
-				};
+					DOM.val('#J_storeDiscount',o.payload);
+				}
 		 		var error = function(o){
-		 			DOM.hide('#J_loadingDiscount');
-		 			DOM.show('#J_storeDiscount');
-		 			DOM.text('#J_storeDiscount',o.desc);
-		 			if(id == '1'){
-						promotionControl.addSelectItemsToPromotion();
-					}else{
-						promotionControl.addSelectItemsToPromotion(id);
-					}
+		 			new H.widget.msgBox({
+					    title:"错误提示",
+					    content:o.desc,
+					    type:"error"
+					});	 			
 		 		};
-		 		DOM.show('#J_loadingDiscount');
-		 		DOM.hide('#J_storeDiscount');
-		 		var isLoading = 0;
-		 		var data = 'fg='+isLoading;
+		 		var data = 'item_id='+12;
 		  	    new H.widget.asyncRequest().setURI(getLowestDisUrl).setMethod("GET").setHandle(sucess).setErrorHandle(error).setData(data).send(); 
-	        },
-	        
-	        //点击更新店铺设置的折扣
-	        getLowestDis : function(){
-	        	var sucess = function(o){
-	        		DOM.hide('#J_loadingDiscount');
-	        		DOM.show('#J_storeDiscount');
-	        		DOM.val('#J_Discount',o.payload);
-	        		DOM.text('#J_storeDiscount',o.payload+' 折');
-				};
-		 		var error = function(o){
-		 			DOM.hide('#J_loadingDiscount');
-		 			DOM.show('#J_storeDiscount');
-		 			DOM.text('#J_storeDiscount',o.desc);
-		 		};
-		 		DOM.show('#J_loadingDiscount');
-		 		DOM.hide('#J_storeDiscount');
-		 		var isLoading = DOM.val('#J_isDiscount');
-		 		var data = 'fg='+isLoading;
-		  	    new H.widget.asyncRequest().setURI(getLowestDisUrl).setMethod("GET").setHandle(sucess).setErrorHandle(error).setData(data).send(); 
-	        },
-	        
-	        //弹窗重新加入活动获取折扣
-	        getLowestDisAgain : function(){
-	        	var joinType = DOM.val(DOM.get('#J_joinType'));
-	        	var joinItemId = DOM.attr('#J_joinType','item-id');
-	        	var sucess = function(o){
-            		DOM.hide('#J_loadingDiscount');
-	        		DOM.show('#J_storeDiscount');
-        			DOM.val('#J_Discount',o.payload);
-	        		DOM.text('#J_storeDiscount',o.payload+' 折');
-	        		DOM.html('#J_latest',o.payload);
-        			if(joinType == 'all'){
-        				if(joinItemId != undefined){
-            				promotionControl.editPromoItem();
-            			}else{
-            				promotionControl.addSelectItemsToPromotion();
-            			}
-            		}else{
-            			if(joinItemId != undefined){
-            				promotionControl.editPromoItem(joinType,joinItemId);
-            			}else{
-            				promotionControl.addSelectItemsToPromotion(joinType);
-            			}
-            		}
-				};
-				var error = function(o){
-		 			DOM.hide('#J_loadingDiscount');
-		 			DOM.show('#J_storeDiscount');
-		 			DOM.text('#J_storeDiscount',o.desc);
-		 			if(joinType == 'all'){
-        				if(joinItemId != undefined){
-            				promotionControl.editPromoItem();
-            			}else{
-            				promotionControl.addSelectItemsToPromotion();
-            			}
-            		}else{
-            			if(joinItemId != undefined){
-            				promotionControl.editPromoItem(joinType,joinItemId);
-            			}else{
-            				promotionControl.addSelectItemsToPromotion(joinType);
-            			}
-            		}
-		 		};
-				DOM.show('#J_loadingDiscount');
-		 		DOM.hide('#J_storeDiscount');
-		 		var isLoading = DOM.val('#J_isDiscount');
-		 		var data = 'fg='+isLoading;
-		  	    new H.widget.asyncRequest().setURI(getLowestDisUrl).setMethod("GET").setHandle(sucess).setErrorHandle(error).setData(data).send(); 
-	        },
-	        
-	        //弹出是否重新加入活动
-	        getLowestDisAdd : function(){
-	        	new H.widget.msgBox({
-	                title: "重新加入活动",
-	                content: '我已经修改完折扣，重新加入活动？',
-	                type: "popup",
-	                buttons: [{value: "重新加入" },{ value: "取消"}],
-	                success: function (result) {
-	                    if(result == "重新加入"){
-	                    	var diff  = IsExpired();
-			    			if(diff > -5000 ){
-								var sucessHandle = function(o) {
-									promotionControl.getLowestDisAgain();
-						 		};
-						 		var errorHandle = function(o){
-						 			KISSY.Event.fire('.J_TopExpired','click');
-						 		};
-						 		var data = '';
-						  	    new H.widget.asyncRequest().setURI(isExpiredUrl).setMethod("GET").setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
-				   			}else{
-				   				promotionControl.getLowestDisAgain();
-				   			}
-	                    }
-	                }
-	            });
 	        },
 	        
 	        //清除淘宝特价
@@ -923,17 +1766,6 @@ KISSY.add(function (S,showPages,itemHandle) {
 				var error = false;
 				var len = checkBoxs.length;
 				var translateDiv = DOM.get("#J_Translate");
-				
-				//把优惠内容保存，获取优惠内容中最小值
-				var privilegeJson = [];
-				for(i=0; i<len; i++){
-					var id = checkBoxs[i].value;
-    				var z = DOM.val(DOM.get('#J_PromoValue_'+id));
-					privilegeJson.push(z);
-	            };
-	            //把最低优惠内容写入J_minPrivilege
-				DOM.val('#J_minPrivilege',Math.min.apply(null,privilegeJson));
-
 				for(i=0; i<len; i++){
 					var flag = false;
 					if(iid!=undefined){
@@ -946,9 +1778,8 @@ KISSY.add(function (S,showPages,itemHandle) {
 					if(flag == true){
 						var totalNum = Number(DOM.val('#J_TotalPromoItems'));	 
 						totalNum = totalNum+1;
-						
 						//无条件免邮，一口价，一件优惠 限时折扣 限购不限制 150个
-						if(totalNum > 150 && !KISSY.inArray(typeId,['130','10','22','2','32','107','105','207'])){
+						if(totalNum >150 && !KISSY.inArray(typeId,['130','10','22','2','32','107','105','207'])){
 							new H.widget.msgBox({
 							    title:"温馨提示",
 							    content:'非全店活动宝贝数量不能大于150个，现在已经加入'+totalNum+'请删除多余的宝贝，或酌情分多次活动创建！',
@@ -958,8 +1789,7 @@ KISSY.add(function (S,showPages,itemHandle) {
 						}else{
 							 DOM.val('#J_TotalPromoItems',totalNum);
 						}
-						
-						var id = checkBoxs[i].value;
+                        var id = checkBoxs[i].value;
     					var title = H.util.strProcess(DOM.val(DOM.get('#J_ItemTitle_'+id)));
         				var picUrl = DOM.val(DOM.get('#J_ItemPic_'+id));
         				var price = DOM.val(DOM.get('#J_ItemPrice_'+id));
@@ -967,7 +1797,6 @@ KISSY.add(function (S,showPages,itemHandle) {
 						var outId = H.util.strProcess(DOM.val(DOM.get('#J_ItemOuterId_'+id)));
         				//var iconId = DOM.val(DOM.get('#J_ItemIcon_'+id));
         				var paramsStr = '';
-        				
         				if (type == 'spec' ) {
         					r = itemHandle.generalSpecParams(id, error);
         					error = r[0];
@@ -991,15 +1820,15 @@ KISSY.add(function (S,showPages,itemHandle) {
 						}
         				if (error === false) {
                         	o = '{"id":"' + id + '", "outer_id":"' + outId + '", "title":"' + title + '", "price":"' + price + '", "pic_url":"'+ picUrl +'", "update_pic":"'+ updatePic +'"'+ paramsStr + '}';
-                        	o = eval('(' + o + ')');
+							o = eval('(' + o + ')');
 							json.push(o);
         				}else{
+        					
         					break ;
         				}
         				if(iid!=undefined){
         					break;
         				}
-        				
 					}
 	            }
 				
@@ -1009,6 +1838,7 @@ KISSY.add(function (S,showPages,itemHandle) {
 					promotionControl.processStatus = 4;
 					return ;
     			}
+				
 				if(json.length == 0){
 					new H.widget.msgBox({
 					    title:"错误提示",
@@ -1058,7 +1888,6 @@ KISSY.add(function (S,showPages,itemHandle) {
          	    var data = "pid="+pid+"&items="+itemsJson+"&form_key="+FORM_KEY;
          	    new H.widget.asyncRequest().setURI(addItemsToPromotionUrl).setMethod("POST").setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).send();
 			},
-			
 			//点击 加入活动  后的 按钮还原
 			addAfter : function(){
 				DOM.show(DOM.query('.J_addItem'));
@@ -1550,10 +2379,10 @@ KISSY.add(function (S,showPages,itemHandle) {
 			},
 			editPromoItem : function(promo_item_id,item_id){
 				promotionControl.msg = new H.widget.msgBox({
-				    title:"",
-					dialogType : 'loading',
-				    content:'正在处理中，请稍候'	
-				});
+								    title:"",
+									dialogType : 'loading',
+								    content:'正在处理中，请稍候'	
+								});
 				var json = [];
 				var error = false;
 				
@@ -1603,17 +2432,6 @@ KISSY.add(function (S,showPages,itemHandle) {
 					//批量编辑
 					checkBoxs = DOM.query("#J_PromotionItemList .J_CheckBox");
 					var len = checkBoxs.length;
-					
-					//把优惠内容保存，获取优惠内容中最小值
-					var privilegeJson = [];
-					for(i=0; i<len; i++){
-						var id = checkBoxs[i].value;
-	    				var z = DOM.val(DOM.get('#J_PromoValue_'+id));
-						privilegeJson.push(z);
-		            };
-		            //把最低优惠内容写入J_minPrivilege
-					DOM.val('#J_minPrivilege',Math.min.apply(null,privilegeJson));
-					
 					for(i=0; i<len; i++){
 						if(checkBoxs[i].checked && !checkBoxs[i].disabled){
 							 var id = checkBoxs[i].value;

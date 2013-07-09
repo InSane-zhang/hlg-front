@@ -31,6 +31,7 @@ KISSY.add(function(S,showPages){
 						DOM.css(DOM.query(".J_PromotionItemBtnHolder") , 'display' , 'none');
 						DOM.css(DOM.query(".J_ControlBtm") , 'display' , 'none');
 					}
+					
 					DOM.html('#J_PromotionItemList' ,o.payload.body);
 					var oTriggers = DOM.query('#J_PromotionItemList .J_CheckBox');
 					selectItemNum = 0;
@@ -68,6 +69,7 @@ KISSY.add(function(S,showPages){
 						DOM.css(DOM.get('#J_REmpty'), 'display' , '');
 						DOM.css(DOM.query(".J_PromotionItemBtnHolder") , 'display' , 'none');
 					}
+					
 					DOM.html('#J_PromotionItemList' ,o.payload.body);
 
 					if(!specifyList.checkBoxs){
@@ -138,6 +140,9 @@ KISSY.add(function(S,showPages){
 					DOM.html("#r-del-item-msg",'');
 					items = JSON.stringify(items);
 					specifyList.ajaxPostProcessItems(0, items);
+					S.later(function(){   
+                        window.location.reload();
+                    },500,false) 
 				},
 				delItemsFromSpecify : function(){
 					if(!showPermissions('editor_tool','工具箱')){return ;}
@@ -167,6 +172,9 @@ KISSY.add(function(S,showPages){
 					DOM.html("#r-del-item-msg",'');
 					items = JSON.stringify(items);
 					specifyList.ajaxPostProcessItems(0, items);
+					S.later(function(){   
+                        window.location.reload();
+                    },500,false) 
 				},
 				ajaxPostProcessItems : function(added, items){
 					items = encodeURIComponent(items)

@@ -24,13 +24,14 @@ KISSY.add(function (S,showPages,itemHandle) {
 	    	msg : null,
 	    	bd : null,
 	    	tabs : null,
+	    	
 	    	init : function() {
+				
 				   var timeFunName = null;
-				   
-
+				  
 				    /*加入宝贝授权*/
 					Event.delegate(document,'click dblclick','.J_AddToPromo',function(ev){
-						promotionControl.processStatus = 0;
+					    promotionControl.processStatus = 0;
 						if(!showPermissions('editor_promotion',"编辑促销活动")){
 							promotionControl.processStatus = 1;
 				   			return ;
@@ -39,42 +40,153 @@ KISSY.add(function (S,showPages,itemHandle) {
 						var id = DOM.attr(ev.currentTarget,'data');
 						if(id == 1 ){
 							DOM.val('#J_ExpiredActionType','addItems');
-							DOM.val('#J_joinType','all');
 						}else{
 							DOM.val('#J_ExpiredActionType','addItem');
 							DOM.attr('#J_ExpiredActionType','data',id);
-							DOM.val('#J_joinType',id);
 						}
-						DOM.removeAttr('#J_joinType','item-id');
+	        			promotionControl.getPromoItemNum();
 						if(ev.type == 'click'){
 							 clearTimeout(timeFunName);
 				        	 timeFunName = setTimeout(function () {
 				        		var sucess = function(o){
-				        			if(o.payload >= 150 && !KISSY.inArray(typeId,['130','10','22','2','32','107','105','207'])){
-		        			        	promotionControl.addAfter();
-										new H.widget.msgBox({
-										    title:"温馨提示",
-										    content:'非全店活动宝贝数量不能大于150个，现在已经加入'+o.payload+'请删除多余的宝贝，或酌情分多次活动创建',
-										    type:"info"
-										});
-										promotionControl.processStatus = 2;
-		        			        }else{
-		        			        	var diff  = IsExpired();
-						       			if(diff > -5000 ){
-					      					var sucessHandle = function(o) {
-					      						promotionControl.joinLowestDis(id);
-					      			 		};
-					      			 		var errorHandle = function(o){
-					      			 			KISSY.Event.fire('.J_TopExpired','click');
-									 			promotionControl.addAfter();
-									 			promotionControl.processStatus = 3;
-					      			 		};
-					      			 		var data = '';
-					      			  	    new H.widget.asyncRequest().setURI(isExpiredUrl).setMethod("GET").setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
-						      			}else{
-						      				promotionControl.joinLowestDis(id);
-						      			}
-		        			        }
+				        			DOM.val('#J_TotalPromoItems',o.payload);
+				        			var storeDiscount = DOM.val('#J_storeDiscount');
+				        			
+				        			if(id == 1){
+					        			checkBoxs = DOM.query('#J_TbItemList .J_CheckBox');
+					        			var len = checkBoxs.length;
+					        			for(i=0; i<len; i++){
+					        			    var iid = checkBoxs[i].value;
+					        			    if(checkBoxs[i].disabled) continue;
+					        			    if(checkBoxs[i].checked == true){
+					        			        var discount_rate = DOM.val('#J_PromoValue_'+iid);
+					        			        if(DOM.val('#J_storeDiscount') > discount_rate){
+					        			        	promotionControl.addAfter();
+					        			        	new H.widget.msgBox({
+					        			                title: "加入活动失败",
+					        			                content: '您设置的宝贝最低折扣为 <em class="color-red">'+ discount_rate +'</em> 折，您的店铺最低折扣为 <em class="color-red">'+ DOM.val('#J_storeDiscount') +'</em> 折请修改店铺最低折扣后重新加入活动',
+					        			                type: "confirm",
+					        			                buttons: [{ value: "立即修改" }, { value: "取消" }],
+					        			                success: function (result) {
+					        			                    if (result == "立即修改"){
+					        			                        window.open('http://ecrm.taobao.com/promotion/show_other_activity.htm');
+					        			                            
+					        			                        //重新加入活动
+					        			                        new H.widget.msgBox({
+					        			                            title: "加入活动",
+					        			                            content: '我已经修改完折扣，重新加入活动？',
+					        			                            type: "confirm",
+					        			                            buttons: [{ value: "重新加入" }, { value: "取消" }],
+					        			                            success: function (result) {
+					        			                                if (result == "重新加入") {
+					        			                                    Event.fire('#J_TopAddToPromo','click');
+					        			                                }
+					        			                            }
+					        			                        });
+					        			                        
+					        			                    }
+					        			                }
+					        			            });	
+					        			            promotionControl.processStatus = 2;
+					        			            return true;
+					        			        }else if(o.payload >= 150 && !KISSY.inArray(typeId,['130','10','22','2','32','107','105','207'])){
+					        			        	promotionControl.addAfter();
+													new H.widget.msgBox({
+													    title:"温馨提示",
+													    content:'非全店活动宝贝数量不能大于150个，现在已经加入'+o.payload+'请删除多余的宝贝，或酌情分多次活动创建',
+													    type:"info"
+													});
+													promotionControl.processStatus = 2;
+					        			        }else{
+					        			        	var diff  = IsExpired();
+									       			if(diff > -5000 ){
+								      					var sucessHandle = function(o) {
+								      						if(id == '1'){
+																promotionControl.addSelectItemsToPromotion();
+															}else{
+																promotionControl.addSelectItemsToPromotion(id);
+															}
+								      			 		};
+								      			 		var errorHandle = function(o){
+								      			 			KISSY.Event.fire('.J_TopExpired','click');
+												 			promotionControl.addAfter();
+												 			promotionControl.processStatus = 3;
+								      			 		};
+								      			 		var data = '';
+								      			  	    new H.widget.asyncRequest().setURI(isExpiredUrl).setMethod("GET").setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
+									      			}else{
+									      				if(id == '1'){
+															promotionControl.addSelectItemsToPromotion();
+														}else{
+															promotionControl.addSelectItemsToPromotion(id);
+														}
+									      			}
+					        			        }
+					        			    }
+					        			};					        				
+				        			}else{
+				        				var discount_rate = DOM.val('#J_PromoValue_'+id); 
+				        				if(storeDiscount > discount_rate){
+				        					promotionControl.addAfter();
+			        			        	new H.widget.msgBox({
+			        			                title: "加入活动失败",
+			        			                content: '您设置的宝贝最低折扣为 <em class="color-red">'+ discount_rate +'</em> 折，您的店铺最低折扣为 <em class="color-red">'+ DOM.val('#J_storeDiscount') +'</em> 折请修改店铺最低折扣后重新加入活动',
+			        			                type: "confirm",
+			        			                buttons: [{ value: "立即修改" }, { value: "取消" }],
+			        			                success: function (result) {
+			        			                    if (result == "立即修改"){
+			        			                        window.open('http://ecrm.taobao.com/promotion/show_other_activity.htm');
+			        			                            
+			        			                        //重新加入活动
+			        			                        new H.widget.msgBox({
+			        			                            title: "加入活动",
+			        			                            content: '我已经修改完折扣，重新加入活动？',
+			        			                            type: "confirm",
+			        			                            buttons: [{ value: "重新加入" }, { value: "取消" }],
+			        			                            success: function (result) {
+			        			                                if (result == "重新加入") {
+			        			                                    Event.fire('#J_AddToPromo'+id,'click');
+			        			                                }
+			        			                            }
+			        			                        });
+			        			                    }
+			        			                }
+			        			            });	
+			        			            promotionControl.processStatus = 2;
+				        				}else if(o.payload >= 150 && !KISSY.inArray(typeId,['130','10','22','2','32','107','105','207'])){
+			        			        	promotionControl.addAfter();
+											new H.widget.msgBox({
+											    title:"温馨提示",
+											    content:'非全店活动宝贝数量不能大于150个，现在已经加入'+o.payload+'请删除多余的宝贝，或酌情分多次活动创建',
+											    type:"info"
+											});
+											promotionControl.processStatus = 2;
+			        			        }else{
+			        			        	var diff  = IsExpired();
+							       			if(diff > -5000 ){
+						      					var sucessHandle = function(o) {
+						      						if(id == '1'){
+														promotionControl.addSelectItemsToPromotion();
+													}else{
+														promotionControl.addSelectItemsToPromotion(id);
+													}
+						      			 		};
+						      			 		var errorHandle = function(o){
+						      			 			KISSY.Event.fire('.J_TopExpired','click');
+										 			promotionControl.addAfter();
+										 			promotionControl.processStatus = 3;
+						      			 		};
+						      			 		var data = '';
+						      			  	    new H.widget.asyncRequest().setURI(isExpiredUrl).setMethod("GET").setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
+							      			}else{
+							      				if(id == '1'){
+													promotionControl.addSelectItemsToPromotion();
+												}else{
+													promotionControl.addSelectItemsToPromotion(id);
+												}
+							      			}
+			        			        }
+				        			};
 				        			
 	                         	};
 						 		var error = function(o){
@@ -93,31 +205,144 @@ KISSY.add(function (S,showPages,itemHandle) {
 			        	 if(ev.type == 'dblclick'){
 							 clearTimeout(timeFunName);
 							 var sucess = function(o){
-			        			if(o.payload >= 150 && !KISSY.inArray(typeId,['130','10','22','2','32','107','105','207'])){
-	        			        	promotionControl.addAfter();
-									new H.widget.msgBox({
-									    title:"温馨提示",
-									    content:'非全店活动宝贝数量不能大于150个，现在已经加入'+o.payload+'请删除多余的宝贝，或酌情分多次活动创建',
-									    type:"info"
-									});
-									promotionControl.processStatus = 2;
-	        			        }else{
-	        			        	var diff  = IsExpired();
-					       			if(diff > -5000 ){
-				      					var sucessHandle = function(o) {
-				      						promotionControl.joinLowestDis(id);
-				      			 		};
-				      			 		var errorHandle = function(o){
-				      			 			KISSY.Event.fire('.J_TopExpired','click');
-								 			promotionControl.addAfter();
-								 			promotionControl.processStatus = 3;
-				      			 		};
-				      			 		var data = '';
-				      			  	    new H.widget.asyncRequest().setURI(isExpiredUrl).setMethod("GET").setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
-					      			}else{
-					      				promotionControl.joinLowestDis(id);
-					      			}
-	        			        }
+			        			DOM.val('#J_TotalPromoItems',o.payload);
+			        			var storeDiscount = DOM.val('#J_storeDiscount');
+			        			
+			        			if(id == 1){
+				        			checkBoxs = DOM.query('#J_TbItemList .J_CheckBox');
+				        			var len = checkBoxs.length;
+				        			for(i=0; i<len; i++){
+				        			    var iid = checkBoxs[i].value;
+				        			    if(checkBoxs[i].disabled) continue;
+				        			    if(checkBoxs[i].checked == true){
+				        			        var discount_rate = DOM.val('#J_PromoValue_'+iid);
+				        			        if(DOM.val('#J_storeDiscount') > discount_rate){
+				        			        	promotionControl.addAfter();
+				        			        	new H.widget.msgBox({
+				        			                title: "加入活动失败",
+				        			                content: '您设置的宝贝最低折扣为 <em class="color-red">'+ discount_rate +'</em> 折，您的店铺最低折扣为 <em class="color-red">'+ DOM.val('#J_storeDiscount') +'</em> 折请修改店铺最低折扣后重新加入活动',
+				        			                type: "confirm",
+				        			                buttons: [{ value: "立即修改" }, { value: "取消" }],
+				        			                success: function (result) {
+				        			                    if (result == "立即修改"){
+				        			                        window.open('http://ecrm.taobao.com/promotion/show_other_activity.htm');
+				        			                            
+				        			                        //重新加入活动
+				        			                        new H.widget.msgBox({
+				        			                            title: "加入活动",
+				        			                            content: '我已经修改完折扣，重新加入活动？',
+				        			                            type: "confirm",
+				        			                            buttons: [{ value: "重新加入" }, { value: "取消" }],
+				        			                            success: function (result) {
+				        			                                if (result == "重新加入") {
+				        			                                    Event.fire('#J_TopAddToPromo','click');
+				        			                                }
+				        			                            }
+				        			                        });
+				        			                        
+				        			                    }
+				        			                }
+				        			            });	
+				        			            promotionControl.processStatus = 2;
+				        			            return true;
+				        			        }else if(o.payload >= 150 && !KISSY.inArray(typeId,['130','10','22','2','32','107','105','207'])){
+				        			        	promotionControl.addAfter();
+												new H.widget.msgBox({
+												    title:"温馨提示",
+												    content:'非全店活动宝贝数量不能大于150个，现在已经加入'+o.payload+'请删除多余的宝贝，或酌情分多次活动创建',
+												    type:"info"
+												});
+												promotionControl.processStatus = 2;
+				        			        }else{
+				        			        	var diff  = IsExpired();
+								       			if(diff > -5000 ){
+							      					var sucessHandle = function(o) {
+							      						if(id == '1'){
+															promotionControl.addSelectItemsToPromotion();
+														}else{
+															promotionControl.addSelectItemsToPromotion(id);
+														}
+							      			 		};
+							      			 		var errorHandle = function(o){
+							      			 			KISSY.Event.fire('.J_TopExpired','click');
+											 			promotionControl.addAfter();
+											 			promotionControl.processStatus = 3;
+							      			 		};
+							      			 		var data = '';
+							      			  	    new H.widget.asyncRequest().setURI(isExpiredUrl).setMethod("GET").setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
+								      			}else{
+								      				if(id == '1'){
+														promotionControl.addSelectItemsToPromotion();
+													}else{
+														promotionControl.addSelectItemsToPromotion(id);
+													}
+								      			}
+				        			        }
+				        			    }
+				        			};					        				
+			        			}else{
+			        				var discount_rate = DOM.val('#J_PromoValue_'+id); 
+			        				if(storeDiscount > discount_rate){
+			        					promotionControl.addAfter();
+		        			        	new H.widget.msgBox({
+		        			                title: "加入活动失败",
+		        			                content: '您设置的宝贝最低折扣为 <em class="color-red">'+ discount_rate +'</em> 折，您的店铺最低折扣为 <em class="color-red">'+ DOM.val('#J_storeDiscount') +'</em> 折请修改店铺最低折扣后重新加入活动',
+		        			                type: "confirm",
+		        			                buttons: [{ value: "立即修改" }, { value: "取消" }],
+		        			                success: function (result) {
+		        			                    if (result == "立即修改"){
+		        			                        window.open('http://ecrm.taobao.com/promotion/show_other_activity.htm');
+		        			                            
+		        			                        //重新加入活动
+		        			                        new H.widget.msgBox({
+		        			                            title: "加入活动",
+		        			                            content: '我已经修改完折扣，重新加入活动？',
+		        			                            type: "confirm",
+		        			                            buttons: [{ value: "重新加入" }, { value: "取消" }],
+		        			                            success: function (result) {
+		        			                                if (result == "重新加入") {
+		        			                                    Event.fire('#J_AddToPromo'+id,'click');
+		        			                                }
+		        			                            }
+		        			                        });
+		        			                    }
+		        			                }
+		        			            });	
+		        			            promotionControl.processStatus = 2;
+			        				}else if(o.payload >= 150 && !KISSY.inArray(typeId,['130','10','22','2','32','107','105','207'])){
+		        			        	promotionControl.addAfter();
+										new H.widget.msgBox({
+										    title:"温馨提示",
+										    content:'非全店活动宝贝数量不能大于150个，现在已经加入'+o.payload+'请删除多余的宝贝，或酌情分多次活动创建',
+										    type:"info"
+										});
+										promotionControl.processStatus = 2;
+		        			        }else{
+		        			        	var diff  = IsExpired();
+						       			if(diff > -5000 ){
+					      					var sucessHandle = function(o) {
+					      						if(id == '1'){
+													promotionControl.addSelectItemsToPromotion();
+												}else{
+													promotionControl.addSelectItemsToPromotion(id);
+												}
+					      			 		};
+					      			 		var errorHandle = function(o){
+					      			 			KISSY.Event.fire('.J_TopExpired','click');
+									 			promotionControl.addAfter();
+									 			promotionControl.processStatus = 3;
+					      			 		};
+					      			 		var data = '';
+					      			  	    new H.widget.asyncRequest().setURI(isExpiredUrl).setMethod("GET").setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
+						      			}else{
+						      				if(id == '1'){
+												promotionControl.addSelectItemsToPromotion();
+											}else{
+												promotionControl.addSelectItemsToPromotion(id);
+											}
+						      			}
+		        			        } 
+			        			};
 			        			
                          	};
 					 		var error = function(o){
@@ -132,36 +357,6 @@ KISSY.add(function (S,showPages,itemHandle) {
 					  	    new H.widget.asyncRequest().setURI(getPromoItemNumUrl).setMethod("GET").setHandle(sucess).setErrorHandle(error).setData(data).send();
 			        	 }; 
 					});
-					
-					/*更新店铺折扣*/
-					promotionControl.getLowestDis();
-					Event.on('#J_updateDiscount','click',function(){
-						DOM.val('#J_isDiscount','1');
-						var diff  = IsExpired();
-		    			if(diff > -5000 ){
-							var sucessHandle = function(o) {
-								promotionControl.getLowestDis();
-					 		};
-					 		var errorHandle = function(o){
-					 			KISSY.Event.fire('.J_TopExpired','click');
-					 		};
-					 		var data = '';
-					  	    new H.widget.asyncRequest().setURI(isExpiredUrl).setMethod("GET").setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
-			   			}else{
-			   				promotionControl.getLowestDis();
-			   			}
-					});	
-					
-				//编辑活动中的宝贝折扣获取id
-				Event.delegate(document,'click','.J_isEdit',function(ev){
-				   var id = DOM.attr(ev.currentTarget,'pid');
-				   var item_id = DOM.attr(ev.currentTarget,'item-id');
-				   DOM.val('#J_joinType',id);
-				   DOM.attr('#J_joinType',{'item-id':item_id});
-			    });
-				Event.on('#J_EditPromoItem','click',function(){
-					DOM.val('#J_joinType','all');
-				});	
 
 				/*编辑宝贝授权 重启宝贝。批量编辑*/
 				Event.delegate(document,'click dblclick','.J_removeToPromo',function(ev){
@@ -182,17 +377,17 @@ KISSY.add(function (S,showPages,itemHandle) {
 				    var diff  = IsExpired();
 	       			 if(diff > -5000 ){
 	      					var sucessHandle = function(o) {
-      						    if(type == 'editorOne'){
-								   promotionControl.editItem(idd);
-								}else if(type == 'editorAll'){
-									promotionControl.editPromoItem();
-								}else if(type == 'restartOne'){
-									 promotionControl.restartPromotionItemHandle(idd,pidd)
-								}else if(type == 'restartAll' ){
-									promotionControl.restartPromotionItemHandle();
-								}else if(type == 'batchRetryAll'){
-									promotionControl.batchRetry();
-								}
+	      						    if(type == 'editorOne'){
+									   promotionControl.editItem(idd);
+									}else if(type == 'editorAll'){
+										promotionControl.editPromoItem();
+									}else if(type == 'restartOne'){
+										 promotionControl.restartPromotionItemHandle(idd,pidd)
+									}else if(type == 'restartAll' ){
+										promotionControl.restartPromotionItemHandle();
+									}else if(type == 'batchRetryAll'){
+										promotionControl.batchRetry();
+									}
 	      			 		};
 	      			 		var errorHandle = function(o){
 	      			 			KISSY.Event.fire('.J_TopExpired','click');
@@ -293,11 +488,11 @@ KISSY.add(function (S,showPages,itemHandle) {
 					DOM.hide(box);
 				    var submitHandle = function(o) {
 						new H.widget.msgBox({
-						    title:"温馨提示",
-						    content:'同步数据请求成功，请点击搜索查看宝贝。如无法显示请过1分钟左右再查看！',
-						    type:"info"
-						
-						});
+									    title:"温馨提示",
+									    content:'同步数据请求成功，请点击搜索查看宝贝。如无法显示请过1分钟左右再查看！',
+									    type:"info"
+									
+									});
 						KISSY.later(function(box){DOM.show(box);},60000,false,null,box)
 			        }
 					var data = "";
@@ -326,130 +521,20 @@ KISSY.add(function (S,showPages,itemHandle) {
 			   
 	        },
 	        
-	        //宝贝加入活动获取店铺折扣判断
-	        joinLowestDis : function(id){
+	        //获取店铺设置的折扣
+	        getPromoItemNum : function(discount){
 	        	var sucess = function(o){
-	        		DOM.hide('#J_loadingDiscount');
-	        		DOM.show('#J_storeDiscount');
-	        		DOM.val('#J_Discount',o.payload);
-	        		DOM.text('#J_storeDiscount',o.payload+' 折');
-	        		if(id == '1'){
-						promotionControl.addSelectItemsToPromotion();
-					}else{
-						promotionControl.addSelectItemsToPromotion(id);
-					}
-				};
+					DOM.val('#J_storeDiscount',o.payload);
+				}
 		 		var error = function(o){
-		 			DOM.hide('#J_loadingDiscount');
-		 			DOM.show('#J_storeDiscount');
-		 			DOM.text('#J_storeDiscount',o.desc);
-		 			if(id == '1'){
-						promotionControl.addSelectItemsToPromotion();
-					}else{
-						promotionControl.addSelectItemsToPromotion(id);
-					}
+		 			new H.widget.msgBox({
+					    title:"错误提示",
+					    content:o.desc,
+					    type:"error"
+					});	 			
 		 		};
-		 		DOM.show('#J_loadingDiscount');
-		 		DOM.hide('#J_storeDiscount');
-		 		var isLoading = 0;
-		 		var data = 'fg='+isLoading;
+		 		var data = 'item_id='+12;
 		  	    new H.widget.asyncRequest().setURI(getLowestDisUrl).setMethod("GET").setHandle(sucess).setErrorHandle(error).setData(data).send(); 
-	        },
-	        
-	        //点击更新店铺设置的折扣
-	        getLowestDis : function(){
-	        	var sucess = function(o){
-	        		DOM.hide('#J_loadingDiscount');
-	        		DOM.show('#J_storeDiscount');
-	        		DOM.val('#J_Discount',o.payload);
-	        		DOM.text('#J_storeDiscount',o.payload+' 折');
-				};
-		 		var error = function(o){
-		 			DOM.hide('#J_loadingDiscount');
-		 			DOM.show('#J_storeDiscount');
-		 			DOM.text('#J_storeDiscount',o.desc);
-		 		};
-		 		DOM.show('#J_loadingDiscount');
-		 		DOM.hide('#J_storeDiscount');
-		 		var isLoading = DOM.val('#J_isDiscount');
-		 		var data = 'fg='+isLoading;
-		  	    new H.widget.asyncRequest().setURI(getLowestDisUrl).setMethod("GET").setHandle(sucess).setErrorHandle(error).setData(data).send(); 
-	        },
-	        
-	        //弹窗重新加入活动获取折扣
-	        getLowestDisAgain : function(){
-	        	var joinType = DOM.val(DOM.get('#J_joinType'));
-	        	var joinItemId = DOM.attr('#J_joinType','item-id');
-	        	var sucess = function(o){
-            		DOM.hide('#J_loadingDiscount');
-	        		DOM.show('#J_storeDiscount');
-        			DOM.val('#J_Discount',o.payload);
-	        		DOM.text('#J_storeDiscount',o.payload+' 折');
-	        		DOM.html('#J_latest',o.payload);
-        			if(joinType == 'all'){
-        				if(joinItemId != undefined){
-            				promotionControl.editPromoItem();
-            			}else{
-            				promotionControl.addSelectItemsToPromotion();
-            			}
-            		}else{
-            			if(joinItemId != undefined){
-            				promotionControl.editPromoItem(joinType,joinItemId);
-            			}else{
-            				promotionControl.addSelectItemsToPromotion(joinType);
-            			}
-            		}
-				};
-				var error = function(o){
-		 			DOM.hide('#J_loadingDiscount');
-		 			DOM.show('#J_storeDiscount');
-		 			DOM.text('#J_storeDiscount',o.desc);
-		 			if(joinType == 'all'){
-        				if(joinItemId != undefined){
-            				promotionControl.editPromoItem();
-            			}else{
-            				promotionControl.addSelectItemsToPromotion();
-            			}
-            		}else{
-            			if(joinItemId != undefined){
-            				promotionControl.editPromoItem(joinType,joinItemId);
-            			}else{
-            				promotionControl.addSelectItemsToPromotion(joinType);
-            			}
-            		}
-		 		};
-				DOM.show('#J_loadingDiscount');
-		 		DOM.hide('#J_storeDiscount');
-		 		var isLoading = DOM.val('#J_isDiscount');
-		 		var data = 'fg='+isLoading;
-		  	    new H.widget.asyncRequest().setURI(getLowestDisUrl).setMethod("GET").setHandle(sucess).setErrorHandle(error).setData(data).send(); 
-	        },
-	        
-	        //弹出是否重新加入活动
-	        getLowestDisAdd : function(){
-	        	new H.widget.msgBox({
-	                title: "重新加入活动",
-	                content: '我已经修改完折扣，重新加入活动？',
-	                type: "popup",
-	                buttons: [{value: "重新加入" },{ value: "取消"}],
-	                success: function (result) {
-	                    if(result == "重新加入"){
-	                    	var diff  = IsExpired();
-			    			if(diff > -5000 ){
-								var sucessHandle = function(o) {
-									promotionControl.getLowestDisAgain();
-						 		};
-						 		var errorHandle = function(o){
-						 			KISSY.Event.fire('.J_TopExpired','click');
-						 		};
-						 		var data = '';
-						  	    new H.widget.asyncRequest().setURI(isExpiredUrl).setMethod("GET").setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
-				   			}else{
-				   				promotionControl.getLowestDisAgain();
-				   			}
-	                    }
-	                }
-	            });
 	        },
 	        
 	        //清除淘宝特价
@@ -923,17 +1008,6 @@ KISSY.add(function (S,showPages,itemHandle) {
 				var error = false;
 				var len = checkBoxs.length;
 				var translateDiv = DOM.get("#J_Translate");
-				
-				//把优惠内容保存，获取优惠内容中最小值
-				var privilegeJson = [];
-				for(i=0; i<len; i++){
-					var id = checkBoxs[i].value;
-    				var z = DOM.val(DOM.get('#J_PromoValue_'+id));
-					privilegeJson.push(z);
-	            };
-	            //把最低优惠内容写入J_minPrivilege
-				DOM.val('#J_minPrivilege',Math.min.apply(null,privilegeJson));
-
 				for(i=0; i<len; i++){
 					var flag = false;
 					if(iid!=undefined){
@@ -946,9 +1020,8 @@ KISSY.add(function (S,showPages,itemHandle) {
 					if(flag == true){
 						var totalNum = Number(DOM.val('#J_TotalPromoItems'));	 
 						totalNum = totalNum+1;
-						
 						//无条件免邮，一口价，一件优惠 限时折扣 限购不限制 150个
-						if(totalNum > 150 && !KISSY.inArray(typeId,['130','10','22','2','32','107','105','207'])){
+						if(totalNum >150 && !KISSY.inArray(typeId,['130','10','22','2','32','107','105','207'])){
 							new H.widget.msgBox({
 							    title:"温馨提示",
 							    content:'非全店活动宝贝数量不能大于150个，现在已经加入'+totalNum+'请删除多余的宝贝，或酌情分多次活动创建！',
@@ -958,8 +1031,7 @@ KISSY.add(function (S,showPages,itemHandle) {
 						}else{
 							 DOM.val('#J_TotalPromoItems',totalNum);
 						}
-						
-						var id = checkBoxs[i].value;
+                        var id = checkBoxs[i].value;
     					var title = H.util.strProcess(DOM.val(DOM.get('#J_ItemTitle_'+id)));
         				var picUrl = DOM.val(DOM.get('#J_ItemPic_'+id));
         				var price = DOM.val(DOM.get('#J_ItemPrice_'+id));
@@ -967,7 +1039,6 @@ KISSY.add(function (S,showPages,itemHandle) {
 						var outId = H.util.strProcess(DOM.val(DOM.get('#J_ItemOuterId_'+id)));
         				//var iconId = DOM.val(DOM.get('#J_ItemIcon_'+id));
         				var paramsStr = '';
-        				
         				if (type == 'spec' ) {
         					r = itemHandle.generalSpecParams(id, error);
         					error = r[0];
@@ -991,15 +1062,15 @@ KISSY.add(function (S,showPages,itemHandle) {
 						}
         				if (error === false) {
                         	o = '{"id":"' + id + '", "outer_id":"' + outId + '", "title":"' + title + '", "price":"' + price + '", "pic_url":"'+ picUrl +'", "update_pic":"'+ updatePic +'"'+ paramsStr + '}';
-                        	o = eval('(' + o + ')');
+							o = eval('(' + o + ')');
 							json.push(o);
         				}else{
+        					
         					break ;
         				}
         				if(iid!=undefined){
         					break;
         				}
-        				
 					}
 	            }
 				
@@ -1009,6 +1080,7 @@ KISSY.add(function (S,showPages,itemHandle) {
 					promotionControl.processStatus = 4;
 					return ;
     			}
+				
 				if(json.length == 0){
 					new H.widget.msgBox({
 					    title:"错误提示",
@@ -1058,7 +1130,6 @@ KISSY.add(function (S,showPages,itemHandle) {
          	    var data = "pid="+pid+"&items="+itemsJson+"&form_key="+FORM_KEY;
          	    new H.widget.asyncRequest().setURI(addItemsToPromotionUrl).setMethod("POST").setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).send();
 			},
-			
 			//点击 加入活动  后的 按钮还原
 			addAfter : function(){
 				DOM.show(DOM.query('.J_addItem'));
@@ -1550,10 +1621,10 @@ KISSY.add(function (S,showPages,itemHandle) {
 			},
 			editPromoItem : function(promo_item_id,item_id){
 				promotionControl.msg = new H.widget.msgBox({
-				    title:"",
-					dialogType : 'loading',
-				    content:'正在处理中，请稍候'	
-				});
+								    title:"",
+									dialogType : 'loading',
+								    content:'正在处理中，请稍候'	
+								});
 				var json = [];
 				var error = false;
 				
@@ -1603,17 +1674,6 @@ KISSY.add(function (S,showPages,itemHandle) {
 					//批量编辑
 					checkBoxs = DOM.query("#J_PromotionItemList .J_CheckBox");
 					var len = checkBoxs.length;
-					
-					//把优惠内容保存，获取优惠内容中最小值
-					var privilegeJson = [];
-					for(i=0; i<len; i++){
-						var id = checkBoxs[i].value;
-	    				var z = DOM.val(DOM.get('#J_PromoValue_'+id));
-						privilegeJson.push(z);
-		            };
-		            //把最低优惠内容写入J_minPrivilege
-					DOM.val('#J_minPrivilege',Math.min.apply(null,privilegeJson));
-					
 					for(i=0; i<len; i++){
 						if(checkBoxs[i].checked && !checkBoxs[i].disabled){
 							 var id = checkBoxs[i].value;
