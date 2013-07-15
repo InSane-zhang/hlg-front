@@ -2,7 +2,7 @@
 <html lang="zh-cn">
     <head>
         <meta charset="utf-8">
-        <title>Huhao.me</title>
+        <title>hlg</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="">
@@ -56,12 +56,13 @@
                     <div class="span9">
                         <div class="row-fluid article-content">
                         </div>
+
+						<div id="disqus_thread"></div>
                     </div>
                 </div>
                 <hr>
                 <footer>
-                <p>&copy; {{copyright}} Powered by <a
-                    href="https://github.com/onlytiancai/xiaotiantian" target="_blank">小天天博客</a></p>
+                <p>&copy; {{copyright}}</p>
                 </footer>
             </div><!--/.fluid-container-->
         </script>
@@ -86,6 +87,28 @@
         <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
         <script src="http://cachedcommons.org/cache/showdown/1.0.0/javascripts/showdown-min.js"></script>
         <script src="main.js"></script>
+  
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'xiaoz'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+     /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+    </script>
+    
     </body>
-    <!-- 为了迎接小天天的到来，本博客程序命名为小天天博客，祝小天天能健康茁壮成长。 huhao@2012-03-24 -->
 </html>
