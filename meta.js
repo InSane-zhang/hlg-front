@@ -1,6 +1,6 @@
 {
-    "site_name": "小天天博客",
-    "copyright": "wawasoft 2012",
+    "site_name": "xiaoz",
+    "copyright": "xiaoz 2013",
     "cates": [
         {"name": "tech", "text":"技术"},
         {"name": "art", "text":"艺术"},
