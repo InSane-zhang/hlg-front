@@ -154,13 +154,13 @@ KISSY.add('page/mods/lottery-tplt',function(C) {
 			title_sub: "您可以先开通免费版再来抽奖",
 			icon_cls: "lottery-icon-1",
 			buttons: [{
-				text: "开通免费版",
+				text: "立即开通免费版",
 				cls: "",
 				href: "http://fuwu.taobao.com/ser/assembleParam.htm?subParams=itemCode:appstore-10687-1,cycleNum:12,cycleUnit:2"
 			}]
 		},
 		"2": {
-			title_main: "亲，恭喜您抽中“免费季度尊享版”啦",
+			title_main: "亲，恭喜您抽中\"免费季度尊享版\"啦",
 			title_sub: "您只要退出并重新登录软件，系统就会自动帮您升级哦",
 			icon_cls: "lottery-icon-2",
 			buttons: [{
@@ -181,20 +181,20 @@ KISSY.add('page/mods/lottery-tplt',function(C) {
 		},
 		"4": {
 			title_main: "亲，请先登录哦！",
-			title_sub: "\u7acb\u523b\u767b\u5f55\uff0c\u53c2\u4e0e\u62bd\u5956",
+			title_sub: "立即登陆淘宝网，参与欢乐逛抽奖",
 			icon_cls: "lottery-icon-4",
 			buttons: [{
-				text: "\u7acb\u523b\u767b\u5f55",
+				text: "立即登录",
 				cls: "J_LotteryLogin",
-				href: "https://oauth.taobao.com/authorize?client_id=12029422&response_type=code&redirect_uri=http://tb.huanleguang.com/"
+				href: "https://login.taobao.com/member/login.jhtml?spm=0.0.0.0.wQHRQd&f=top&redirectURL=http://www.taobao.com/go/act/sale/huanle424.php?promo=mother"
 			}]
 		},
 		"5": {
-			title_main: "亲，恭喜您抽中“诺基亚手机”啦",
+			title_main: "亲，恭喜您抽中\"诺基亚手机\"啦",
 			title_sub: "速速查看<a target=\"_blank\" href=\"http://bangpai.taobao.com/group/thread/609027-282269816.htm?spm=0.0.0.0.Ssas6x\">【领取注意事项】</a>吧！",
 			icon_cls: "lottery-icon-2",
 			buttons: [{
-				text: "确定",
+				text: "\u786e\u5b9a",
 				cls: "J_LotteryPopHide",
 				href: ""
 			}]
@@ -217,7 +217,7 @@ KISSY.add('page/mods/lottery-tplt',function(C) {
 			title_sub: "\u518d\u6765\u8bd5\u4e00\u6b21\u5427\uff01",
 			icon_cls: "lottery-icon-5",
 			buttons: [{
-				text: "确定",
+				text: "\u518d\u8bd5\u4e00\u6b21",
 				cls: "J_LotteryPopHide",
 				href: ""
 			}]
@@ -390,14 +390,14 @@ KISSY.add('page/lottery-core',function(S, char, popup , roll) {
 					var type = J.payload.type; 
 					char.lotteryAnimStop(I,function() {
 							switch (J.payload.code) {
-								case '1':
-								case 1 :
-									H._updateButtonEvent(H._showLotteryOrder);
-									break;
-								case 4:
-								case '4':
-									H._updateButtonEvent(H._showLotteryLogin);
-									break;
+//								case '1':
+//								case 1 :
+//									H._updateButtonEvent(H._showLotteryOrder);
+//									break;
+//								case 4:
+//								case '4':
+//									H._updateButtonEvent(H._showLotteryLogin);
+//									break;
 								case 6:
 								case '6':
 									H._updateButtonEvent(H._showLotteryChanceOver);

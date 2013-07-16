@@ -49,14 +49,14 @@ KISSY.add(function(S, char, popup , roll) {
 					var type = J.payload.type; 
 					char.lotteryAnimStop(I,function() {
 							switch (J.payload.code) {
-								case '1':
-								case 1 :
-									H._updateButtonEvent(H._showLotteryOrder);
-									break;
-								case 4:
-								case '4':
-									H._updateButtonEvent(H._showLotteryLogin);
-									break;
+//								case '1':
+//								case 1 :
+//									H._updateButtonEvent(H._showLotteryOrder);
+//									break;
+//								case 4:
+//								case '4':
+//									H._updateButtonEvent(H._showLotteryLogin);
+//									break;
 								case 6:
 								case '6':
 									H._updateButtonEvent(H._showLotteryChanceOver);
