@@ -75,7 +75,8 @@ KISSY.add(function(S,showPages){
 					if(ev.type == 'mouseenter'){
 						DOM.addClass(ev.currentTarget,'edit-activity-hover');
 					}else if(ev.type == 'mouseleave'){
-						DOM.removeClass(ev.currentTarget,'edit-activity-hover');
+						//DOM.removeClass(ev.currentTarget,'edit-activity-hover');
+						DOM.addClass(ev.currentTarget,'edit-activity-hover');
 					}else if(ev.type == 'click'){
 						var pid = DOM.attr(ev.currentTarget,'data');
 						relistCreate.editorListTime(pid);

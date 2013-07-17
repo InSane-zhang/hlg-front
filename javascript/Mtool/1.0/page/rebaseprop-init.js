@@ -54,7 +54,7 @@ KISSY.add(function(S,showPages){
 				    		rebaseprop.closeViewPop(data);
 				    	}
 				    });
-					
+					DOM.attr('#J_TCheckAll','checked',false);
 					var oTriggers = DOM.query('#J_PromotionItemList .J_CheckBox');
 					selectItemNum = 0;
 	                Event.on(oTriggers, "click", function(ev){
@@ -168,14 +168,20 @@ KISSY.add(function(S,showPages){
 			showContent : function(flag){
 				DOM.toggle('#J_'+flag+'_Content');
 				selectBaseprop = DOM.prop('#J_BasepropSelect','title');
-				if(flag === 'FreightBear' && !DOM.prop('#J_FreightBear','checked')){
+				if(flag === 'FreightBear' && DOM.prop('#J_FreightBear','checked')){
 					DOM.prop('#J_FreightBear_Seller','checked',true);
 					rebaseprop.freightBearSeller();
+				}else if(!DOM.prop('#J_FreightBear','checked')){
+					DOM.prop('#J_ExpressTemplate','checked',false);
+					DOM.css('#J_ExpressTemplate_Content','display','none');
+					DOM.prop('#J_DeliveryCosts','checked',false);
+					DOM.css('#J_DeliveryCosts_Content','display','none');
 				}
 				if(DOM.attr('#J_'+flag,'checked')){
 					selectBaseprop += flag + ',';
    					DOM.prop('#J_BasepropSelect','title',selectBaseprop);
-   					DOM.css('#J_PreviewBtm','display','');
+   					DOM.css('#J_PreviewBtm','display','inline');
+   					DOM.css('#J_PreviewBtm_1','display','inline');
    				} else {   					
    					var reg1 = new RegExp(flag+",","g");
    					selectBaseprop = selectBaseprop.replace(reg1,'');
@@ -189,6 +195,7 @@ KISSY.add(function(S,showPages){
    					}
    					if(selectFlag){
    						DOM.css('#J_PreviewBtm','display','none');
+   						DOM.css('#J_PreviewBtm_1','display','none');
    					}
    				}
 			},
@@ -204,12 +211,30 @@ KISSY.add(function(S,showPages){
 			},
 			//买家承担运费
 			freightBearBuyer : function(){
-				DOM.prop('#J_ExpressTemplate','checked',true);
-				DOM.css('#J_ExpressTemplate_Content','display','');
-				DOM.prop('#J_DeliveryCosts','checked',true);
-				DOM.css('#J_DeliveryCosts_Content','display','');
-				selectBaseprop += 'ExpressTemplate,DeliveryCosts';
-				DOM.prop('#J_BasepropSelect','title',selectBaseprop);
+					DOM.prop('#J_ExpressTemplate','checked',true);
+					DOM.css('#J_ExpressTemplate_Content','display','');
+					DOM.prop('#J_DeliveryCosts','checked',true);
+					DOM.css('#J_DeliveryCosts_Content','display','');
+					selectBaseprop += 'ExpressTemplate,DeliveryCosts';
+					DOM.prop('#J_BasepropSelect','title',selectBaseprop);
+			},
+			//选择快递模板
+			changeExpressTemplate : function(){
+				var template_id = DOM.val('#J_ExpressTemplate_select');
+				var arr = template_id.split(',');
+				var submitHandle = function(o) {
+					DOM.html('#DeliveryCostsGroup',o.payload.body);
+        	    };
+        	    var errorHandle = function(o){
+        	    	new H.widget.msgBox({
+					    title:"错误提示",
+					    content:o.desc,
+					    type:"error"
+					});	
+        	    };
+        	    DOM.prop('#J_ZdTemplete','title',arr[0]);
+        	    var data ="template_id="+arr[0];
+        	    new H.widget.asyncRequest().setURI(getTemplatePriceUrl).setMethod("POST").setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).send();
 			},
 			//伪预览功能
 			previewBaseprop : function(){
@@ -455,9 +480,17 @@ KISSY.add(function(S,showPages){
 			},
 			getO : function(){
 				var selectBaseprop = DOM.prop('#J_BasepropSelect','title');
-				var o = '", "selectBaseprop":"' + selectBaseprop;
+				var selectTemplete = DOM.prop('#J_ZdTemplete','title');
 				var shen = DOM.val('#a1');
 				var shi = DOM.val('#a2');
+				if(selectTemplete == 0){
+					var subPostage = DOM.val('#subPostage');
+					var subEms = DOM.val('#subEms');
+					var subExpressDelivery = DOM.val('#subExpressDelivery');
+					var o = '", "selectBaseprop":"' + selectBaseprop+'","subEms":"'+subEms+'","subExpressDelivery":"'+subExpressDelivery+'","subPostage":"'+subPostage;
+				}else{
+					var o = '", "selectBaseprop":"' + selectBaseprop;
+				}
 				if(shen == 0){
 					o += '","selectProvince":"'+encodeURIComponent('请选择')+'","selectCity":"'+encodeURIComponent('请选择');
 				}else if(shi ==0){
@@ -466,7 +499,6 @@ KISSY.add(function(S,showPages){
 					o += '","selectProvince":"'+encodeURIComponent(window.link.data[''+shen+''][0])+'","selectCity":"'+encodeURIComponent(window.link.data[''+shi+''][0]);
 				}
 		        return o;  
-	
 			}		
     	};
 },{ requires: ['utils/showPages/index']});

@@ -17,7 +17,8 @@ KISSY.add(function(S,showPages){
 					reouter.searchTbItems();
 				});
 				Event.on('#J_SearchBtn','click',reouter.searchTbItems); //活动中宝贝全选   	 
-			    Event.on('#J_TCheckAll','click',reouter.CheckAll); //活动中宝贝全选   	    
+			    Event.on('#J_TCheckAll','click',reouter.CheckAll); //活动中宝贝全选   	 
+			    
 	        },
      		searchTbItems : function() {
 	            var submitHandle = function(o) {
@@ -34,6 +35,7 @@ KISSY.add(function(S,showPages){
 						DOM.css(DOM.query(".J_ControlBtm") , 'display' , 'none');
 					}
 					DOM.html('#J_PromotionItemList' ,o.payload.body);
+					DOM.attr('#J_TCheckAll','checked',false);
 					var oTriggers = DOM.query('#J_PromotionItemList .J_CheckBox');
 					selectItemNum = 0;
 	                Event.on(oTriggers, "click", function(ev){
@@ -157,7 +159,7 @@ KISSY.add(function(S,showPages){
 			                type: "error",
 			                buttons: [{ value: "Ok"}],
 							autoClose : true,
-							timeOut : 1000
+							timeOut : 3000
 			                
 			            });
 						return;
@@ -170,7 +172,7 @@ KISSY.add(function(S,showPages){
 			                type: "error",
 			                buttons: [{ value: "Ok"}],
 							autoClose : true,
-							timeOut : 1000
+							timeOut : 3000
 			                
 			            });
 						return;
@@ -198,7 +200,7 @@ KISSY.add(function(S,showPages){
 						id = checkBoxs[i].value;
 						var prefix = DOM.val(DOM.get("#J_Prefix"));
 						var suffix = DOM.val(DOM.get("#J_Suffix"));
-						var itemOuter =DOM.val(DOM.get('#J_outer_'+id));
+						var itemOuter =DOM.val(DOM.get('#J_ItemOuter_'+id));
 						var str = prefix+itemOuter+suffix;
 						DOM.val(DOM.get('#J_outer_'+id), str);
 						m++;
@@ -210,7 +212,7 @@ KISSY.add(function(S,showPages){
 								    content:'未选择任何宝贝！',
 								    type:"error",
 									autoClose:true,
-									timeOut :1000							
+									timeOut :2000							
 								});
 				
 				return;
@@ -228,11 +230,18 @@ KISSY.add(function(S,showPages){
 				DOM.val(DOM.get('#J_Suffix'), '');
 				var len = checkBoxs.length;
 				var m=0;
+				var json = [];
 				for(i=0; i<len; i++){
 					if(checkBoxs[i].checked){
 						id = checkBoxs[i].value;
 						var itemOuter =DOM.val(DOM.get('#J_ItemOuter_'+id));
 						DOM.val(DOM.get('#J_outer_'+id), itemOuter);
+						var itemOuter =DOM.val(DOM.get('#J_outer_'+id));
+						var itemTitle = H.util.strProcess(DOM.val(DOM.get('#J_ItemTitle_'+id)));
+						var pic_url = DOM.val(DOM.get('#J_ItemPic_'+id));
+						var o = '{"id":"' + id + '", "outer":"' + itemOuter + '","title":"'+itemTitle+ '", "pic_url":"' + pic_url+'"}';
+						o = eval('(' + o + ')');						
+						json.push(o);
 						m++;
 					}
 				}
@@ -242,12 +251,37 @@ KISSY.add(function(S,showPages){
 								    content:'未选择任何宝贝！',
 								    type:"error",
 									autoClose:true,
-									timeOut :1000
+									timeOut :2000
 								
 								});
 				
-				return;
-				}	
+	 				return;
+				}
+				
+				var itemsJson = KISSY.JSON.stringify(json);
+				var data = "items="+itemsJson+"&form_key="+FORM_KEY;
+                var submitHandle = function(o) {
+                	
+	        		 new H.widget.msgBox({ 
+				 			type: "sucess", 
+				 			content: "取消成功",
+							dialogType:"msg", 
+							autoClose:true, 
+							timeOut:3000
+						});
+        	    };
+        	    var errorHandle = function(o){
+        	    	
+			    	new H.widget.msgBox({
+					    title:"错误提示",
+					    content:o.desc,
+					    type:"error"
+					});	
+					return;
+        	    };
+				new H.widget.asyncRequest().setURI(updateOuterUrl).setMethod("POST").setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).send();
+				
+				
 			},			
 			replaceOuter : function(type) {
 				if(!reouter.checkBoxs){
@@ -281,7 +315,7 @@ KISSY.add(function(S,showPages){
 								    content:'未选择任何宝贝！',
 								    type:"error",
 									autoClose:true,
-									timeOut :1000
+									timeOut :2000
 								
 								});				
 				return;
@@ -290,6 +324,30 @@ KISSY.add(function(S,showPages){
 			updateOuter : function(id) {
 				if(!showPermissions('editor_tool','工具箱')){return ;}
 				if(isVersionPer('tool')){return ;}	
+				if(DOM.attr('#J_PrefixSufix','checked') || DOM.attr('#J_ReplaceType','checked') || DOM.attr('#J_KeyType','checked')){
+					if((DOM.attr('#J_PrefixSufix','checked')&&DOM.val('#J_Prefix')==''&&DOM.val('#J_Suffix')=='')||(DOM.attr('#J_ReplaceType','checked')&&(DOM.val('#J_Proto')==''||DOM.val('#J_Replace')==''))||(DOM.attr('#J_KeyType','checked')&&DOM.val('#J_KeyWord')=='')){
+						new H.widget.msgBox({
+			                title: "",
+			                content: "已选项代码区域不能为空，请检查！",
+			                type: "error",
+			                buttons: [{ value: "Ok"}],
+							autoClose : true,
+							timeOut : 3000
+			                
+			            });
+						return;
+					}
+					if(DOM.attr('#J_PrefixSufix','checked')){
+						reouter.addItemOuterPrefixSufix()
+					}
+					if(DOM.attr('#J_ReplaceType','checked')){
+						reouter.replaceOuter(1);
+					} 
+					if(DOM.attr('#J_KeyType','checked')){
+						reouter.replaceOuter(2);
+					}				
+				}
+				DOM.attr('#J_check'+id,'checked',true);
 				var itemOuter =DOM.val(DOM.get('#J_outer_'+id));
 				var itemTitle = H.util.strProcess(DOM.val(DOM.get('#J_ItemTitle_'+id)));
 				var pic_url = DOM.val(DOM.get('#J_ItemPic_'+id));
@@ -333,8 +391,31 @@ KISSY.add(function(S,showPages){
 //					reouter.msg.setMsg('<div class="point relative"><div class="point-w-1">已选项代码区域不能为空，请检查！</div></div>').showDialog();
 //					return;
 //				}
-				if(reouter.inputChangeFlag){
-						reouter.previewOuter();
+//				if(reouter.inputChangeFlag){
+//						reouter.previewOuter();
+//				}
+				if(DOM.attr('#J_PrefixSufix','checked') || DOM.attr('#J_ReplaceType','checked') || DOM.attr('#J_KeyType','checked')){
+					if((DOM.attr('#J_PrefixSufix','checked')&&DOM.val('#J_Prefix')==''&&DOM.val('#J_Suffix')=='')||(DOM.attr('#J_ReplaceType','checked')&&(DOM.val('#J_Proto')==''||DOM.val('#J_Replace')==''))||(DOM.attr('#J_KeyType','checked')&&DOM.val('#J_KeyWord')=='')){
+						new H.widget.msgBox({
+			                title: "",
+			                content: "已选项代码区域不能为空，请检查！",
+			                type: "error",
+			                buttons: [{ value: "Ok"}],
+							autoClose : true,
+							timeOut : 3000
+			                
+			            });
+						return;
+					}
+					if(DOM.attr('#J_PrefixSufix','checked')){
+						reouter.addItemOuterPrefixSufix()
+					}
+					if(DOM.attr('#J_ReplaceType','checked')){
+						reouter.replaceOuter(1);
+					} 
+					if(DOM.attr('#J_KeyType','checked')){
+						reouter.replaceOuter(2);
+					}				
 				}
 				reouter.msg = new H.widget.msgBox({ type: "error",
 			                content: "系统正在处理中",
@@ -362,7 +443,7 @@ KISSY.add(function(S,showPages){
 								    content:'未选择任何宝贝！',
 								    type:"error",
 									autoClose:true,
-									timeOut :1000
+									timeOut :2000
 								
 								});
 				

@@ -31,6 +31,7 @@ KISSY.add(function(S,showPages){
 						DOM.css(DOM.get('#J_REmpty'), 'display' , '');
 						DOM.css(DOM.query(".J_PromotionItemBtnHolder") , 'display' , 'none');
 					}
+					DOM.html('#ItemNum',o.payload.totalRecords);
 					DOM.html('#J_PromotionItemList' ,o.payload.body);
 					var oTriggers = DOM.query('#J_PromotionItemList .J_CheckBox');
 					selectItemNum = 0;
@@ -85,6 +86,7 @@ KISSY.add(function(S,showPages){
 						DOM.css(DOM.get('#J_REmpty'), 'display' , '');
 						DOM.css(DOM.query(".J_PromotionItemBtnHolder") , 'display' , 'none');
 					}
+					DOM.html('#ItemNum',o.payload.totalRecords);
 					DOM.html('#J_PromotionItemList' ,o.payload.body);
 					var oTriggers = DOM.query('#J_PromotionItemList .J_CheckBox');
 	                Event.on(oTriggers, "click", function(ev){

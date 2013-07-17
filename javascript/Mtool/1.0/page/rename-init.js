@@ -18,7 +18,8 @@ KISSY.add(function (S,showPages) {
 						rename.searchTbItems();
 					});
 					Event.on('#J_SearchBtn','click',rename.searchTbItems); //搜索活动中宝贝  	 
-				    Event.on('#J_TCheckAll','click',rename.CheckAll); //活动中宝贝全选   	    
+				    Event.on('#J_TCheckAll','click',rename.CheckAll); //活动中宝贝全选   	   
+				    
 			    },
 				searchTbItems : function() {
 			        var submitHandle = function(o) {
@@ -36,14 +37,15 @@ KISSY.add(function (S,showPages) {
 							DOM.css(DOM.query(".J_ControlBtm") , 'display' , 'none');
 						}
 						DOM.html('#J_PromotionItemList' ,o.payload.body);
+						//DOM.attr('#J_TCheckAll','checked',false);
 						var oTriggers = DOM.query('#J_PromotionItemList .J_CheckBox');
 						selectItemNum = 0;
 						changeItemId = '';
+						DOM.attr('#J_TCheckAll','checked',false);
 			            Event.on(oTriggers,'click', function(ev){
 							if(!this.checked){
 								DOM.attr('#J_TCheckAll','checked',false);
-							} else{
-							}
+							} 
 						});
 						var pageCount = Math.ceil(totalRecords/o.payload.pageNum); 
 						rename.paginator = new showPages('rename.paginator').setRender(rename.handlePagination).setPageCount(pageCount).printHtml('#J_BottomPaging',2);
@@ -189,7 +191,7 @@ KISSY.add(function (S,showPages) {
 			                type: "error",
 			                buttons: [{ value: "Ok"}],
 							autoClose : true,
-							timeOut : 1000
+							timeOut : 3000
 			                
 			            });
 						return;
@@ -202,7 +204,7 @@ KISSY.add(function (S,showPages) {
 			                type: "error",
 			                buttons: [{ value: "Ok"}],
 							autoClose : true,
-							timeOut : 1000
+							timeOut : 3000
 			                
 			            });
 						return;
@@ -232,7 +234,7 @@ KISSY.add(function (S,showPages) {
 							id = checkBoxs[i].value;
 							var prefix = DOM.val(DOM.get("#J_Prefix"));
 							var suffix = DOM.val(DOM.get("#J_Suffix"));
-							var itemTitle =DOM.val(DOM.get('#J_title_'+id));
+							var itemTitle =DOM.val(DOM.get('#J_ItemTitle_'+id));
 							var str = prefix+itemTitle+suffix;
 							DOM.val(DOM.get('#J_title_'+id), str);
 							rename.checkTitleNotice(str,id);
@@ -245,13 +247,14 @@ KISSY.add(function (S,showPages) {
 									    content:'未选择任何宝贝！',
 									    type:"error",
 										autoClose:true,
-										timeOut :1000
+										timeOut :2000
 									
 									});
 					
 					return;
 					}	
 				},
+				//取消修改
 				revertItemTitle : function() {
 					if(!showPermissions('editor_tool','工具箱')){return ;}
 					if(isVersionPer('tool')){return ;}					
@@ -264,12 +267,21 @@ KISSY.add(function (S,showPages) {
 					DOM.val(DOM.get('#J_Suffix'), '');
 					var len = checkBoxs.length;
 					var m=0;
+					var json = [];
 					for(i=0; i<len; i++){
 						if(checkBoxs[i].checked){
 							id = checkBoxs[i].value;
 							var itemTitle =DOM.val(DOM.get('#J_ItemTitle_'+id));
 							DOM.val(DOM.get('#J_title_'+id), itemTitle);
 							rename.checkTitleNotice(itemTitle,id);
+							var itemTitle =H.util.strProcess(DOM.val(DOM.get('#J_title_'+id)));
+							var pic_url = DOM.val(DOM.get('#J_ItemPic_'+id));
+							titleLen = itemTitle.replace(/[^\x00-\xff]/g,"**").length;
+							if(titleLen <= 60 ){							
+								var o = '{"id":"' + id + '", "title":"' + itemTitle + '", "pic_url":"' + pic_url + '"}';
+								o = eval('(' + o + ')');						
+								json.push(o);
+							}
 							m++;
 						}
 					}
@@ -279,12 +291,37 @@ KISSY.add(function (S,showPages) {
 									    content:'未选择任何宝贝！',
 									    type:"error",
 										autoClose:true,
-										timeOut :1000
+										timeOut :2000
 									
 									});
 					
-					return;
-					}	
+		 				return;
+					}
+				
+					var itemsJson = KISSY.JSON.stringify(json);
+					var data = "items="+itemsJson+"&form_key="+FORM_KEY;
+			        var submitHandle = function(o) {
+			        		rename.msg.hide();
+			        		 new H.widget.msgBox({ 
+						 			type: "sucess", 
+						 			content: "取消成功",
+									dialogType:"msg", 
+									autoClose:true, 
+									timeOut:3000
+								});
+				    };
+				    var errorHandle = function(o){
+				    	rename.msg.hide();
+				    	new H.widget.msgBox({
+						    title:"错误提示",
+						    content:o.desc,
+						    type:"error"
+						});	
+						return;
+				    };
+					new H.widget.asyncRequest().setURI(updateTitleUrl).setMethod("POST").setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).send();
+					
+					
 				},
 				//转义 正则
 				escape : function(str){
@@ -329,7 +366,7 @@ KISSY.add(function (S,showPages) {
 									    content:'未选择任何宝贝！',
 									    type:"error",
 										autoClose:true,
-										timeOut :1000
+										timeOut :2000
 									
 									});
 					
@@ -339,7 +376,30 @@ KISSY.add(function (S,showPages) {
 				
 				updateTitle : function(id) {
 					if(!showPermissions('editor_tool','工具箱')){return ;}
-					if(isVersionPer('tool')){return ;}	
+					if(isVersionPer('tool')){return ;}
+					if(DOM.attr('#J_PrefixSufix','checked') || DOM.attr('#J_ReplaceType','checked') || DOM.attr('#J_KeyType','checked')){
+						if((DOM.attr('#J_PrefixSufix','checked')&&DOM.val('#J_Prefix')==''&&DOM.val('#J_Suffix')=='')||(DOM.attr('#J_ReplaceType','checked')&&(DOM.val('#J_Proto')==''||DOM.val('#J_Replace')==''))||(DOM.attr('#J_KeyType','checked')&&DOM.val('#J_KeyWord')=='')){
+							new H.widget.msgBox({
+				                title: "",
+				                content: "已选项代码区域不能为空，请检查！",
+				                type: "error",
+				                buttons: [{ value: "Ok"}],
+								autoClose : true,
+								timeOut : 3000
+				                
+				            });
+							return;
+						}
+						if(DOM.attr('#J_PrefixSufix','checked')){
+							rename.addItemTitlePrefixSufix()
+						}
+						if(DOM.attr('#J_ReplaceType','checked')){
+							rename.replaceTitle(1);
+						}
+						if(DOM.attr('#J_KeyType','checked')){
+							rename.replaceTitle(2);
+						}
+					}
 					DOM.attr('#J_check'+id,'checked',true);
 					var itemTitle =H.util.strProcess(DOM.val(DOM.get('#J_title_'+id)));
 					var pic_url = DOM.val(DOM.get('#J_ItemPic_'+id));
@@ -370,10 +430,10 @@ KISSY.add(function (S,showPages) {
 				checkTitleLen : function(str ,id) {
 					var len = str.replace(/[^\x00-\xff]/g,"**").length;
 					if(len > 60){
-						DOM.html(DOM.get('#J_Notice_'+id), '宝贝标题超过淘宝限制（30个汉字）');
+						DOM.html(DOM.get('#J_Notice_'+id), '宝贝标题超过淘宝限制（30个汉字）将不做修改！');
 						DOM.html(DOM.get('#J_Zs_'+id), '');	
 						DOM.replaceClass('#J_Opertion_'+id,'J_Abled','J_DisAbled');
-						DOM.attr('#J_check'+id,'disabled',true);
+						//DOM.attr('#J_check'+id,'disabled',true);
 						return false;
 			        }
 					var len = 60-len;
@@ -385,10 +445,10 @@ KISSY.add(function (S,showPages) {
 				checkTitleNotice : function(str ,id) {
 					var len = str.replace(/[^\x00-\xff]/g,"**").length;
 					if(len > 60){
-						DOM.html(DOM.get('#J_Notice_'+id), '宝贝标题超过淘宝限制（30个汉字）');
+						DOM.html(DOM.get('#J_Notice_'+id), '宝贝标题超过淘宝限制（30个汉字）将不做修改！');
 						DOM.html(DOM.get('#J_Zs_'+id), '');	
 						DOM.replaceClass('#J_Opertion_'+id,'J_Abled','J_DisAbled');
-						DOM.attr('#J_check'+id,'disabled',true);
+					//	DOM.attr('#J_check'+id,'disabled',true);
 						
 					}else{
 						DOM.replaceClass('#J_Opertion_'+id,'J_DisAbled','J_Abled');
@@ -414,9 +474,33 @@ KISSY.add(function (S,showPages) {
 			//			H.rename.msg.setMsg('<div class="point relative"><div class="point-w-1">已选项代码区域不能为空，请检查！</div></div>').showDialog();
 			//			return;
 			//		}
-					if(rename.inputChangeFlag){
-						rename.previewTitle();
+					//rename.inputChangeFlag = true;
+					if(DOM.attr('#J_PrefixSufix','checked') || DOM.attr('#J_ReplaceType','checked') || DOM.attr('#J_KeyType','checked')){
+						if((DOM.attr('#J_PrefixSufix','checked')&&DOM.val('#J_Prefix')==''&&DOM.val('#J_Suffix')=='')||(DOM.attr('#J_ReplaceType','checked')&&(DOM.val('#J_Proto')==''||DOM.val('#J_Replace')==''))||(DOM.attr('#J_KeyType','checked')&&DOM.val('#J_KeyWord')=='')){
+							new H.widget.msgBox({
+				                title: "",
+				                content: "已选项代码区域不能为空，请检查！",
+				                type: "error",
+				                buttons: [{ value: "Ok"}],
+								autoClose : true,
+								timeOut : 3000
+				                
+				            });
+							return;
+						}
+						if(DOM.attr('#J_PrefixSufix','checked')){
+							rename.addItemTitlePrefixSufix()
+						}
+						if(DOM.attr('#J_ReplaceType','checked')){
+							rename.replaceTitle(1);
+						}
+						if(DOM.attr('#J_KeyType','checked')){
+							rename.replaceTitle(2);
+						}
 					}
+//					if(rename.inputChangeFlag){
+//						rename.previewTitle();
+//					}
 					rename.msg = new H.widget.msgBox({ type: "error",
 			                content: "系统正在处理中",
 			 				dialogType:"loading"
@@ -449,7 +533,7 @@ KISSY.add(function (S,showPages) {
 									
 									});
 					
-					return;
+		 				return;
 					}				
 					var itemsJson = KISSY.JSON.stringify(json);
 					var data = "items="+itemsJson+"&form_key="+FORM_KEY;

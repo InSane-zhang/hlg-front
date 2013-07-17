@@ -107,9 +107,9 @@ KISSY.add(function (S) {
 					var buttons = "";
 					S.each(self.options.buttons, function(button, index){
 						if(index == 0){
-							buttons += "<input class=\"btm-68-orange msgButton \" type=\"button\" name=\"" + button.value + "\" value=\"" + button.value + "\" />";
+							buttons += "<span><input class=\"btm-68-orange msgButton \" type=\"button\" name=\"" + button.value + "\" value=\"" + button.value + "\" /></span>";
 						}else{
-							buttons += "<input class=\"btm-68-gray msgButton \" type=\"button\" name=\"" + button.value + "\" value=\"" + button.value + "\" />";
+							buttons += "<span><input class=\"btm-68-gray msgButton \" type=\"button\" name=\"" + button.value + "\" value=\"" + button.value + "\" /></span>";
 						}
 					})
 					var inputs = "";

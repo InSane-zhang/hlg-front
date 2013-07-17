@@ -1,7 +1,8 @@
 
 KISSY.add(function (S,showPages) {
     // your code here
-	var DOM = S.DOM, Event = S.Event;	
+	var DOM = S.DOM, Event = S.Event;
+    
 	return renum = {
 	    	paginator : null,
 	    	panel : null,
@@ -14,8 +15,10 @@ KISSY.add(function (S,showPages) {
 				});
 				renum.searchTbItems();
 				Event.on('#J_SearchBtn','click',renum.searchTbItems); //搜索宝贝 
-			    Event.on('#J_TCheckAll','click',renum.CheckAll); //活动中宝贝全选   	    
+			    Event.on('#J_TCheckAll','click',renum.CheckAll); //活动中宝贝全选   
+			    
     		},
+    		
     		searchTbItems : function() {
 		        var submitHandle = function(o) {
 					DOM.hide('#J_RightLoading');
@@ -31,6 +34,7 @@ KISSY.add(function (S,showPages) {
 						DOM.css(DOM.query(".J_ControlBtm") , 'display' , 'none');
 					}
 					DOM.html('#J_PromotionItemList' ,o.payload.body);
+					DOM.attr('#J_TCheckAll','checked',false);
 					var oTriggers = DOM.query('#J_PromotionItemList .J_CheckBox');
 					selectItemNum = 0;
 		            Event.on(oTriggers, "click", function(ev){
@@ -152,14 +156,6 @@ KISSY.add(function (S,showPages) {
 			},
 			previewNum : function(){
 				renum.previewed = true;
-				renum.changeNum();
-			},
-			changeNum : function(){
-				if(!renum.checkBoxs){
-					var checkBoxs = DOM.query('#J_PromotionItemList .J_CheckBox');
-				}else{
-					var checkBoxs = renum.checkBoxs;
-				}
 				if(!DOM.attr('#J_ChangeNum','checked') && !DOM.attr('#J_AddNum','checked') && !DOM.attr('#J_DelNum','checked')){
 					new H.widget.msgBox({
 		                title: "",
@@ -167,7 +163,7 @@ KISSY.add(function (S,showPages) {
 		                type: "error",
 		                buttons: [{ value: "Ok"}],
 						autoClose:true,
-						timeOut :1000
+						timeOut :2000
 		               
 		            });
 					return false;
@@ -179,11 +175,21 @@ KISSY.add(function (S,showPages) {
 		                type: "error",
 		                buttons: [{ value: "Ok"}],
 						autoClose:true,
-						timeOut :1000
+						timeOut :2000
 		                
 		            });
 					return false;
 				}
+				renum.changeNum();
+				
+			},
+			changeNum : function(){
+				if(!renum.checkBoxs){
+					var checkBoxs = DOM.query('#J_PromotionItemList .J_CheckBox');
+				}else{
+					var checkBoxs = renum.checkBoxs;
+				}
+				
 				var directNum = Number(DOM.val(DOM.get('#J_Direct_Num')));
 				var addNum = Number(DOM.val(DOM.get('#J_Add_Num')));
 				var delNum = Number(DOM.val(DOM.get('#J_Del_Num')));
@@ -294,13 +300,110 @@ KISSY.add(function (S,showPages) {
 								    content:'未选择任何宝贝！',
 								    type:"error",
 									autoClose:true,
-									timeOut :1000
+									timeOut :2000
 								
 								});
 				
 				return false;
 				}
 				return true;
+			},
+			revertItemNum : function() {
+				if(!showPermissions('editor_tool','工具箱')){return ;}
+				if(isVersionPer('tool')){return ;}	
+				if(!renum.checkBoxs){
+					var checkBoxs = DOM.query('#J_PromotionItemList .J_CheckBox');
+				}else{
+					var checkBoxs = renum.checkBoxs;
+				}
+				
+				var len = checkBoxs.length;
+				var m=0;
+				for(i=0; i<len; i++){
+					if(checkBoxs[i].checked && !checkBoxs[i].disabled){
+						id = checkBoxs[i].value;
+						if (DOM.get('#J_ItemSkus_' + id) == null) {
+							var protoNum = Number(DOM.val(DOM.get('#J_ItemNum_' + id)));
+							var num = protoNum ;
+							DOM.val(DOM.get('#J_new_item_num_' + id), num);
+							renum.checkNumNotice(num, id,1);
+							m++;
+						}else{
+							var origPriceEls = DOM.query('#J_SkuTable_' + id + ' .J_SkuOrigNum');
+							var promoPriceEls = DOM.query('#J_SkuTable_' + id + ' .J_SkuPromoPrice');
+							var slen = origPriceEls.length;
+							for (var n= 0; n < slen; n++) {
+								sop = Number(origPriceEls[n].value);
+								spp = sop
+								promoPriceEls[n].value = spp;
+								if ((H.util.checkPrice(spp)[0] && spp!=0) || (spp > 999999 || spp < 0)) {
+									DOM.html(DOM.get('#J_Notice_' + id), '亲，库存范围为0-999999！');
+									DOM.addClass(promoPriceEls[n], 'text-error');
+									DOM.replaceClass('#J_Opertion_' + id, 'J_Abled', 'J_DisAbled');
+									DOM.attr('#J_check' + id, 'disabled', true);
+									DOM.css('#J_Zs_' + id, 'display', 'none');
+								}
+								m++;
+							}
+						}
+					}
+				}
+				if(m == 0){		
+	 				new H.widget.msgBox({
+								    title:"错误提示",
+								    content:'未选择任何宝贝！',
+								    type:"error",
+									autoClose:true,
+									timeOut :2000
+								
+								});
+				
+	 				return;
+				}
+				var json = [];
+				for(i=0; i<len; i++){
+					if(checkBoxs[i].checked && !checkBoxs[i].disabled){
+						id = checkBoxs[i].value;
+						var r = renum.generalSpecParams(id);
+						var itemTitle = H.util.strProcess(DOM.val(DOM.get('#J_ItemTitle_'+id)));
+						var pic_url = DOM.val(DOM.get('#J_ItemPic_'+id));
+						var	error = r[0];
+						var params = r[1];
+							paramsStr = ', "params":' + KISSY.JSON.stringify(params);
+						if (error === false) {
+							var o = '{"id":"' + id + '"'+ paramsStr + ',"title":"'+itemTitle+ '", "pic_url":"' + pic_url+'"}';
+							o = eval('(' + o + ')');
+			            	json.push(o);
+						}else{
+							return ;
+						}
+					}
+				}
+				var itemsJson = KISSY.JSON.stringify(json);
+				var data = "items="+itemsJson+"&form_key="+FORM_KEY;
+		
+		        var submitHandle = function(o) {
+						DOM.attr('#J_TCheckAll','checked',false);
+						renum.msg.hide();
+		        	 	new H.widget.msgBox({ 
+				 			type: "sucess", 
+				 			content: "取消成功",
+							dialogType:"msg", 
+							autoClose:true, 
+							timeOut:3000
+						});
+			    };
+			    var errorHandle = function(o){
+						renum.msg.hide();
+			    		new H.widget.msgBox({
+						    title:"错误提示",
+						    content:o.desc,
+						    type:"error"
+						});	
+					return;
+			    };
+				new H.widget.asyncRequest().setURI(updateTitleUrl).setMethod("POST").setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).send();
+				
 			},
 			checkNumNotice : function(el ,id,type) {
 				if(type == 1 ){
@@ -326,6 +429,23 @@ KISSY.add(function (S,showPages) {
 			updateNum : function(id) {
 				if(!showPermissions('editor_tool','工具箱')){return ;}
 				if(isVersionPer('tool')){return ;}	
+				//renum.previewNum();
+				if(DOM.attr('#J_ChangeNum','checked') || DOM.attr('#J_AddNum','checked') || DOM.attr('#J_DelNum','checked')){
+					if((DOM.attr('#J_ChangeNum','checked')&&DOM.val('#J_Direct_Num')=='')||(DOM.attr('#J_AddNum','checked')&&DOM.val('#J_Add_Num')=='')||(DOM.attr('#J_DelNum','checked')&&DOM.val('#J_Del_Num')=='')){
+						new H.widget.msgBox({
+			                title: "",
+			                content: "已选项代码区域不能为空，请检查！",
+			                type: "error",
+			                buttons: [{ value: "Ok"}],
+							autoClose:true,
+							timeOut :1000
+			                
+			            });
+						return false;
+					}
+					renum.changeNum();
+				}
+				
 				DOM.attr('#J_check'+id,'checked',true);
 				var r = renum.generalSpecParams(id);
 				var itemTitle = H.util.strProcess(DOM.val(DOM.get('#J_ItemTitle_'+id)));
@@ -371,6 +491,7 @@ KISSY.add(function (S,showPages) {
 				}else{
 					var checkBoxs = renum.checkBoxs;
 				}
+				
 		//		if(!DOM.attr('#J_ChangeNum','checked') && !DOM.attr('#J_AddNum','checked') && !DOM.attr('#J_DelNum','checked')){
 		//			H.renum.msg.setMsg('<div class="point relative"><div class="point-w-1">请选择代码修改方式！</div></div>').showDialog();
 		//			return;
@@ -379,11 +500,27 @@ KISSY.add(function (S,showPages) {
 		//			H.renum.msg.setMsg('<div class="point relative"><div class="point-w-1">已选项代码区域不能为空，请检查！</div></div>').showDialog();
 		//			return;
 		//		}
-				if(renum.previewed){
-					var flag = renum.changeNum();
-					if(!flag){
-						return ;
+//				renum.previewed = true;
+//				if(renum.previewed){
+//					var flag = renum.changeNum();
+//					if(!flag){
+//						return ;
+//					}
+//				}
+				if(DOM.attr('#J_ChangeNum','checked') || DOM.attr('#J_AddNum','checked') || DOM.attr('#J_DelNum','checked')){
+					if((DOM.attr('#J_ChangeNum','checked')&&DOM.val('#J_Direct_Num')=='')||(DOM.attr('#J_AddNum','checked')&&DOM.val('#J_Add_Num')=='')||(DOM.attr('#J_DelNum','checked')&&DOM.val('#J_Del_Num')=='')){
+						new H.widget.msgBox({
+			                title: "",
+			                content: "已选项代码区域不能为空，请检查！",
+			                type: "error",
+			                buttons: [{ value: "Ok"}],
+							autoClose:true,
+							timeOut :1000
+			                
+			            });
+						return false;
 					}
+					renum.changeNum();
 				}
 				renum.msg = new H.widget.msgBox({ type: "error",
 	                content: "系统正在处理中",
@@ -419,7 +556,7 @@ KISSY.add(function (S,showPages) {
 								    content:'未选择任何宝贝！',
 								    type:"error",
 									autoClose:true,
-									timeOut :1000
+									timeOut :2000
 								
 								});
 						return;

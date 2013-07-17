@@ -39,7 +39,8 @@ KISSY.add(function(S,showPages){
 	   				}
 	       		})
 				Event.on('#J_SearchBtn','click',recats.searchTbItems); //活动中宝贝全选   	 
-			    Event.on('#J_TCheckAll','click',recats.CheckAll); //活动中宝贝全选   	    
+			    Event.on('#J_TCheckAll','click',recats.CheckAll); //活动中宝贝全选   	 
+			    
 	        },
      		searchTbItems : function() {
 	            var submitHandle = function(o) {
@@ -57,6 +58,7 @@ KISSY.add(function(S,showPages){
 						DOM.css(DOM.query(".J_ControlBtm") , 'display' , 'none');
 					}
 					DOM.html('#J_PromotionItemList' ,o.payload.body);
+					DOM.attr('#J_TCheckAll','checked',false);
 					var oTriggers = DOM.query('#J_PromotionItemList .J_CheckBox');
 					selectItemNum = 0;
 	                Event.on(oTriggers, "click", function(ev){
@@ -338,25 +340,117 @@ KISSY.add(function(S,showPages){
 				}
 				if(flag){
 					id = flag;
+					var json = [];
 					var itemCats =DOM.html(DOM.get('#J_ProtoCats_'+id));
 					DOM.html(DOM.get('#J_Cats_'+id), itemCats);
+					var itemTitle =H.util.strProcess(DOM.val(DOM.get('#J_ItemTitle_'+id)));
+					var selectCats = '';
+					var protoCats = DOM.val('#J_ItemProtoSellerCIds_'+id);
+					var delComma = new RegExp(",$","g");
+					var selCatsArray = selectCats.replace(delComma,'');
+					var proCatsArray = protoCats.replace(delComma,'');
+						selCatsArray = selCatsArray.split(',');
+						proCatsArray = proCatsArray.split(',');
+					for(var a = 0;a<proCatsArray.length;a++){
+						for(var z = 0;z<selCatsArray.length;z++){
+							if(selCatsArray[z] == proCatsArray[a]){
+								selCatsArray.splice(z,1);
+							}
+						}
+					}
+					if(selCatsArray.length + proCatsArray.length > 10){
+						//recats.msg.hide();
+						new H.widget.msgBox({
+			                title: "",
+			                content: "当前所属目录修改最多为10个，即(原目录+现目录-重复目录<=10)！",
+			                type: "error",
+			                buttons: [{ value: "Ok"}]
+			                
+			            });
+						return;
+					}
+					var pic_url = DOM.val(DOM.get('#J_ItemPic_'+id));
+					var o = '{"id":"' + id + '","catsType":"' + catsType + '","protoCats":"' + protoCats + '", "title":"' + itemTitle + '", "selectCats":"' + selectCats + '", "pic_url":"' + pic_url + '"}';
+					o = eval('(' + o + ')');						
+					json.push(o);
+					var m=1;
 				}else{
+					
 					var len = checkBoxs.length;
 					var m=0;
+					var json = [];
 					for(i=0; i<len; i++){
 						if(checkBoxs[i].checked){
 							id = checkBoxs[i].value;
 							var itemCats =DOM.html(DOM.get('#J_ProtoCats_'+id));
 							DOM.html(DOM.get('#J_Cats_'+id), itemCats);
+							var itemTitle =H.util.strProcess(DOM.val(DOM.get('#J_ItemTitle_'+id)));
+							var selectCats = '';
+							var protoCats = DOM.val('#J_ItemProtoSellerCIds_'+id);
+							var delComma = new RegExp(",$","g");
+							var selCatsArray = selectCats.replace(delComma,'');
+							var proCatsArray = protoCats.replace(delComma,'');
+								selCatsArray = selCatsArray.split(',');
+								proCatsArray = proCatsArray.split(',');
+							for(var a = 0;a<proCatsArray.length;a++){
+								for(var z = 0;z<selCatsArray.length;z++){
+									if(selCatsArray[z] == proCatsArray[a]){
+										selCatsArray.splice(z,1);
+									}
+								}
+							}
+							if(selCatsArray.length + proCatsArray.length > 10){
+								//recats.msg.hide();
+								new H.widget.msgBox({
+					                title: "",
+					                content: "当前所属目录修改最多为10个，即(原目录+现目录-重复目录<=10)！",
+					                type: "error",
+					                buttons: [{ value: "Ok"}]
+					                
+					            });
+								return;
+							}
+							var pic_url = DOM.val(DOM.get('#J_ItemPic_'+id));
+							var o = '{"id":"' + id + '","catsType":"' + catsType + '","protoCats":"' + protoCats + '", "title":"' + itemTitle + '", "selectCats":"' + selectCats + '", "pic_url":"' + pic_url + '"}';
+							o = eval('(' + o + ')');						
+							json.push(o);
 							m++;
 						}
 					}
 				}
-//				if(m == 0){
-//					H.recats.msg.hide();
-//					H.recats.msg.setMsg('<div class="point relative"><div class="point-w-1">未选择任何宝贝</div></div>').showDialog();
-//					return;
-//				}
+				if(m == 0){
+					//recats.msg.hide();
+					new H.widget.msgBox({
+							    title:"错误提示",
+							    content:'未选择任何宝贝！',
+							    type:"error",
+								autoClose:true,
+								timeOut :1000
+							});
+			                return;
+			   }	
+
+				var itemsJson = KISSY.JSON.stringify(json);
+				var data = "items="+itemsJson+"&form_key="+FORM_KEY;
+				var submitHandle = function(o) {
+						//recats.msg.hide();
+					 	new H.widget.msgBox({ 
+						 			type: "sucess", 
+						 			content: "取消成功",
+									dialogType:"msg", 
+									autoClose:true, 
+									timeOut:3000
+								});
+				};
+				var errorHandle = function(o){
+						//recats.msg.hide();
+						new H.widget.msgBox({
+						    title:"错误提示",
+						    content:o.desc,
+						    type:"error"
+						});	
+				};
+				new H.widget.asyncRequest().setURI(updateCatsUrl).setMethod("POST").setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).send();
 			},
 			
 			updateCats : function(id) {

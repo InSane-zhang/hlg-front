@@ -67,10 +67,10 @@ div.msgBoxImage img
 div.msgBoxContent
 {
     font-size:11pt;
-    margin:0 3px 6px 3px;
+    margin:6px 3px 6px 3px;
     display:inline-block;
     float:left;
-    height:90px;
+    min-height:90px;
     width:319px;
 }
 div.msgBoxContent p
@@ -99,19 +99,44 @@ div.msgBoxButtons
 	vertical-align: middle;
 	height: 45px;
 }
-div.msgBoxButtons input[type='button']
-{
-    cursor:pointer;
-    margin:2px;
+
+div.msgBoxButtons span,
+div.msgBoxButtons input[type='button']{
+	background:url(http://cdn.huanleguang.com/img/hlg/v3/msgbok-btn-pic.png) no-repeat;
+}
+div.msgBoxButtons span{
+	margin:2px;
     height:31px;
-    width:68px;
-    border:0px;
 	display: inline-block;
 }
-div.msgBoxButtons input[type='button']:hover
+div.msgBoxButtons span.msg-btn-orange{
+	background-position:left 0;
+}
+div.msgBoxButtons span.msg-btn-gray{
+	background-position:left -62px;
+}
+div.msgBoxButtons input[type='button']{
+	min-width:60px;
+    cursor:pointer;
+    height:31px;
+    border:0px;
+	display: inline-block;
+	margin-left:3px;
+	padding:0 10px 0px 7px;
+}
+div.msgBoxButtons span.msg-btn-orange input[type='button']{
+	color:#fff;
+	background-position:right -31px;
+}
+div.msgBoxButtons span.msg-btn-gray input[type='button']{
+	color:#555;
+	background-position:right -93px;
+}
+
+/*div.msgBoxButtons input[type='button']:hover
 {
     color:#00549c;
-}
+}*/
 
 div.msgBoxInputs
 {

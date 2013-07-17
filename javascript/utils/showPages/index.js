@@ -215,7 +215,7 @@ KISSY.add(function (S) {
 		    return this;
 		 },
 		setPage:function(page){
-		    this.page = page;  
+		    this.page = page;
 		    return this; 
 	    }   	   
 
