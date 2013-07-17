@@ -1,4 +1,5 @@
-## css结构 @by yazi
+ ## css结构 @by yazi  
+
 	-common(公用css)
 		|- fonts //存放字体文件 因为icomoon 在Firefox不支持跨域引用所以引用的是相对路径，不要随意移动该目录
 		|- base.css //包括reset 按钮 字体颜色 输入框
@@ -27,7 +28,7 @@
 				|- ...
 		|- care.css  //入口文件，Mcare里面所有的文件都在这里引用: @import 'mods/public.css';
 	...
-
+> [css3 动画](http://daneden.me/animate/) 高级浏览器提高点体验
 ## 使用条件注释判断浏览器
 	<!DOCTYPE html>
 	<!--[if lt ie 7]>
