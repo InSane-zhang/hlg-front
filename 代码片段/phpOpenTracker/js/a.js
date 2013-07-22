@@ -63,6 +63,7 @@
             },false);
         return;
      }
+     
      if (o.attachEvent) {
         return o.attachEvent('on'+e,function() {
             h.apply(null,[window.event].concat(args));

@@ -10,7 +10,10 @@
 -3. 变量命名: 仅在JavaScript代码中当作hook{钩子}用的id或class,命名规则为J_UpperCamelCase;
 > 注意：如果在JavaScript和CSS中都需要用到,则不用遵守本约定。  
 > **为了统一页面按钮点击情况。页面上可以点击的按钮 一律使用 a 元素 书写。 按钮必须 命名 id，
-> id的命名 J_模块名页面名按钮名 比如 首页 海报点击  J_McoreDaboardPoster  最终确保能通过id名称 判断出来 哪个页面的哪个点击活动**
+> id的命名 J_模块名页面名按钮名  比如 首页 海报点击  J_McoreDaboard_Poster
+	促销活动创建页 保存按钮：J_MpromoCreate_Save
+	促销活动宝贝页 头部加入宝贝按钮：J_MpromoItem_TopAddtoPromo
+	原则 ：最终确保能通过id名称 判断出来 哪个页面的哪个点击按钮
 	
 -4.前缀规范
 

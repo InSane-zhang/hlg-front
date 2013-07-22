@@ -242,17 +242,14 @@ KISSY.add(function(S){
 									        }
 									    }
 									}
-								}).use("elementpaths," +
-										"sourcearea,preview," +
-										"checkbox-sourcearea," +
-										"undo,separator," +
-										"font,format,color,separator," +
-										"list,indent," +
-										"justify,separator,link," +
-										"image," +
-										"smiley,resize," +
-										"draft," +
-										"dragupload");
+								}).use(
+										"image,separator,smiley,separator,link,separator," +
+										"font,color," +
+										"list," +
+										"justify," +
+										"resize," +
+										"draft" 
+										);
 
 							}else{
 								window.suggestDialog.show();

@@ -13,6 +13,7 @@
 > [支付宝 前端异常监控系统](https://github.com/totorojs/monitor.js/blob/master/doc/index.md)  
 > [搭建前端性能测试框架](http://ued.taobao.com/blog/2010/07/xvfb_yslow_showslow-2/)  
 > [前端性能监控总结](http://www.xiaoqiang.org/javascript/font-end-performance-monitor.html)
+> [segment.io](https://segment.io/docs/big-picture/what-we-do)
 
 	给 kissy 类模块 的 加 try {} catch{}{}
 	instance = S.Env.mods['page/design-init'].value;

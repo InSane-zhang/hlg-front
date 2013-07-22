@@ -387,9 +387,9 @@ H.add('widget~msgBox', function(HLG) {
 					var buttons = "";
 					S.each(self.options.buttons, function(button, index){
 						if(index == 0){
-							buttons += "<input class=\"btm-68-orange msgButton \" type=\"button\" name=\"" + button.value + "\" value=\"" + button.value + "\" />";
+							buttons += "<span class=\"msg-btn-orange\"><input class=\"msgButton\" type=\"button\" name=\"" + button.value + "\" value=\"" + button.value + "\" /></span>";
 						}else{
-							buttons += "<input class=\"btm-68-gray msgButton \" type=\"button\" name=\"" + button.value + "\" value=\"" + button.value + "\" />";
+							buttons += "<span class=\"msg-btn-gray\"><input class=\"msgButton\" type=\"button\" name=\"" + button.value + "\" value=\"" + button.value + "\" /></span>";
 						}
 					})
 					var inputs = "";
@@ -399,7 +399,7 @@ H.add('widget~msgBox', function(HLG) {
 								inputs += "<div class=\"msgInput\">" +
 								"<input type=\"" +
 								input.type +
-								"id=\"" +
+								"\"id=\"" +
 								input.id +
 								"\" name=\"" +
 								input.name +
@@ -820,7 +820,7 @@ H.add('widget~asyncRequest', function(HLG) {
 						    type:"info"
 						});
 					}else{
-						new H.widget.msgBox({ content: "系统出错"+textStatus+"，请联系欢乐逛", dialogType:"loading", autoClose:true, timeOut:8000 });
+						new H.widget.msgBox({ content: "系统出错！请刷新后重试或联系欢乐逛。", dialogType:"loading", autoClose:true, timeOut:8000 });
 					}
 				}	
 			} 	

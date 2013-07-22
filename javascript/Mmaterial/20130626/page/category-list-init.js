@@ -35,7 +35,7 @@ KISSY.add('page/category-list-init',function (S,O) {
 	                     var lid = DOM.attr(e.currentTarget,"lid");
 	                     list.get(lid);
 					})
-					Event.on('#J_StartDesign','click',function(e){
+					Event.on(DOM.query('.J_StartDesign'),'click',function(e){
 						 e.preventDefault();
 						 if(!showPermissions('editor_material','促销素材')){
 						 	return ;
