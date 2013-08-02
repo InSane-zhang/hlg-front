@@ -18,6 +18,8 @@
 		|- gallery (kissy组件)
 	-Mcore （其他模块）
 	...
+
+**新版升级kissy1.31，删除base.js,添加bui库，可以引用里面的控件库，css需自定义**
 [前台验证模块validator](https://github.com/chriso/node-validator)  
 [图表控件highcharts](http://www.highcharts.com/)
  
@@ -88,7 +90,7 @@
 [ant 学习](http://book.36ria.com/ant/index.html)
 ## TODO: 
 
-优化 ：
+：
 	
 
 

@@ -118,7 +118,6 @@ KISSY.add(function(S){
 					DOM.toggle(NextMenu);
 				});
 				Event.on('.kefu-zu','click',function(ev){
-					console.log(2)
 					if(ev.type == 'click'){
 						if(DOM.hasClass('.kefu','.block')){
 							DOM.addClass(ev.currentTarget,'service');
@@ -132,7 +131,6 @@ KISSY.add(function(S){
 					}
 				});	
 				Event.on('.kefu-other','click',function(ev){
-					console.log(3)
 					if(ev.type == 'click'){
 						if(DOM.hasClass('.other_kefu','.block')){
 							DOM.addClass(ev.currentTarget,'service');
@@ -243,13 +241,82 @@ KISSY.add(function(S){
 									    }
 									}
 								}).use(
-										"image,separator,smiley,separator,link,separator," +
-										"font,color," +
-										"list," +
-										"justify," +
+										"image,separator,smiley,separator," +
 										"resize," +
 										"draft" 
 										);
+								window.editor_config = {
+								        tsfont:{
+								            title:"文字格式",
+								            height: 0,
+								            text:'<span class="ke-toolbar-item ke-tri-button ke-toolbar-fontControl"></span>',
+								            src:''
+								      }
+								}
+								editor.ready(function(){
+
+									var S = KISSY, DOM = S.DOM, Event = S.Event, $ = KISSY.all;
+									
+									var TripleButton = S.Editor.TripleButton;
+							        if (!window.editor_config) {
+							            return;
+							        }
+							        var a = ['ke-toolbar-italic','ke-toolbar-bold','ke-select','ke-toolbar-underline','ke-toolbar-strikeThrough','ke-toolbar-color','ke-toolbar-bgcolor','ke-toolbar-ul','ke-toolbar-ol','ke-toolbar-alignleft','ke-toolbar-aligncenter',,'ke-toolbar-alignright','ke-toolbar-link']; 
+							        var config = window.editor_config,
+							            iframes = {}, tbs = [], l,c;
+							        S.each(config, function(v, k) {
+							            var button = new TripleButton({
+							                render:editor.toolBarDiv,
+							                title: v.title,
+							                text: v.text
+							            });
+							            tbs.push(button);
+							            button.on('offClick', function(e) {
+							                var c = e.target,p = c.get("elCls");
+											if(DOM.hasClass(c.get("el"),'ke-triplebutton-off')){
+												DOM.replaceClass(c.get("el"),'ke-triplebutton-off','ke-triplebutton-on');
+												S.each(a,function(item,index){
+													if(item == 'ke-select'){
+										    			var p = DOM.query('.'+item,'.ke-editor-tools');
+														DOM.show(DOM.parent(p[0]));
+														DOM.show(DOM.parent(p[1]));
+													}else{
+														var p = DOM.parent(DOM.get('.'+item));
+														DOM.show(p);
+													}
+												})
+											}else{
+												DOM.replaceClass(c.get("el"),'ke-triplebutton-on','ke-triplebutton-off');
+												S.each(a,function(item,index){
+													if(item == 'ke-select'){
+										    			var p = DOM.query('.'+item,'.ke-editor-tools');
+														DOM.hide(DOM.parent(p[0]));
+														DOM.hide(DOM.parent(p[1]));
+													}else{
+														var p = DOM.parent(DOM.get('.'+item));
+														DOM.hide(p);
+													}
+												})
+											}
+							            });
+							            button.render();
+							        })
+							        editor.use(
+											"font,color," +
+											"list," +
+											"justify,link" 
+											);
+							        S.each(a,function(item,index){
+							    		if(item == 'ke-select'){
+							    			var p = DOM.query('.'+item,'.ke-editor-tools');
+											DOM.hide(DOM.parent(p[0]));
+											DOM.hide(DOM.parent(p[1]));
+							    		}else{
+							    			var p = DOM.parent(DOM.get('.'+item,'.ke-editor-tools'));
+											DOM.hide(p);
+							    		}
+									})
+								})
 
 							}else{
 								window.suggestDialog.show();
