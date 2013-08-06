@@ -3,7 +3,11 @@
 
 [markdown编辑器](http://www.markdownpad.com/)
 [markdown语法说明](http://wowubuntu.com/markdown/)
+## 页面标准
 
+ - ie6  不变形，正常使用
+ - ie7+ 和设计稿一样；圆角阴影不强求.
+ - 火狐 谷歌 等 高级浏览器 适当 增加效果!提高体验！
 
 ## 结构图： 
 
