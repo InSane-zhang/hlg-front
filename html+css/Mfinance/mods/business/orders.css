@@ -1,0 +1,13 @@
+.Mfinance .business-index .cw-content .list-item .baobei-pho{width:40px; height:40px; display:block; float:left; margin-right:5px;}
+.Mfinance .business-index .cw-content .ui-list .list-item .ellipsis{background:url(http://cdn.huanleguang.com/img/hlg-app/Mfinance/finance.png); background-position:-17px 0px; background-repeat:no-repeat; width:34px; height:16px; display:block;float:right;position:absolute;top:11px;left:230px;}
+.Mfinance .business-index .cw-content .ui-list .list-item .deal{background:url(http://cdn.huanleguang.com/img/hlg-app/Mfinance/finance.png); background-position:0px 0px; background-repeat:no-repeat; width:16px; height:16px; display:block;float:left;}
+.Mfinance .business-index .cw-content .ui-list .list-item .al-center{height:58px;line-height:58px;}
+/*加载列表内容*/
+.Mfinance .business-index .cw-content .ui-list .list-item .fn-list-pop{width:345px;border:1px solid #E5E8ED; border-radius:5px;position:absolute;z-index:100;}
+.Mfinance .business-index .cw-content .ui-list .list-item .fn-list-hd{height:44px;padding:10px 20px; background:#F6F7FB;}
+.Mfinance .business-index .cw-content .ui-list .list-item .fn-list-hd .drop-dowm{background: url("http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png") no-repeat scroll right -30px transparent;color: #656D78;display: inline-block;height: 16px;position: absolute;width: 16px;top:10px;}
+.Mfinance .business-index .cw-content .ui-list .list-item .fn-list-con{ background:#FFFFFF;}
+.Mfinance .business-index .cw-content .ui-list .list-item .fn-list-con .list-bd .list-item .baobei-pho{display: block;float: left; height: 40px;margin-right: 5px;width: 40px;}
+.Mfinance .business-index .cw-content .ui-list .list-item .fn-list-con .list-bd .list-item .list-title{display: block;height: 32px;line-height: 15px;overflow: hidden;text-align: left;text-overflow: ellipsis;width: 250px;color:#656D78;}
+.Mfinance .business-index .cw-content .ui-list .list-item .fn-list-con .list-bd .list-item{border-bottom: 1px solid #EAEDF2;padding:13px 20px;}   	
+.Mfinance .business-index .cw-content .ui-list .list-item .fn-list-con .list-bd .list-item .list-gray{text-align: left;}

@@ -4,128 +4,391 @@
  
 **/
 
-body{ background:#e6e6e6;}
+body{ width:100%;height:100%; background:#F1F2F6; color:#656d78;}
+.bui-ext-mask{ background:#000; opacity:0.5; filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50); z-index:1000;}
 .hlg-app{ width:100%; min-width:1200px;}
-.hlg-app .main{ width:1200px; min-height:700px; margin:auto; overflow:hidden; border:1px #d9d9d9 solid; background:#fff;}
-.hlg-app .main .menu{ width:160px; float:left; background:#f5f5f5; border-right:1px #e6e6e6 solid; margin-bottom:-5000px; padding-bottom:5000px;}
-.hlg-app .main .content{ width:1039px; float:right;}
-.hlg-app .main .content .spacing{ padding:15px;}
+.hlg-app .main{ width:1200px; min-height:700px; margin:auto; overflow:hidden;}
+.hlg-app .main .content{ width:1040px; float:right;}
+.hlg-app .main .content .spacing{ padding:20px 30px;}
+
+/*圆角结构*/
+.hlg-app .fillet-layer{ width:100%; border-bottom:2px #e2e3e9 solid; background:#fff; position:relative;}
+.hlg-app .fillet-layer .fillet-lt,
+.hlg-app .fillet-layer .fillet-rt,
+.hlg-app .fillet-layer .fillet-br,
+.hlg-app .fillet-layer .fillet-bl{ width:5px; overflow:hidden; display:block; position:absolute; background:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat;}
+.hlg-app .fillet-layer .fillet-lt,.hlg-app .fillet-layer .fillet-rt{ height:5px;}
+.hlg-app .fillet-layer .fillet-lt{ background-position:0 -40px; left:0; top:0;}
+.hlg-app .fillet-layer .fillet-rt{ background-position:0 -45px; right:0; top:0;}
+.hlg-app .fillet-layer .fillet-br,.hlg-app .fillet-layer .fillet-bl{ height:6px;}
+.hlg-app .fillet-layer .fillet-br{ background-position:0 -50px; left:0; bottom:-2px;}
+.hlg-app .fillet-layer .fillet-bl{ background-position:0 -56px; right:0; bottom:-2px;}
+html.ie6 .hlg-app .fillet-layer .fillet-br,html.ie6 .hlg-app .fillet-layer .fillet-bl{ bottom:-3px;}
+
+/*升级框续费*/
+.order-btn{ width:740px; padding:15px 10px;  background:#fff; overflow:hidden;}
+.order-btn  ul{ margin-bottom:5px; overflow:hidden;}
+.order-btn  li{ width:140px;line-height: 40px; margin:0 5px; _display:inline; border:1px #dfdfdf solid; border-radius:5px; background:#fefefe; float:left;}
+.order-btn  li b{ color:#f16611;}
+.order-btn  li em{ color:#cecece; text-decoration:line-through;}
+.order-btn  li span{ color:#666;}
+.order-btn  li.user-version{ width:100px; text-align:right; padding:0; border:0; font-weight:bold; color:#474747;}
 
 /*加载效果*/
-.hlg-app .main .content .loading{ display:none; background:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-loading.gif) no-repeat; width:32px; height:32px; margin:200px auto 0 auto;}
+.loading{ display:none; background:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-loading.gif) no-repeat; width:32px; height:32px; margin:100px auto;}
 
-/*自定义搜索栏目*/
-.hlg-app .main .content .main-select{ overflow:hidden; line-height:24px; padding:5px 10px; background:#ececec; margin-bottom:15px;}
-.hlg-app .main .content .main-select li{ float:left; margin-right:10px; color:#666;}
+/*返回上一级*/
+.hlg-app .main .content .return-top{ float:left; height:22px; line-height:20px; margin-right:15px;}
+.hlg-app .main .content .return-top a{ height:22px; padding-left:30px; display:block; color:#83858b; font-weight:bold; font-size:18px; background:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat scroll -171px 1px;}
+
+/*页面头部，步骤条*/
+.hlg-app .main .content .page-head{ height:40px; padding:20px 0; border-bottom:1px #eaedf2 solid; position:relative;}
+.hlg-app .main .content .page-head .page-head-left{ position:absolute; top:20px; left:30px;}
+.hlg-app .main .content .page-head .page-head-left .page-title{ float:left; margin-right:25px; font-size:24px; color:#454954;}
+.hlg-app .main .content .page-head .page-head-right{ position:absolute; top:20px; right:30px;}
+
+/*新增层级*/
+.hlg-app .main .privilege-tier{ clear:both;}
+.hlg-app .main .privilege-tier:after{ content:'\20'; display:block; height:0; clear:both; visibility:hidden;}
+ html.lte7 .hlg-app .main .privilege-tier:after{ zoom:1;}
+
+.hlg-app .main .edit-tier{ padding-top:10px;}
+.hlg-app .main .edit-tier li{ margin-bottom:10px;}
+.hlg-app .main .edit-tier .tier-item{ width:460px; padding:20px; border:1px #e5e8ed solid; border-radius:5px; background:#f6f7fb; position:relative;}
+.hlg-app .main .edit-tier .tier-item .handle-tier{ width:155px; height:30px; position:absolute; right:-1px; top:-1px;}
+.hlg-app .main .edit-tier .tier-item .handle-tier a{ height:30px; line-height:30px; display:block; float:right; margin-left:1px; text-align:center; color:#fff; text-indent:12px; background-image:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png);}
+.hlg-app .main .edit-tier .tier-item .handle-tier a.tier-an{ width:60px; background-color:#aab2bd; background-position:-89px -657px;}
+.hlg-app .main .edit-tier .tier-item .handle-tier a.tier-stop{ width:60px; background-color:#8bd167; background-position:-89px -677px;}
+.hlg-app .main .edit-tier .tier-item .handle-tier a.tier-del{ width:30px; background-color:#aab2bd; background-position:-89px -699px;}
+.hlg-app .main .edit-tier .tier-item .handle-tier a.tier-del:hover{ background-color:#ed5564;}
+/*设置条件*/
+.hlg-app .main .edit-tier .tier-item .tier-num,
+.hlg-app .main .edit-tier .tier-item .caps-icon,
+.hlg-app .main .edit-tier .add-tier i{ background:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat;}
+.hlg-app .main .edit-tier .tier-item .tier-num{ display:inline-block; width:18px; height:18px; line-height:18px; margin-right:10px; color:#fff; text-align:center; background-position:-117px -635px;}
+.hlg-app .main .edit-tier .tier-item .set-condition{ padding-bottom:20px; border-bottom:1px #e5e8ed dashed;}
+.hlg-app .main .edit-tier .tier-item .caps-icon{ width:16px; height:16px; display:inline-block; margin-left:5px; vertical-align:text-top; background-position:-98px -636px;}
+.hlg-app .main .edit-tier .tier-item .input-text-1{ width:110px; color:#4dc1e8; font-size:20px;}
+.hlg-app .main .edit-tier .tier-item .input-text-2{ width:130px;}
+.hlg-app .main .edit-tier .tier-item .set-privilege{ padding-top:20px;}
+.hlg-app .main .edit-tier .tier-item .set-privilege label{ font-weight:bold;}
+.hlg-app .main .edit-tier .tier-item .set-privilege p{ margin-bottom:5px; clear:both; overflow:hidden;}
+.hlg-app .main .edit-tier .tier-item .set-privilege p.discount b{ margin-right:20px;}
+.hlg-app .main .edit-tier .tier-item .set-privilege p.discount .input-text-1{ color:#4dc1e8; font-size:22px;}
+/*缩小层级*/
+.hlg-app .main .edit-tier .tier-item .tier-stop b{ color:#fb6e52;}
+.hlg-app .main .edit-tier .tier-item .tier-stop .condition-text{ display:block; padding-left:30px;}
+/*新增层级按钮*/
+.hlg-app .main .edit-tier .add-tier{ height:34px; padding-right:11px; float:left; margin-right:17px; cursor: pointer; border:1px #e5e8ed solid; border-radius:5px; background:#f6f7fb;}
+.hlg-app .main .edit-tier .add-tier i{ display:block; float:left; width:14px; height:14px; margin:10px 8px 0 11px; background-position:-138px -635px;}
+.hlg-app .main .edit-tier .add-tier span{ float:left;}
+
+/*内容头部栏*/
+.hlg-app .main .main-header{ font-size:20px;color:#434a54;font-weight:600;}  
+.hlg-app .main .main-header a{ color:#82858b;}
+.hlg-app .main .main-header .back-btn{ background: url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat;background-position: -171px 0;display:inline-block;width:20px;height:20px;vertical-align: top;margin:5px 10px 0 0;}
+
+/*编辑左右列表*/
+.ui-about-list li{ color:#656d7a; margin-bottom:15px; clear:both;}
+.ui-about-list li:after{ content:'\20'; display:block; height:0; clear:both; visibility:hidden;}
+html.lte8 .ui-about-list li{ zoom:1;}
+.ui-side-list{ width:100px; text-align:right; float:left; line-height:36px; font-size:14px; margin-right:20px;}   
+.ui-content-list{ text-align:left; float:left; line-height:35px; /*font-size:14px;*/}
+.ui-content-list .text-note{ padding-left:15px;}
 
 /*活动搜索*/
 .hlg-app .main .content .main-head{ background:#FFF; zoom:1; overflow:auto; line-height:25px; padding:15px 0;}
-.hlg-app .main .content .main-head .main-head-title{ color:#666; float:left; }
+.hlg-app .main .content .main-head .main-head-title{ color:#666; float:left; font-size:20px;color:#434a54;font-weight: 600;}
 .hlg-app .main .content .main-head .main-head-title b{ color:#3E3E3E; font-size:14px;}
 .hlg-app .main .content .main-head .main-head-title span{ color: #C00; font-weight:bold;}
+.hlg-app .main .content .main-head .back-btn{background: url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat;background-position: -171px 0;display:inline-block;width:20px;height:20px;vertical-align: top;margin:5px 10px 0 0;}
 .hlg-app .main .content .main-head .main-head-add-btm{ float:right;}
 .hlg-app .main .content .main-head .main-head-add-btm .input-text-2{ border:0; width:200px;}
 
-/*搜索--无详情--部分样式*/
-.no-details{color:#999999; margin:160px auto 0 auto;}
+/*筛选栏目*/
+.main-seach{ height:30px; line-height:30px; padding:20px 30px; background:#f6f7fb; border-top:1px solid #eaedf2; border-bottom:1px solid #eaedf2; border-left:0; border-right:0;clear:both;}
+.main-seach ul li{float: left;margin-right: 10px}
+.main-seach ul .seach-item{ float:left; margin-right:5px; _display:inline; vertical-align:middle;}
+.main-seach .search-input {width: 160px;height: 28px;line-height: 28px;float: left;margin-right: 10px;border: 1px #E5E8ED solid;border-radius: 3px;color: #AAB2BD;padding: 0 5px;border-image: initial;}
+.main-seach .search-btn {width: 71px;height: 30px;line-height: 30px;text-align: center;background: #4dc1e8;float: left;color: #fff;border-radius: 3px;padding: 0 5px; font-weight:900; font-size:13px;}
+.main-seach .bui-select{ width:100px; overflow: hidden;}
+.main-seach .bui-select .bui-select-input{width: 60px}
+
+/*搜索宝贝*/
+.main-screen{ height:30px; line-height:30px; padding:20px 10px; border-bottom:1px #eaedf2 solid; background:#f6f7fb; color:#aab2bd;}
+.main-screen li{ margin:0 5px;}
+.search-promo .search-input{ width:160px; height:28px; line-height:28px; padding:0 5px; margin-right:10px; border:1px #e5e8ed solid; border-radius:3px; color:#ccd0d9;}
+.search-promo .search-btn{ width:70px; height:30px; line-height:30px; display:inline-block; text-align:center; border-radius:3px; font-weight:bold; color:#fff; background:#4dc1e8;}
+/*价格区间*/
+.main-screen .price-among span{ float:left; margin-right:10px;}
+.main-screen .price-among .price-start,.main-screen .price-among .price-end{ width:40px; height:28px; line-height:28px; float:left; padding:0 5px; border:1px #e5e8ed solid; color:#ccd0d9;}
+.main-screen .price-among .price-start{ border-radius:3px 0px 0px 3px;}
+.main-screen .price-among .price-end{ border-radius:0px 3px 3px 0px;}
+.main-screen .price-among i{ width:18px; height:28px; line-height:28px; float:left; text-align:center; display:inline-block; border-top:1px #e5e8ed solid; border-bottom:1px #e5e8ed solid; background:#f6f7fb; padding:0 5px; color:#ccd0d9;}
+/*选择分类下拉*/
+.main-screen .bui-select{ width:100px;} 
+.main-screen .bui-select .bui-select-input{ width:60px}
+/**/
+
+
+/*搜索--无内容样式*/
+.no-details{color:#AAB2BD; margin:70px auto; clear:both;}
 .no-details div{ text-align:center; margin:0px auto;}
-.no-details div span.prompt-1,.no-details div span.prompt-2,.no-details span.no-details-pic{display:block; clear:both;}
-.no-details div span.prompt-1{ margin-top:30px;}
-.no-details .no-details-pic{ width:104px; height:104px; background:url(http://cdn.huanleguang.com/img/hlg-app/common/no-details.jpg) no-repeat scroll 0 0; margin:0 auto;}
+.no-details div .prompt-1,.no-details .no-details-pic{display:inline-block;zoom:1;*display:inline; clear:both; vertical-align:middle;}
+.no-details .no-details-pic{width:80px; height:80px;background: url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat;}
+.no-details .no-details-smile{ background-position:0px -88px;} 
+.no-details .no-details-cry{ background-position:-92px -87px;} 
+.no-details div .prompt-1{margin-left:20px;}
+.no-details div .prompt-1 span{display:block; line-height:24px; margin-bottom:10px;font-size:18px;color:#AAB2BD; font-weight:900; word-spacing:0px; letter-spacing:0px;}
+.no-details .no-details-creat{color: #fff;*padding:3px 0px 11px;width:135px;}
 .no-details .not-making a:link,.no-details .not-making a:visited{ color:#333; text-decoration:underline;}
-/* 弹出对话框外框架样式*/
+
+/*新版弹窗样式*/
+div.msgBox{ position: absolute;z-index: 1000; width: 430px; min-height:160px; color: #00335e;background-color:#fff;border-radius: 5px;-webkit-box-shadow: inset 0px 0px 20px 0px #ccd0d8; -moz-box-shadow: inset 0px 0px 20px 0px #ccd0d8;box-shadow: inset 0px 0px 20px 0px #ccd0d8;box-shadow: 0 0 11px #ccd0d8;}
+div.msgBoxBackGround{top:0;left:0;position:absolute;padding:0;margin:0;width:100%;height:100%;background-color:#000000;opacity:0.1;z-index:999;}
+div.msgBoxTitle{padding:19px 0 19px 0;font-variant:small-caps;font-size:14px;font-weight:bolder;color:#000;width:90%;margin:0 auto;border-bottom : 1px solid #e5e8ed;}
+div.msgBoxTitle .closeButton{position: absolute;z-index: 100;right: 22px;top: 15px;overflow: hidden;text-indent: -9em;width: 20px;height: 20px;background:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png);background-repeat: no-repeat;background-position: -171px -190px;cursor:pointer;}
+div.msgBoxTitle  a:hover{position: absolute;z-index: 100;right: 22px;top: 15px;overflow: hidden;text-indent: -9em;width: 20px;height: 20px;background:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png);background-repeat: no-repeat;background-position: -171px -168px;cursor:pointer;}
+div.msgBoxImage{margin:20px 5px 0 25px;display:inline-block;float:left;height:75px;width:45px;}
+div.msgBoxImage img{height:40px;width:40px;}
+div.msgBoxContent{font-size:11pt;margin:30px 10px 0px 0px;display:inline-block;float:left;min-height:90px;width:319px;}
+div.msgBoxContent p{padding:0;margin:0;display: table;height: 100%;width: 100%;}
+div.msgBoxContent span{display: table-cell;vertical-align: middle;color: #000;}
+div.msgBoxButtons{display:inline-block;width:100%;background-color:#f6f7fb;text-align:center;padding-top: 15px;vertical-align: middle;height: 45px;}
+div.msgBoxButtons span,
+div.msgBoxButtons input[type='button']{	background:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat;}
+div.msgBoxButtons span{margin:2px;height:31px;display: inline-block;}
+div.msgBoxButtons span.msg-btn-orange{background-position:0 -1657px;}
+div.msgBoxButtons span.msg-btn-gray{background-position:left -1721px;}
+div.msgBoxButtons input[type='button']{min-width:83px;cursor:pointer;height:31px;border:0px;display: inline-block;margin-left:2px;text-align:center;}
+div.msgBoxButtons span.msg-btn-orange input[type='button']{color:#fff;background:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png);background-position:right -1690px;}
+div.msgBoxButtons span.msg-btn-gray input[type='button']{color:#fff;background:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png);background-position:right -1752px;}
+div.msgBoxInputs{margin:0 auto;padding-top:2px;padding-bottom:2px;margin-top:5px;width:240px;}
+div.msgInput {margin :10px 0px}
+div.msgInput input[type='text'],div.msgInput input[type='password']{width:180px;}
+div.msgInput text{color:#2f2f2f;font-size:10pt;}
+
+/***弹出框 START***/
+
+/*messages消息32*32图标*/
+.messages-prompt{background:rgba(122,122,122,.5);filter:progid:DXImageTransform.Microsoft.gradient(startColorStr='#7f7A7A7A',EndColorStr='#7f7A7A7A');padding:1px;position:absolute;z-index: 1000004 ;border:1px #e4e4e4 solid}
+.messages-prompt div{ padding:10px; background:#FFF; z-index: 1000004}
+.messages-prompt .fbloader{padding:10px 0px 0 0px;text-align: center;}
+.msg-mask{position: absolute; top:0px; left:0px;right:0px;bottom:0px;z-index: 1000003;filter:alpha(opacity=10);width:100%;background-color:#000000;opacity:0.1}
+/*messages消息框 END*/
+/*对话框*/
 .point-w{ margin:0px auto; font-size:14px; padding:60px 0 20px 0; width:310px; height:120px;text-align:center  }
 .point-w-1{ margin:0px auto; font-size:14px; padding:40px 10px; text-align:center }
 .point-w-2{ margin:0px auto; font-size:14px; padding:20px 10px; text-align:center }
 .point-w-380{ margin:0px auto; font-size:14px; padding:60px 0 20px 0; width:380px; height:120px; }
-
-/*新版弹窗样式*/
-div.msgBox{ position: absolute;z-index: 1000; width: 430px; min-height:160px; color: #00335e;background-color:#fff;-moz-box-shadow: 0px 0px 11px #000000; -webkit-box-shadow: 0px 0px 11px #000000; box-shadow: 0px 0px 11px #000000;}
-div.msgBoxBackGround{ top:0;left:0; position:absolute; padding:0; margin:0;width:100%; height:100%; background-color:#000000; opacity:0.1; z-index:999;}
-div.msgBoxTitle{ padding:8px 0 8px 0; font-variant:small-caps; font-size:16px; font-weight:bolder; color:#000;width:90%;margin:0 auto; border-bottom : 1px solid #d9d9d9;}
-div.msgBoxTitle .closeButton{ position: absolute;z-index: 100;right: 22px;top: 15px;overflow: hidden;text-indent: -9em;width: 15px;height: 15px;background-repeat: no-repeat;background-position: 0 -201px; background-image: url(http://cdn.huanleguang.com/img/hlg-app/common/ui-dialog.gif);}
-div.msgBoxImage{ margin:20px 5px 0 25px; display:inline-block; float:left;height:75px;width:45px;}
-div.msgBoxImage img{height:40px; width:40px;}
-div.msgBoxContent{font-size:11pt; margin:0 3px 6px 3px; display:inline-block; float:left; height:90px;width:319px;}
-div.msgBoxContent p{ padding:0; margin:0; display: table; height: 100%; width: 100%;}
-div.msgBoxContent span { display: table-cell; vertical-align: middle; color: #000;}
-div.msgBoxButtons{display:inline-block; width:100%;background-color:#f2f2f2; text-align:center;padding-top: 15px;vertical-align: middle;height: 45px;}
-div.msgBoxButtons input[type='button']{cursor:pointer; margin:2px; height:31px; width:68px; border:0px;display: inline-block;}
-div.msgBoxButtons input[type='button']:hover{}
-div.msgBoxInputs{margin:0 auto; padding-top:2px; padding-bottom:2px; margin-top:5px; width:240px;}
-div.msgInput {margin :10px 0px}
-div.msgInput input[type='text'],div.msgInput input[type='password']{ width:180px;}
-div.msgInput text{ color:#2f2f2f;font-size:10pt;}
-
-/***弹出框 START***/
-/*搜索时弹出框*/
-.messages-prompt{ background:rgba(122,122,122,.5); filter:progid:DXImageTransform.Microsoft.gradient(startColorStr='#7f7A7A7A',EndColorStr='#7f7A7A7A');padding:1px;position:absolute;z-index: 1000004 ;border:1px #e4e4e4 solid}
-.messages-prompt div{ padding:10px; background:#FFF; z-index: 1000004}
-.messages-prompt .fbloader{padding:10px 0px 0 0px;text-align: center;}
-/*对话框*/
-.point{ margin:0px auto; font-size:14px; padding:40px 0 10px 0; width:360px; height:120px;text-align:center;}
-.point-w-1{ margin:0px auto; font-size:12px; padding:40px 10px; text-align:center }
-.point-w-2{ margin:0px auto; font-size:12px; padding:20px 10px; text-align:center }
-.point-w-380{ margin:0px auto; font-size:12px; padding:60px 0 20px 0; width:380px; height:120px; }
-#ds-toolbar,
-#ds-toolbar .ds-logo a,
-.ui-dialog .close,
-.ks-dialog .ks-dialog-close,
-.ks-dialog .ks-ext-close,
-.release-msg i,
-#speed-tips a span,
-#ds-toolbar i,
-addmodbar i,
-.ui-dialog .ui-dialog-hd,
-.ks-dialog .ks-stdmod-header,
-.ui-dialog .gengxin-btm,
-.point-text{background-image:url(http://cdn.huanleguang.com/img/hlg-app/common/ui-dialog.gif);}
-#ds-toolbar,
-#ds-toolbar .ds-logo a,
-.ui-dialog .close,
-.ks-dialog .ks-dialog-close,
-.ks-dialog .ks-ext-close,
-.release-msg i,
-#speed-tips a span,
-#ds-toolbar i,
-addmodbar i{width:15px; height:15px; background-repeat:no-repeat; background-position:0 -201px;}
-.ui-dialog,.ks-dialog {position:absolute;z-index:10001;border:1px solid #979797; background:#fff;border-radius:3px;-moz-border-radius:3px;-webkit-border-radius:3px;padding:0;}
-.ks-dialog {left:20px;top:20px;}
-.ui-dialog .ui-dialog-hd,.ks-dialog .ks-stdmod-header{height:30px; display: block; padding-left:20px; line-height:30px; position:relative; z-index:2;border-bottom-width:0; background-repeat:repeat-x; background-color:#ddd; background-position:0 -218px; font-size:12px; color:#555555; text-align:left;  border-bottom:1px dotted #bbbbbb;}
-.ui-dialog .ui-dialog-bd,.ks-dialog .ks-stdmod-body {position:relative;z-index:2;display:block;border-top-width:0;zoom:1;}
-.ui-dialog .ui-dialog-ft {position:absolute;z-index:2;top:14px;right:16px;}
-.ui-dialog .close {position:absolute;z-index:100;right:15px;top:9px;width:13px;height:13px;overflow:hidden;text-indent:-9em;}
-.ui-dialog .ui-dialog-ft .close {position:absolute;z-index:100;right:0px;top:0px;width:15px;height:15px;overflow:hidden;text-indent:-9em;}
-.ks-dialog .ks-ext-close {background-position:0 -35px;height:15px;overflow:hidden;position:absolute;right:16px;text-indent:-9em;top:16px;width:15px;z-index:3;}
-.ui-dialog-dd .ui-dialog-hd,.ui-dd {cursor:move;}
-.ui-dialog-mask {position:absolute;z-index:10000;top:0;right:0;bottom:0;left:0;width:100%;background-color:#fff;opacity:0;filter:alpha(opacity=0);}
-.ui-dialog-loading {padding:20px;color:#000;text-align:center;}
-.ui-dialog button {margin-right:15px;padding:4px 8px;border:none;border-radius:3px;-moz-border-radius:3px;-webkit-border-radius:3px;color:#000;background-color:#d5d5d5;}
-.ui-dialog .container-btn {margin-top:20px;}
-.ui-dialog button.btn-ok {color:#fff;background-color:#0085ce;}
-.ui-dialog iframe.ifr {display:block;width:100%;height:120px;border:none;}
 /*对话框小图标样式*/
 .point-text{ background-repeat:no-repeat; padding-left:15px;}
 .point .prompt{background-position:0 -151px; width:6px; height:14px;}
 .point .success{background-position:0 -167px; width:15px; height:12px;padding-left:20px;}
 .point .fail{background-position:0 -184px; width:13px; height:13px;padding-left:20px;}
 /***弹出框END***/
-
+/*bui弹窗样式*/
+.bui-overlay {left: -9999px;position: absolute;top: -9999px; z-index:10001;}
+.bui-dialog {
+  background-color: #ffffff;
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0px 0px 20px 0px #ccd0d8;
+  -moz-box-shadow: inset 0px 0px 20px 0px #ccd0d8;
+  box-shadow: inset 0px 0px 20px 0px #ccd0d8;
+  position: absolute;
+  z-index: 1070;
+  box-shadow: 0 0 11px #ccd0d8;
+}
+.bui-dialog .bui-stdmod-header {height: 55px;line-height: 55px;font-size: 12px;font-weight: bold;padding:0px 20px;color: #333333; cursor: move;-webkit-user-select: none;-moz-user-select: none;-o-user-select: none; user-select: none; }
+.bui-dialog .bui-stdmod-header .header-title{-moz-user-select: none;border-bottom: 1px solid #e5e8ed;color: #333333;cursor: move;font-size: 14px;font-weight: bold; height: 55px;    line-height: 55px;position: relative;
+}
+.bui-message .bui-stdmod-body {background-color: transparent;border: medium none;padding: 0 35px 20px;}
+.bui-dialog .bui-stdmod-body {background-color: #FFFFFF;padding:20px;}
+.bui-message .bui-stdmod-body .x-icon {float: left;}
+.x-icon-info, .x-icon-question {
+   background-color: #0087E8;
+   background-image: -moz-linear-gradient(center top , #0096E8, #0071E7);
+   background-repeat: repeat-x;
+   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+   color: #FFCE55;
+background:url(tk.png);
+background-position:-2px -43px;
+background-repeat:no-repeat;
+width:16px;
+height:16px;
+}
+.bui-message .bui-message-content {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 24px;
+    margin: 0px 0 0 40px;
+	color:#656D7A;
+}
+.bui-button{
+  margin: 0;
+  font-family: "SimSun", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 100%;
+}
+.bui-button,input {
+  *overflow: visible;
+  line-height: normal;
+}
+.bui-button::-moz-focus-inner,
+input::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+.bui-button,
+input[type="bui-button"],
+input[type="reset"],
+input[type="submit"] {
+  cursor: pointer;
+  -webkit-appearance: bui-button;
+}
+.bui-dialog .bui-stdmod-footer .bui-button {
+    margin-right: 15px;
+    vertical-align: baseline;
+}
+.bui-dialog .bui-stdmod-footer .bui-button-primary {
+  background-color: #8BD167;
+  border: 1px solid #8BD167;
+  margin-right:10px;
+ }
+.bui-dialog .bui-stdmod-footer .bui-button-primary:hover{border: 1px solid #73BF4D;background-color: #73BF4D;}
+.bui-button {
+display: inline-block;
+*zoom:1;
+*display:inline;
+padding:0px 24px;
+*padding:0px 24px;
+margin-bottom: 0;
+font-size: 14px;
+height:30px;
+line-height:28px;
+*line-height:30px;
+font-weight: 700;
+color: #fff;
+text-align: center;
+cursor: pointer;
+background-image:none; 
+background-color:#aab1bc; 
+border:1px solid #aab1bc; 
+border-radius: 5px; 
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+-khtml-border-radius: 5px; 
+}
+.bui-button:hover,
+.bui-button:active,
+.bui-button.active,
+.bui-button.disabled {
+  background-color: #434A54;
+}
+.bui-button[disabled] {
+  background-color: #434A54;
+}
+.bui-button:active,
+.bui-button.active {
+  background-color: #434A54 \9;
+}
+.bui-button:first-child {
+  *margin-left: 0;
+}
+.bui-button:hover,
+.bui-button-hover {
+  color: #ffffff;
+  text-decoration: none;
+  background-color: #434A54;
+  background-position: 0 -15px;
+  -webkit-transition: background-position 0.1s linear;
+  -moz-transition: background-position 0.1s linear;
+  -ms-transition: background-position 0.1s linear;
+  -o-transition: background-position 0.1s linear;
+  transition: background-position 0.1s linear;
+}
+.bui-button:focus {
+  outline: thin dotted #333;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.bui-button.active,
+.bui-button-checked,
+.bui-button:active {
+  background-image: none;
+  -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+  background-color: #434A54;
+  background-color: #434A54 \9;
+  outline: 0;
+}
+.bui-button-disabled,
+.bui-button[disabled] {
+  cursor: default;
+  outline-width: 0;
+  background-image: none;
+  background-color: #434A54;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.bui-button,.bui-button:hover,.bui-button-creat,.bui-button-creat:hover{
+color: #fff;
+text-decoration:none;
+}
+.bui-dialog .bui-stdmod-footer{
+  display:inline-block;
+  width:100%;
+  text-align:center;
+  vertical-align: middle;
+  padding:15px 0px;
+   background:#F6F7FB;
+   font-size:15px;
+   color:#ffffff;
+	}
+.bui-dialog  a.bui-ext-close {
+position: absolute;
+right: 20px;
+top: 15px;
+width: 20px;
+height: 20px;
+text-decoration: none;
+outline: none;
+overflow: hidden;
+cursor: pointer;
+text-decoration: none;
+z-index: 1;
+}
+.bui-dialog  a:hover .bui-ext-close-x {
+display: block;
+font-size: 0px;
+height: 20px;
+width: 20px;
+line-height: 20px;
+background:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat -171px -168px;
+}
+.bui-dialog .bui-ext-close-x {display: block;font-size: 0px;height: 20px;width: 20px;line-height: 20px;background:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat -171px -190px;}
+/*bui弹窗样式end*/
 /*messages消息框 START*/
 .ui-msg .messages{margin-bottom:15px;}
 .ui-msg .text-16,.ui-msg .text,.ui-msg .text-32{float:left;}
 .ui-msg .text-16{line-height:18px;}
 .ui-msg .text-32{line-height:35px;}
 .warning-msg,.success-msg,.error-msg,.ui-msg .notice-msg{color:#3E3E3E; zoom:1; overflow:auto; padding:8px 6px;}
-.warning-msg{border:1px solid #FFCC7F; background:#FFFFE5;}
-.success-msg{ border:1px solid #AADBAD; background:#EFFFEA;}
-.error-msg{ border:1px solid #FFCC7F; background:#FFFFE5;}
-.notice-msg{ border:1px solid #A9DEED; background:#F3FAFC;}
+.warning-msg{border:1px solid #fffdec;border-radius: 3px; background:#fffdec;}
+.success-msg{ border:1px solid #ecfce2;border-radius: 3px; background:#ecfce2;}
+.success-msg .text-16,.success-msg .text-32,.success-msg .text{color: #73bf4d}
+.error-msg{ border:1px solid #fbe3e7;border-radius: 3px; background:#fbe3e7;}
+.error-msg .text-16,.error-msg .text-32,.error-msg .text{color: #ed5564}
+.notice-msg{ border:1px solid #fffdec;border-radius: 3px; background:#fffdec;}
+.warning-msg .text-16,.warning-msg .text-32,.warning-msg .text,.notice-msg .text-16,.notice-msg .text-32,.notice-msg .text{color: #eaab2e}
 /*messages 消息16*16图标*/
 .ui-msg .img-16-1,
 .ui-msg .img-error,
 .ui-msg .img-16-2,
-.ui-msg .img-warnning,
+.ui-msg .img-warning,
 .ui-msg .img-16-3,
 .ui-msg .img-16-4,
 .ui-msg .img-notice,
@@ -143,13 +406,11 @@ addmodbar i{width:15px; height:15px; background-repeat:no-repeat; background-pos
 .input-point-error span em,
 .input-point-success,
 .input-point-error-2 span em,
-.active-add-edit-edit .success-img,
-.active-add-edit-edit .error-img,
-.diqushezhi .diqushezhi-btm-on{ background-image: url(http://cdn.huanleguang.com/img/hlg-app/common/msg_bg.png); _background-image: url(http://cdn.huanleguang.com/img/hlg-app/common/msg_bg.gif); background-repeat:no-repeat;}
+.diqushezhi .diqushezhi-btm-on,.tubiao-pic-no { background: url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat;}
 .ui-msg .img-16-1,
 .ui-msg .img-error,
 .ui-msg .img-16-2,
-.ui-msg .img-warnning,
+.ui-msg .img-warning,
 .ui-msg .img-16-3,
 .ui-msg .img-16-4,
 .ui-msg .img-notice,
@@ -159,26 +420,113 @@ addmodbar i{width:15px; height:15px; background-repeat:no-repeat; background-pos
 .ui-msg .img-16-7,
 .ui-msg .img-16-8,
 .ui-msg .img-16-9{ width:16px;height:16px; float:left; margin-right:8px;}
-.ui-msg .img-16-1,.ui-msg .img-error{ background-position:0 0;}
-.ui-msg .img-16-2,.ui-msg .img-warnning{ background-position:0 -50px;}
-.ui-msg .img-16-3{ background-position:0 -100px;}
-.ui-msg .img-16-4,.ui-msg .img-notice{ background-position:0 -150px;}
-.ui-msg .img-16-5{ background-position:0 -200px;}
-.ui-msg .img-16-6,.ui-msg .img-success{ background-position:0 -250px;}
-.ui-msg .img-16-7{ background-position:0 -300px;}
-.ui-msg .img-16-8{ background-position:0 -350px;}
-.ui-msg .img-16-9{ background-position:0 -1200px;}
+.ui-msg .img-16-1,.ui-msg .img-error{ background-position:0 -240px;}
+.ui-msg .img-16-2,.ui-msg .img-warning{ background-position:0 -290px;}
+.ui-msg .img-16-3{ background-position:0 -340px;}
+.ui-msg .img-16-4,.ui-msg .img-notice{ background-position:0 -440px;}
+.ui-msg .img-16-5{ background-position:0 -390px;}
+.ui-msg .img-16-6,.ui-msg .img-success{ background-position:0 -490px;}
+.ui-msg .img-16-7{ background-position:0 -537px;}
+.ui-msg .img-16-8{ background-position:0 -590px;}
+.ui-msg .img-16-9{ background-position:0 -1440px;}
 .ui-msg .img-32-1,
 .ui-msg .img-32-2,
 .ui-msg .img-32-3,
 .ui-msg .img-32-4,
 .ui-msg .img-32-5{ width:32px; height:32px; float:left; margin-right:16px}
-.active-add-edit-edit .success-img{ background-position:0 -250px;}
-.active-add-edit-edit .error-img{ background-position:0 0;}
-.diqushezhi .diqushezhi-btm-on{ background-position:100% -1308px;}
-/*messages消息32*32图标*/
-.messages-prompt{background:rgba(122,122,122,.5);filter:progid:DXImageTransform.Microsoft.gradient(startColorStr='#7f7A7A7A',EndColorStr='#7f7A7A7A');padding:1px;position:absolute;z-index: 1000004 ;border:1px #e4e4e4 solid}
-.messages-prompt div{ padding:10px; background:#FFF; z-index: 1000004}
-.messages-prompt .fbloader{padding:10px 0px 0 0px;text-align: center;}
-.msg-mask{position: absolute; top:0px; left:0px;right:0px;bottom:0px;z-index: 1000003;filter:alpha(opacity=10);width:100%;background-color:#000000;opacity:0.1}
-/*messages消息框 END*/
+.ui-msg .img-32-1{ background-position:0 -640px;}
+.ui-msg .img-32-2{ background-position:0 -740px;}
+.ui-msg .img-32-3{ background-position:0 -840px;}
+.ui-msg .img-32-4{ background-position:0 -940px;}
+.ui-msg .img-32-5{ background-position:0 -1040px;}
+.diqushezhi .diqushezhi-btm-on{ background-position:100% -1548px;}
+.refresh {
+width: 14px;
+height: 17px;
+display: inline-block;
+vertical-align: middle;
+background-position: -176px -72px;
+}
+/*日历*/
+.hlg-app .main .calendarImg {
+width: 150px;
+height: 27px;
+border: 1px solid #DDD;
+vertical-align: middle;
+background: url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat;
+background-position: 100% -988px;
+padding: 0 5px;
+}
+/*messages 图标*/
+
+/* form  表单 美化 开始*/
+.has-js .beautify_radio,.has-js .beautify_check,.has-js .beautify_radio_disable,.has-js .beautify_check_disable,.has-js label.c_on,.has-js label.r_on,.has-js label.c_on_disable,.has-js label.r_on_disable,.radio-checkoff-span,.radio-checkon-span,.has-js .beautify_radio_on,.has-js .beautify_radio_off {background-image:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png);background-repeat:no-repeat;}
+.beautify_check,.beautify_radio{ cursor: pointer; line-height:18px; padding-bottom: 9px;  }
+.beautify_check input,
+.beautify_radio input{ margin-right: 5px; }
+.has-js .beautify_check,
+.has-js .beautify_radio    { padding-left: 30px; }
+.has-js .beautify_radio    { background-position: -142px -410px;}
+.has-js .beautify_radio_on    { background-position: -142px -364px;background-color:#8BD167;}
+.has-js .beautify_radio_off    { background-position: -142px -401px;background-color:#f6f7fb;}
+.has-js .beautify_check    { background-position: -142px -240px; }
+.has-js .beautify_radio_disable { background-position: -142px -483px;}
+.has-js .beautify_check_disable{ background-position:-142px -304px;}
+.has-js label.c_on      { background-position:-142px -271px; }
+.has-js label.r_on      { background-position:-142px -373px; }
+.has-js label.c_on_disable{ background-position:-142px -338px;}
+.has-js label.r_on_disable{background-position: -142px -447px; }
+.has-js .beautify_check input,
+.has-js .beautify_radio input  { position: absolute; left: -9999px; }
+
+/*高级选择框*/
+.beautify_input{width:34px; height:36px;  cursor:pointer;filter:alpha(opacity=0);opacity: 0;-webkit-opacity:0;-moz-opacity:0;-khtml-opacity:0;}
+.radio-style,.input_style{background: #FFFFFF;border: 1px solid #E5E8ED;border-radius: 5px 5px 5px 5px;color:#7A818B;cursor: pointer;height:36px;line-height:36px;padding: 0 5px;width:110px;position:relative;margin-bottom:10px;}
+.radio-checkstyle,.radio-style:hover,.input_style:hover{border: 1px solid #8BD167;}
+.radio-style label , .input_style label{ display:block; margin-left:26px; font-weight:700;}
+.radio-style span, .input_style span {display:block;height: 36px;text-align: left;vertical-align: middle;width: 26px;margin: 0px;position:absolute; left:0; top:0;border-radius: 3px 0 0 3px; -webkit-border-radius: 3px 0 0 3px;-moz-border-radius: 3px 0 0 3px;-khtml-border-radius:3px 0 0 3px;}
+.radio-checkoff-span{background-position:-140px -230px;background-color:#f6f7fb;}
+.radio-checkon-span{background-position:-142px -262px;background-color:#8BD167;overflow:hidden;}
+
+
+/*下拉框样式 默认*/
+.bui-select{ display:inline-block;*display: inline;*zoom: 1; width:230px; height:28px; line-height:27px; overflow:hidden; border:1px solid #E5E8ED;border-radius:5px; -webkit-border-radius:5px;-moz-border-radius:5px;-khtml-border-radius:5px;}
+.bui-select .bui-select-input {border:0; margin-top:0px; margin-left:2px;vertical-align: middle;height:26px; line-height:26px;outline: none;width:191px; padding-left:10px;color:#AAB2BD;}
+.bui-select .x-icon { display:inline-block; text-align:center; vertical-align: middle;cursor: pointer;height:27px;width: 27px; background:#F6F7FB;border-radius:0 5px 5px 0;-moz-border-radius: 0 5px 5px 0; -webkit-border-radius: 0 5px 5px 0; -khtml-border-radius:0 5px 5px 0; }
+.ie7 .bui-select .x-icon {margin-top:8px !important; }
+.bui-select .x-caret { display:inline-block; cursor:pointer; width:0; height:0; line-height:0; margin-top:-3px; vertical-align: middle; border:4px solid transparent; border-top:4px solid #AAB2BD;border-bottom: 0;}
+.bui-select-list{ overflow:auto;max-height: 217px; background-color:#FFF; border:1px solid #E5E8ED; border-top:0; border-radius:5px; -webkit-border-radius:5px;-moz-border-radius:5px;-khtml-border-radius:5px;}
+.bui-select-list .bui-list-item {padding: 6px 4px 6px 8px;-webkit-user-select: none;-moz-user-select: none;-o-user-select: none;user-select: none;cursor: pointer;border-bottom: 1px solid #E5E8ED;padding-left: 12px;*zoom: 1; }
+.bui-select-list .bui-list-item:last-child{border-bottom:0;}
+.bui-select-list .bui-list-item-hover { background:#F6F7FB;}
+.bui-select-list .bui-list-item-selected {background: #F6F7FB;}
+.bui-select-list .bui-list-item-disabled { background: none;color:#AAB2BD;cursor: default;}
+.bui-select-list .bui-list-item-disabled a {color:#AAB2BD;cursor: default;}
+.bui-select-list .bui-list-item-disabled a:hover {text-decoration: none;}
+.bui-overlay{ position:absolute; left:-999px; top:-999px;}
+.bui-select-disabled{}
+.bui-select-disabled .bui-select-input {color:#aab2bd;background-color: #F6F7FB;margin: 0px;height: 29px }
+.bui-select-disabled .x-icon {height: 29px;width: 29px;}
+/*其他下拉框样式 */
+.ui-select{position: relative;}
+.ui-select.current .down-more{display:block;}
+.ui-select .down-icon-1 ,.ui-select .down-value{
+	height: 30px;
+	margin-left: 10px;
+	padding-right: 23px;
+	display: inline-block;
+	color: #656D78;
+}
+.ui-select .down-icon-1{background: url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat;background-position:right -30px }
+.ui-select .down-icon-2{display: inline-block;width:12px;height:10px;margin-left:10px;background: url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat;background-position:-147px -12px }
+.ui-select .down-more{display:none;  width: 88px;border: 1px #E5E8ED solid;border-radius: 3px;padding-top: 30px;position: absolute;left: 0px;top: -8px;z-index: 100;}
+.ui-select .down-more a{height: 30px;
+	line-height: 30px;
+	display: block;
+	border-top: 1px #E5E8ED solid;
+	color: #656D78;
+	background: #FFF;
+	text-align: center;
+}
+.ui-select .down-more a.active{background: #e6e9ee;}
+.ui-select .down-more a:hover{background: #e6e9ee;}

@@ -1,0 +1,17 @@
+/**
+ 
+	list素材投放样式文件list.css
+ 
+**/
+
+.hlg-app .main .Mlist .main-seach-2 .li{float: left;margin-right: 5px}
+.hlg-app .main .Mlist .main-seach-2 .bui-select{width: 100px;}
+.hlg-app .main .Mlist .main-seach-2 .bui-select-input{width: 58px}
+
+
+.hlg-app .main .Mlist .ui-list .list-bd .list-item .overflow{height:300px;overflow:hidden;width:950px;margin:auto;*zoom:1;}
+.hlg-app .main .Mlist .ui-list .list-bd .list-item .normal{overflow:auto;_overflow: visible;_zoom:1;}
+.hlg-app .main .Mlist .ui-list .list-bd .list-item .normal .float-icon{background:url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/float-icon-1.png) no-repeat;_background:none; _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://cdn.huanleguang.com/img/hlg-app/Mmaterial/float-icon-1.png" ,sizingMethod="crop");width:950px;height:69px;position:absolute;left:0;bottom:0;z-index:99;cursor: pointer;margin-left:35px;}
+.hlg-app .main .Mlist .ui-list .list-bd .list-item .overflow .float-icon{background:url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/float-icon.png) no-repeat;_background:none; _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://cdn.huanleguang.com/img/hlg-app/Mmaterial/float-icon.png" ,sizingMethod="crop");width:950px;height:69px;position:absolute;left:0;bottom:0;z-index:99;cursor: pointer;}
+.hlg-app .main .Mlist .ui-list .list-bd .list-item .J_Height p,.hlg-app .main .Mlist .ui-list .list-bd .list-item .J_Height div{text-align:center;}
+.hlg-app .main .Mlist .ui-list .list-bd .list-item .J_Height table{margin:auto;} 

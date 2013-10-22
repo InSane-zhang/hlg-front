@@ -1,44 +1,50 @@
 /**
- 
 	步骤条样式文件calendar.css
- 
- 	<div class="ui-step">
-	    <ul>
-	         <li style="z-index:498; width:25%;" class="ui-step-item">1、<a>修改</a><div class="trigon"><span class="bor"></span><span class="blo"></span></div></li>
-	         <li style="z-index:497; width:25%;" class="ui-step-item current">2、<a>修改</a><div class="trigon"><span class="bor"></span><span class="blo"></span></div></li>
-	   		 <li style="z-index:496; width:25%;" class="ui-step-item">3、<a>修改</a><div class="trigon"><span class="bor"></span><span class="blo"></span></div></li>
-	         <li style="z-index:495; width:25%;" class="ui-step-item current">4、<a>修改</a><div class="trigon"><span class="bor"></span><span class="blo"></span></div></li>
-	    </ul>
-	</div>
- 
 **/
+ .ui-step{letter-spacing: -0.31em;*letter-spacing: normal;word-spacing: -0.43em; clear:both;overflow:hidden; height:30px; line-height:30px; position:relative;}
+ .ui-step .last .dot{  visibility:hidden;}
+ .ui-step .ui-step-item li{ position:relative;}
+ .ui-step .ui-step-item{ float:left;zoom: 1; *display: inline; /* IE < 8: fake inline-block */letter-spacing: normal;word-spacing: normal;height:30px;line-height:30px;color:#404040;font-size:12px;text-align:center;background-color:#F6F7FB;margin:0px !important;position:relative;z-index:100;border-left:0;border-right:0; color:#656D78;}
+ .ui-step .ui-step-item .dot{float:right; background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-repeat:no-repeat; background-position:-178px -804px;display: inline-block; width:13px; height:7px;overflow: hidden; vertical-align: middle; background-color:#F6F7FB; position:absolute;right:-6px; top:12px;}
+ .ui-step .ui-step-item li.current{ float:left;zoom: 1; *display: inline; /* IE < 8: fake inline-block */letter-spacing: normal;word-spacing: normal;vertical-align: top;height:30px;line-height:30px;color:#404040;font-size:12px;text-align:center;background-color:#8BD167;margin:0px !important;position:relative;z-index:100;border-left:0;border-right:0; color:#656D78;}
+ .ui-step .ui-step-item.current .dot{ visibility:hidden;}
+ .ui-step li.current .green-right{width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-178px -704px; z-index:200; position:absolute; right:0px;top:0px;}
+ .ui-step li .ui-step-item  .green-right{ font-size:12px; color:#E2E3E9;}
+ .ui-step li.current{ background:#8BD167; color:#fff;}
+ .ui-step li.current a{display: none}
+ .ui-step li.current .green{width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-178px -669px; z-index:200; position:absolute; left:-13px; z-index:100px; top:0px; float:left; display:block; background-repeat:no-repeat;}
+/*区别样式*/
+.step-3{ height:30px; line-height:30px; position:relative;}
+.step-3 .ui-step a{ margin-left:5px; font-size:12px;}
+.step-3 .ui-step-left{width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-178px -770px; float:left; background-repeat:no-repeat;}
+.step-3 .ui-step-right{ width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-178px -739px;  float:left;}
+.step-3 .ui-step .first.current .green{ width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-178px -603px;  position:absolute;  z-index:100; top:0px; float:left; display:block; background-repeat:no-repeat;}
+.step-3 .ui-step .last.current .green-right{ width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-178px -635px; z-index:200; position:absolute;  z-index:100; top:0px; right:-12px; float:right; display:block; background-repeat:no-repeat;}
+/*区别样式*/
+.step-4{ height:30px; line-height:30px; position:relative;}
+.step-4 .ui-step a{ margin-left:5px; font-size:12px;}
+.step-4 .ui-step-left{width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-178px -770px;float:left;background-repeat:no-repeat;}
+.step-4 .ui-step-right{ width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-180px -739px;background-repeat:no-repeat; float:left;}
+.step-4 .ui-step .last.current .green-right{ width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-178px -635px; z-index:200px; position:absolute;  z-index:100; top:0px; right:-10px; float:right; display:block; background-repeat:no-repeat;}
+.step-4 .ui-step .first.current .green{ width:13px; height:30px;position:absolute; top:0px; left:-10px;z-index:100; float:left; display:block; background-repeat:no-repeat;}
+/*区别样式*/
+.step-1 .ui-step li.current .green-right{width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-178px -635px; z-index:200; position:absolute; right:-10px;top:0px;}
+.step-1{ height:30px; line-height:30px; position:relative;}
+.step-1 .ui-step a{ margin-left:5px; font-size:12px;}
+.step-1 .ui-step-left{ width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-178px -770px; float:left; background-repeat:no-repeat;}
+.step-1 .ui-step-right{ width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-180px -739px;  float:left;background-repeat:no-repeat;}
 
+/*区别样式*/
+.step-2{ height:30px; line-height:30px; position:relative;}
+.step-2 .ui-step a{ margin-left:5px; font-size:12px;}
+.step-2 .ui-step-left{width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-178px -770px; float:left; background-repeat:no-repeat;}
+.step-2 .ui-step-right{ width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-178px -739px;  float:left;}
+.step-2 .ui-step .first.current .green{ width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-178px -603px;position:absolute; top:0px; left:-10px; float:left; display:block; background-repeat:no-repeat;}
+.step-2 .ui-step .last.current .green-right{ width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-178px -635px; z-index:200; position:absolute;  z-index:100; top:0px; right:-12px; float:right; display:block; background-repeat:no-repeat;}
 
-
-.ui-step{letter-spacing: -0.31em;*letter-spacing: normal;word-spacing: -0.43em; clear:both; margin-bottom:10px;overflow:hidden;}
-.ui-step a{font-size:12px; margin-left:10px;}
-.ui-step .ui-step-item{display: inline-block;zoom: 1; *display: inline; /* IE < 8: fake inline-block */letter-spacing: normal;word-spacing: normal;vertical-align: top;height:24px;line-height:24px;color:#404040;font-size:12px;text-align:center;background-color:#EDEDED;margin:0px !important;position:relative;z-index:100;border:1px solid #DFDFDF;border-left:0;border-right:0;}
-/*-----步骤条子项宽度-----*/
-.ui-step-num2 li {width:456px;}
-.ui-step-num3 li {width:303px;}
-.ui-step-num4 li {width:228px;}
-/*-----步骤条子项颜色-----*/
-.ui-step-num2 li.current,
-.ui-step-num3 li.current,
-.ui-step-num4 li.current{background-color:#F9985E; color: #FFF}
-.ui-step-num2 li.current a,
-.ui-step-num3 li.current a,
-.ui-step-num4 li.current a{display:none;}
-.ui-step-num2 .current .blo,
-.ui-step-num3 .current .blo,
-.ui-step-num4 .current .blo{border-left-color:#F9985E !important;}
-.ui-step .first .trigon .blo{border-color:transparent transparent transparent #FFFFFF;}
-/*最后一项圆角*/
-.ui-step li.current{background-color:#F9985E;font-weight:normal;color:#FFFFFF !important;}
-.ui-step li.current .first {background-color:#FF6600;}
-
-/*-----箭头样式-----*/
-.ui-step .trigon{position:absolute;top:0px;right:-14px;z-index:200;width:14px;height:24px;overflow:hidden;padding:0px;background-color:transparent;z-index:200;}
-.ui-step .trigon span{width:0px; height:0px;line-height:0px !important;padding:0px;}
-.ui-step .trigon .blo{position:absolute;left:0px;top:0px;border:12px solid; border-color:transparent transparent transparent #EDEDED;border-style:dashed dashed dashed solid;}
-.ui-step .trigon .bor{position:absolute;left:0px;top:-2px;border:14px solid; border-color:transparent transparent transparent #DFDFDF;border-style:dashed dashed dashed solid;	}
+/*区别样式*/
+.step-5{ height:30px; line-height:30px; position:relative;}
+.step-5 .ui-step-left{width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-178px -770px;float:left;background-repeat:no-repeat;}
+.step-5 .ui-step-right{ width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-180px -739px;background-repeat:no-repeat; float:left;}
+.step-5 .ui-step .last.current .green-right{ width:13px; height:30px;background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png); background-position:-178px -635px; z-index:200px; position:absolute;  z-index:100; top:0px; right:-10px; float:right; display:block; background-repeat:no-repeat;}
+.step-5 .ui-step .first.current .green{ width:13px; height:30px;position:absolute; top:0px; left:-10px; float:left; display:block; background-repeat:no-repeat; z-index:503;}

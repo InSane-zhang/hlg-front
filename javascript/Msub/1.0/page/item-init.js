@@ -9,6 +9,7 @@ KISSY.add(function (S) {
 		return subControl = {
 			
 			init : function(){
+		
 					Event.on('.J_Start','click',function(ev){
 						var subId = DOM.attr(ev.currentTarget,'data');
 						var chooseRoleContentSubId = DOM.get('#J_ChooseRoleContent_'+subId);
@@ -44,20 +45,18 @@ KISSY.add(function (S) {
 						DOM.css('#J_RoleControl_'+subId,'display','');
 					});
 				
-				
-				
 			},
 			UpdataRoleId : function(subId){
 				var roleId = DOM.val('#J_RoleId');
 				var data = "subId="+subId+"&roleId="+roleId;
 				var submitHandle = function(o) {
-					new H.widget.msgBox({
-							    title:"温馨提示",
-							    content:o.desc,
-							    type:"info",
-								autoClose : true,
-								timeOut : 3000
-							});
+//					new H.widget.msgBox({
+//							    title:"温馨提示",
+//							    content:o.desc,
+//							    type:"info",
+//								autoClose : true,
+//								timeOut : 3000
+//							});
 					window.location.href= currentUrl;
 			    };
 			    var errorHandle = function(o){

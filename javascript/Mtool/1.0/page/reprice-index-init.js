@@ -2,7 +2,7 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,O) {
+KISSY.add(function (S,O,beautifyForm,Overlay,Select) {
     // your code here
     var DOM = S.DOM, Event = S.Event;	
 	return reprice = {
@@ -10,12 +10,43 @@ KISSY.add(function (S,O) {
 			msg : null,
 			checkBoxs : null,  	
 			init : function() {
-		 		Event.on('#J_CheckAll','click',reprice.CheckAll); //活动中宝贝全选  
-				reprice.panel = new O.Dialog({
+				//状态
+				var items3 = [
+					{text:'全部',value:'-1'},
+					{text:'等待执行',value:'0'},
+					{text:'正在执行',value:'1'},
+					{text:'成功',value:'2'},
+					{text:'失败',value:'4'}    
+				],
+				sortSelect = new Select.Select({  
+					render:'#J_Selectstatus',
+					valueField:'#choose_status',
+					items:items3
+				});
+				sortSelect.render();
+				sortSelect.setSelectedValue(status);
+				
+				Event.on('#J_CheckAll','click',reprice.CheckAll); //活动中宝贝全选  
+				reprice.panel = new Overlay.Dialog({
 						      width: 500,
-						      headerContent: '确认提交',
+						      title: '确认提交',
 						      bodyContent: '',
 						      mask: false,
+						      buttons:[
+			     	                   {
+			     	                     text:'确定',
+			     	                     elCls : 'bui-button J_Sure bui-button-primary',
+			     	                     handler : function(){
+			     	                       this.hide();
+			     	                     }
+			     	                   },{
+			     	                     text:'关闭',
+			     	                     elCls : 'bui-button J_Cancel',
+			     	                     handler : function(){
+			     	                       this.hide();
+			     	                     }
+			     	                   }
+			     	          ],
 						      align: {
 						          points: ['cc', 'cc']
 						      },
@@ -45,12 +76,12 @@ KISSY.add(function (S,O) {
 										scheMe += ' <br>如原价=100，改后价='+ (parseFloat(DOM.val('#J_Percent'))+priceDiff)+'.';
 									}
 									scheMe += "<br>点击【确定】开始修改价格，改完后无法恢复，您确认要进行修改吗？";
-									str = '<div class="point" style="height: 150px;"><div class="point-w" style="height: auto;"><span class="point-img-2"></span><span class=""><span id="J_ScheMess">'+scheMe+'</span><div class="btm-content btm-margin-15auto" style="width:160px;"><input type="button" id="J_Sure" class="btm-68-orange fl" value="确定" /><input type="button" id="J_Cancel" class="btm-68-gray fl" value="取消" /></div></div></div>';
+									str = '<div class="point relative" style="height: 150px;"><div class="point-w-2" style="height: auto;"><span class="point-img-2"></span><span class=""><span id="J_ScheMess">'+scheMe+'</span></div></div>';
 								reprice.panel.set('bodyContent',str);
 								reprice.panel.show();		
-								Event.remove('#J_Sure');
-								Event.remove('#J_Cancel');
-								Event.on('#J_Sure','click',function(ev){
+								Event.remove('.J_Sure');
+								Event.remove('.J_Cancel');
+								Event.on('.J_Sure','click',function(ev){
 									if(isVersionPer('tool')){return ;}
 									ev.preventDefault();
 									if(!reprice.checkForm()){
@@ -63,7 +94,7 @@ KISSY.add(function (S,O) {
 										            });
 									DOM.get('#J_subform').submit();
 								})
-								Event.on('#J_Cancel','click',function(ev){
+								Event.on('.J_Cancel','click',function(ev){
 									ev.preventDefault();
 									reprice.panel.hide();
 									return;
@@ -91,12 +122,12 @@ KISSY.add(function (S,O) {
 										scheMe += ' <br>如原价=100，改后价='+ (parseFloat(DOM.val('#J_Percent'))+priceDiff)+'.';
 									}
 									scheMe += "<br>点击【确定】开始修改价格，改完后无法恢复，您确认要进行修改吗？";
-									str = '<div class="point" style="height: 150px;"><div class="point-w" style="height: auto;"><span class="point-img-2"></span><span class=""><span id="J_ScheMess">'+scheMe+'</span><div class="btm-content btm-margin-15auto" style="width:160px;"><input type="button" id="J_Sure" class="btm-68-orange fl" value="确定" /><input type="button" id="J_Cancel" class="btm-68-gray fl" value="取消" /></div></div></div>';
+									str = '<div class="point relative" style="height: 150px;"><div class="point-w-2" style="height: auto;"><span class="point-img-2"></span><span class=""><span id="J_ScheMess">'+scheMe+'</span></div></div>';
 								reprice.panel.set('bodyContent',str);
 								reprice.panel.show();		
-								Event.remove('#J_Sure');
-								Event.remove('#J_Cancel');
-								Event.on('#J_Sure','click',function(ev){
+								Event.remove('.J_Sure');
+								Event.remove('.J_Cancel');
+								Event.on('.J_Sure','click',function(ev){
 									if(isVersionPer('tool')){return ;}
 									ev.preventDefault();
 									if(!reprice.checkForm()){
@@ -109,7 +140,7 @@ KISSY.add(function (S,O) {
 										            });
 									DOM.get('#J_subform').submit();
 								})
-								Event.on('#J_Cancel','click',function(ev){
+								Event.on('.J_Cancel','click',function(ev){
 									ev.preventDefault();
 									reprice.panel.hide();
 									return;
@@ -438,5 +469,5 @@ KISSY.add(function (S,O) {
 			}
 		}
 }, {
-    requires: ['overlay']
+    requires: ['overlay','utils/beautifyForm/index','bui/overlay','bui/select']
 });

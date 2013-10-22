@@ -1,4 +1,4 @@
-KISSY.add(function(S,showPages,O){
+KISSY.add(function(S,showPages,Overlay){
 	var S = KISSY,DOM = S.DOM, Event = S.Event;	
 	return adjust = {
 			itemIds : new Array(),
@@ -77,9 +77,9 @@ KISSY.add(function(S,showPages,O){
 			openTbItemsDialog : function(){
 				var sellerCats = DOM.html('#J_SellerCats');
 				if(!adjust.panel){
-					var bodyStr = '<div style="width:660px;height:500px;">'+
-					'<div class="baobei-edit"><div class="new-baobei"><div class="seach" style="width:600px; height:26px;margin-top:10px;">'+
-					'名称：<input type="text" id="J_SearchTitle" class="input-text" value="" size="26"/>'+
+					var bodyStr = '<div style="width:620px;height:500px;">'+
+					'<div class="baobei-edit"><div class="new-baobei"><div class="seach" style="width:610px; height:32px;margin-top:10px;">'+
+					'名称：<input type="text" id="J_SearchTitle" class="input-text-2" value="" size="26"/>'+
 					'&nbsp;'+
 					'		<select name="approveStatus" id="J_SearchSelling" class="noneReset haahha">'+
 					'			<option value="1">销售中</option>'+
@@ -105,11 +105,25 @@ KISSY.add(function(S,showPages,O){
 			        '<ul class="new-baobei-list" id="J_ItemList"></ul>'+
 			        '<div id="J_Paging" class="ui-page Rpage"></div>'+
 			        '</div>';
-					adjust.panel = new O.Dialog({
+					adjust.panel =  new Overlay.Dialog({
 					      width: 660,
-					      headerContent: '评分详情',
 					      bodyContent: bodyStr,
 					      mask: false,
+					      buttons:[ 
+				                   {
+				                     text:'确定',
+				                     elCls : 'bui-button bui-button-primary',
+				                     handler : function(){
+				                       this.hide();
+				                     }
+				                   },{
+				                     text:'关闭',
+				                     elCls : 'bui-button',
+				                     handler : function(){
+				                       this.hide();
+				                     }
+				                   }
+				                 ],
 					      align: {
 					          points: ['cc', 'cc']
 					      },
@@ -117,6 +131,7 @@ KISSY.add(function(S,showPages,O){
 					      draggable: true,
 					      aria:true
 					});	
+					adjust.panel.set('title','评分详情');
 					adjust.panel.show();
 				}
 				adjust.panel.show();
@@ -238,11 +253,11 @@ KISSY.add(function(S,showPages,O){
 				var title = DOM.val('#J_item_title_'+num_iid);
 				var pic_url = DOM.val('#J_pic_url_'+num_iid);
 				var itemUl = S.get("#J_ItemUl");
-				var itemLi = "<li id='J_ItemLi_"+num_iid+"' class='list-item border-e4e4e4-b-d'><div class='list-div'><ul class='wc-detail-area'>";
-				itemLi += '<li style="width:10%;"><input type="checkbox" class="J_CheckBox" name="ids[]" value="'+num_iid+'"/></li>'
-				itemLi += '<li style="width:20%;"><a target="_blank" href="http://item.taobao.com/item.htm?id='+num_iid+'"><img height="30" width="40" src="'+pic_url+'"></img></a></li>';
-				itemLi += '<li style="width:35%;">'+title+'</li>'; 
-				itemLi += '<li style="width:20%;"><a onClick="adjust.delItem(\''+num_iid+'\')">删除</a></li>'
+				var itemLi = "<li id='J_ItemLi_"+num_iid+"' class='list-item border-e4e4e4-b-d'><div class='list-div'><ul class=''>";
+				itemLi += '<li style="width:10%;text-align:left;clear:none;"><input type="checkbox" class="J_CheckBox" name="ids[]" value="'+num_iid+'"/></li>'
+				itemLi += '<li style="width:20%;text-align:left;clear:none;"><a target="_blank" href="http://item.taobao.com/item.htm?id='+num_iid+'"><img height="30" width="40" src="'+pic_url+'"></img></a></li>';
+				itemLi += '<li style="width:35%;text-align:left;clear:none;">'+title+'</li>'; 
+				itemLi += '<li style="width:20%;text-align:left;clear:none;"><a onClick="adjust.delItem(\''+num_iid+'\')">删除</a></li>'
 				var ele = new S.Node(itemLi);	
 				DOM.append(ele, itemUl);
 				adjust.itemIds.push(''+num_iid);
@@ -279,5 +294,5 @@ KISSY.add(function(S,showPages,O){
 						
     	};
 },{
-	requires : ['utils/showPages/index','overlay']
+	requires : ['utils/showPages/index','bui/overlay']
 });

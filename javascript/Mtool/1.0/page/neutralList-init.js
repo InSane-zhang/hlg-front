@@ -1,12 +1,73 @@
-KISSY.add('page/neutralList-init',function(S,showPages){
+KISSY.add('page/neutralList-init',function(S,showPages,Select,Calendar){
 	var S = KISSY,DOM = S.DOM, Event = S.Event;
 	return neutralList = {
 	    	paginator : null,
 	    	msg : null,
 	    	
 	    	init : function() {
-				 Event.on('#J_SearchBtn','click',neutralList.searchTraderates); //活动中宝贝全选   	    
+				//默认排序
+				var items3 = [
+					{text:'中评',value:'neutral'},
+					{text:'差评',value:'bad'}
+						     
+				],
+				resultSelect = new Select.Select({  
+					render:'#J_ResultItem',
+					valueField:'#J_Result',
+					items:items3
+				});
+				resultSelect.render();
+				resultSelect.setSelectedValue('neutral');
+				resultSelect.on('change', function(ev){
+					 neutralList.searchTraderates();
+				});
+				Event.on('#J_SearchBtn','click',neutralList.searchTraderates); //活动中宝贝全选   	    
 				 neutralList.searchTraderates();
+				 var datepicker = new Calendar.DatePicker({
+    	              trigger:'#J_startDate',
+    	              showTime:true,
+    	              autoRender : true,
+    	              autoSetValue :false,
+    	              textField  : '2'
+    	            });
+    	         var datepicker2 = new Calendar.DatePicker({
+    	              trigger:'#J_endDate',
+    	              showTime:true,
+    	              autoRender : true,
+    	              autoSetValue :false,
+    	              textField  : '2'
+    	            });
+    	         
+    	        datepicker.on('selectedchange',function (e) {
+    	        	 	var endDate = H.util.stringToDate(S.one('#J_endDate').val());
+						var startDate   = e.value;
+						if((endDate !='')&&(startDate.getTime() >= endDate.getTime()))
+						{
+							new H.widget.msgBox({
+								    title:"错误提示",
+								    content:'开始时间不能大于结束时间，请重新选择',
+								    type:"info"
+								});
+							//S.one('#J_startDate').val('');
+						}else{
+							S.one('#J_startDate').val(e.text);
+						}
+    	         });
+    	        datepicker2.on('selectedchange',function (e) {
+		     	       	var endDate   =  e.value;
+						var startTime = H.util.stringToDate(S.one('#J_startDate').val());
+						var endTime = H.util.stringToDate(endDate);
+						if((endTime.getTime() <= startTime.getTime())&&(startTime !='')){
+							new H.widget.msgBox({
+								    title:"错误提示",
+								    content:'结束时间不能小于开始时间，请重新选择',
+								    type:"info"
+								});
+							//S.one('#J_endDate').val('');
+						}else{
+							S.one('#J_endDate').val(e.text);
+						}
+    	         });
 	        },
 	        open : function(ruleType){
 	        	window.self.location = openRuleUrl+'&type='+ruleType;
@@ -22,7 +83,7 @@ KISSY.add('page/neutralList-init',function(S,showPages){
 		    		neutralList.msg.hide();
 		    		totalRecords = o.payload.totalRecords;
 		    		if(parseInt(totalRecords)==0){
-		    			DOM.html(DOM.get("#J_ContentList"), '<li style="float:none;"><div class="no-details"><div><span class="no-details-pic"></span><span class="prompt-1">暂无记录！</span></div></div></li>',true);
+		    			DOM.html(DOM.get("#J_ContentList"), '<li style="float:none;"><div class="no-details"><div><span class="no-details-pic no-details-cry"></span><span class="prompt-1">暂无记录！</span></div></div></li>',true);
 		    		}else{
 		    			DOM.html(DOM.get("#J_ContentList"), o.payload.body,true);
 		    		}
@@ -59,5 +120,5 @@ KISSY.add('page/neutralList-init',function(S,showPages){
 			}
     };
 },{
-	requires : ['utils/showPages/index']
+	requires : ['utils/showPages/index','bui/select','bui/calendar']
 });

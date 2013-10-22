@@ -2,7 +2,7 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S) {
+KISSY.add(function (S,Calendar,Select,beautifyForm) {
     // your code here
     return promotionControl = {
 			    	Paginator : null,
@@ -16,6 +16,69 @@ KISSY.add(function (S) {
 					
 			    	init : function() {
 						var isEdit = DOM.val('#J_IsEdit');
+						select = new Select.Select({  
+				              render:'#J_ConTypeBox',
+				              valueField:'#J_ConType',
+				              items:[{'text':'元','value':'1'},{'text':'件','value':'0'}]
+				            });
+				            select.render();
+				            select.on('change', function(ev){
+				            });
+				            promotionControl.x = new beautifyForm();
+				            var datepicker = new Calendar.DatePicker({
+			     	              trigger:'#J_startDate',
+			     	              showTime:true,
+			     	              autoRender : true,
+			     	              autoSetValue :false,
+			     	              textField  : '2'
+			     	            });
+			     	         var datepicker2 = new Calendar.DatePicker({
+			     	              trigger:'#J_endDate',
+			     	              showTime:true,
+			     	              autoRender : true,
+			     	              autoSetValue :false,
+			     	              textField  : '2'
+			     	            });
+			     	         
+			     	        datepicker.on('selectedchange',function (e) {
+			     	        	 	var endDate = H.util.stringToDate(S.one('#J_endDate').val());
+									var startDate   = e.value;
+									if((endDate !='')&&(startDate.getTime() >= endDate.getTime()))
+									{
+										new H.widget.msgBox({
+											    title:"错误提示",
+											    content:'开始时间不能大于结束时间，请重新选择',
+											    type:"info"
+											});
+										//S.one('#J_startDate').val('');
+									}else{
+										S.one('#J_startDate').val(e.text);
+									}
+			     	         });
+			     	        datepicker2.on('selectedchange',function (e) {
+					     	       	var endDate   =  e.value;
+									var startTime = H.util.stringToDate(S.one('#J_startDate').val());
+									var endTime = H.util.stringToDate(endDate);
+									if((endTime.getTime() <= startTime.getTime())&&(startTime !='')){
+										new H.widget.msgBox({
+											    title:"错误提示",
+											    content:'结束时间不能小于开始时间，请重新选择',
+											    type:"info"
+											});
+										//S.one('#J_endDate').val('');
+									}else{
+										S.one('#J_endDate').val(e.text);
+									}
+			     	         });
+			     	        
+			     	       Event.on('.J_IsItem','click',function(ev){
+			              	 if(DOM.query('.J_IsItem')[0].checked){
+			              		DOM.show('.J_IsItemBox');
+			              	 }	else{
+			              		DOM.hide('.J_IsItemBox');
+			              	 }
+			               })
+						
 						if(isEdit){
 							var all_type_list = {
 								mianyouka : {ALL:'207',PART:'208',PART_NOT:'209'},
@@ -73,106 +136,13 @@ KISSY.add(function (S) {
 								promotionControl.save();
 								}
 						})
-						promotionControl.myCalendar('J_startDate',new Date(2038,11,29,00,00,00));
-						promotionControl.myCalendar('J_endDate',new Date(2038,11,29,00,00,00));
 					    //处理 input 状态
 						promotionControl.handleInputs();               
 			        },
-					//日历
-					myCalendar : function($id,max){
-						var c =new KISSY.Calendar('#'+$id,{
-									popup:true,
-									triggerType:['click'],
-									minDate:currentDate,
-									date : currentDate,
-									maxDate : max,
-									showTime:true
-								}).on('select timeSelect',function(e){
-										var id = this.id,self = this;
-										if(id=='J_endDate'){
-											if(e.type == 'select'){
-												var endDate   = S.Date.format(e.date,'yyyy-mm-dd 23:59:59');
-											}else{
-												var endDate   = S.Date.format(e.date,'yyyy-mm-dd HH:MM:ss');
-											}
-											var nowDate = new Date();
-											var startTime = H.util.StringToDate(S.one('#J_startDate').val());
-											var endTime = H.util.StringToDate(endDate);
-											if(endTime.getTime() <= nowDate.getTime() || endTime.getTime()<=startTime.getTime()){
-												DOM.addClass(S.one('#J_endDate'),'text-error');
-													new H.widget.msgBox({
-														    title:"错误提示",
-														    content:'结束时间不能小于开始时间！',
-														    type:"error",
-															autoClose:true,
-															timeOut :2000
-														
-														});
-//												DOM.html('#J_PromoEndError','结束时间不能小于开始时间');
-//												DOM.hide('#J_PromoEndRequired');
-//												DOM.hide('#J_PromoEndSucess');
-//												DOM.show('#J_PromoEndError');
-												self.hide();
-											}else{
-												S.one('#J_endDate').val(endDate);
-												DOM.removeClass(S.one('#J_endDate'),'text-error');
-//												DOM.hide('#J_PromoEndRequired');
-//												DOM.hide('#J_PromoEndError');
-//												DOM.show('#J_PromoEndSucess');
-												var leftsecond = parseInt((endTime.getTime() - startTime.getTime()) / 1000);
-								                d = parseInt((leftsecond / 86400) % 10000);
-								                h = parseInt((leftsecond / 3600) % 24);
-												str = '活动持续<b class="red">'+d+'</b>天<b class="red">'+h+'</b>小时';
-												//DOM.html("#J_PromoTimeLast" , str);
-												self.hide();
-											}
-										}else if(id=='J_startDate'){
-											var endDate = S.one('#J_endDate').val();
-											if(e.type == 'select'){
-												var startDate   = S.Date.format(e.date,'yyyy-mm-dd 00:00:01');
-											}else{
-												var startDate   = S.Date.format(e.date,'yyyy-mm-dd HH:MM:ss');
-											}
-											var startTime = H.util.StringToDate(startDate);
-											var endTime = H.util.StringToDate(endDate);
-											if((endDate!='')&&(startDate>=endDate)){
-												DOM.addClass(S.one('#J_endDate'),'text-error');
-												new H.widget.msgBox({
-														    title:"错误提示",
-														    content:'结束时间不能小于开始时间！',
-														    type:"error",
-															autoClose:true,
-															timeOut :2000
-														
-														});
-//												DOM.html('#J_PromoEndError','结束时间不能小于开始时间');
-//												DOM.hide('#J_PromoEndRequired');
-//												DOM.hide('#J_PromoEndSucess');
-//												DOM.show('#J_PromoEndError');
-												S.one('#J_startDate').val(startDate);
-												self.hide();
-											}else{
-												S.one('#J_startDate').val(startDate);
-												DOM.removeClass(S.one('#J_endDate'),'text-error');
-//												DOM.hide('#J_PromoEndRequired');
-//												DOM.hide('#J_PromoEndError');
-//												DOM.show('#J_PromoEndSucess');
-												var leftsecond = parseInt((endTime.getTime() - startTime.getTime()) / 1000);
-								                d = parseInt((leftsecond / 86400) % 10000);
-								                h = parseInt((leftsecond / 3600) % 24);
-												str = '活动持续<b class="red">'+d+'</b>天<b class="red">'+h+'</b>小时';
-												//DOM.html("#J_PromoTimeLast" , str);
-												self.hide();
-											}
-										}else{
-											self.hide();
-										}
-									});
-					},
 					
 					/*活动名称 验证*/
 					PromoNameAction : function(name){
-						var result = H.util.isNull(name);
+						var result = promotionControl.isNull(name);
 						var error = result[0];
 						var msg = result[1];
 						if(error){
@@ -189,7 +159,7 @@ KISSY.add(function (S) {
 					},
 					/*卡片数量 验证*/
 					CardNumAction : function(name){
-						var result = H.util.isNull(name);
+						var result = promotionControl.isNull(name);
 						var error = result[0];
 						var msg = result[1];
 						if(error){
@@ -222,13 +192,20 @@ KISSY.add(function (S) {
 									dialogType : 'loading',
 								    content:'正在保存中，请稍候'	
 								});
+						ParamsErrorBox = KISSY.one('#J_ParamsErrorBox');
+						
 						var promoName = promotionForm.promo_name.value;
 						promotionControl.PromoNameAction(promoName);
 						if(promotionControl.NameError == true){
+							
 							promotionControl.msg.hide();
+							DOM.html('#J_ParamsErrorMsg','名称不能为空，请检查');
+							if (ParamsErrorBox.css("display")==="none") {
+								ParamsErrorBox.slideDown();
+							}
 							return ;
 						}
-						ParamsErrorBox = KISSY.one('#J_ParamsErrorBox');
+						
 						//卡片数量
 						if(promotionForm.card_num_type[1].checked){
 							var card_num = document.getElementsByName('card_num')[0].value;
@@ -532,21 +509,10 @@ KISSY.add(function (S) {
 						var inputs = DOM.filter (DOM.query('input'),function(i){if(i.type =='text')return true;})
 						Event.on(inputs,'focus blur',function(ev){
 							if(ev.type == 'focus'){
-								if(DOM.hasClass(ev.target,'input-none')){
-									DOM.removeClass(DOM.parent(ev.target),'input-text text text-error');
-									DOM.addClass(DOM.parent(ev.target),'input-text-on');
-								}else{
-									DOM.removeClass(ev.target,'input-text text text-error');
+									DOM.removeClass(ev.target,'text-error');
 									DOM.addClass(ev.target,'input-text-on');
-								}
 							} else if(ev.type == 'blur'){
-								if(DOM.hasClass(ev.target,'input-none')){
-									DOM.removeClass(DOM.parent(ev.target),'input-text-on');
-									DOM.addClass(DOM.parent(ev.target),'input-text');
-								}else{
 									DOM.removeClass(ev.target,'input-text-on');
-									DOM.addClass(ev.target,'input-text');
-								}
 							}
 						})
 					},
@@ -568,10 +534,23 @@ KISSY.add(function (S) {
 						result.push(error);
 						result.push(msg);
 						return result;
+					},
+					/*是否为空*/
+					isNull : function(str){
+						var result = [];
+						var error = false;
+						var msg = null;
+						if(str == null ||str == ""){
+							error = true;
+							msg = '请填写，此项不能为空！';
+						}
+						result.push(error);
+						result.push(msg);
+						return result;
 					}
 				
 					
 		    	};
 }, {
-    requires: []
+    requires: ['bui/calendar','bui/select','utils/beautifyForm/index']
 });

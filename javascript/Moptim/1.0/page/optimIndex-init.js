@@ -1,4 +1,4 @@
-KISSY.add(function(S,showPages){
+KISSY.add(function(S,showPages,Select){
 	var S = KISSY,DOM = S.DOM, Event = S.Event;	
 	return optimIndex = {
 	    	paginator : null,
@@ -7,6 +7,33 @@ KISSY.add(function(S,showPages){
 	    	msg : null,
 			checkBoxs : null,
 	    	init : function() {
+				//选择分类
+				promoSelect = new Select.Select({  
+				    render:'#J_SelectItemCidBox',
+			      	valueField:'#J_SelectItemCid',
+			      	items:S.JSON.parse(sellerCats),
+			      	visibleMode : 'display'
+				});
+				promoSelect.render();
+				promoSelect.setSelectedValue('0');
+				DOM.css(DOM.get('.bui-list-picker'),{'left':'-999px','top':'-999px'});
+				// 全部 出售中 库中
+				var Sellingitems = [
+			      {text:'橱窗中',value:'3'},
+			      {text:'出售中',value:'1'},
+			      {text:'已售完',value:'2'},
+			      {text:'仓库中',value:'4'}
+			    ],
+			    SellingSelect = new Select.Select({  
+				    render:'#J_SearchItemSelling',
+			      	valueField:'#J_SearchSelling',
+			      	items:Sellingitems
+				});
+				SellingSelect.render();
+				SellingSelect.setSelectedValue('1');
+				SellingSelect.on('change', function(ev){
+					optimIndex.searchTbItems();
+				});
 				optimIndex.searchTbItems();
 				Event.on('#J_RefreshBtn','click',function(){
 					if(optimIndex.paginator){
@@ -97,8 +124,8 @@ KISSY.add(function(S,showPages){
 			move_layer : function(event){
 				event = event || window.event;
 				var srcollTop = DOM.scrollTop();
-				DOM.css('#J_ItemTitle','left',event.clientX+document.body.scrollLeft+10);
-				DOM.css('#J_ItemTitle','top',event.clientY+srcollTop+10);
+				DOM.css('#J_ItemTitle','left',event.clientX+document.body.scrollLeft-260);
+				DOM.css('#J_ItemTitle','top',event.clientY+srcollTop-45);
 			},
 			showTitle : function(type) {
 				if(type == '1'){
@@ -149,7 +176,7 @@ KISSY.add(function(S,showPages){
 						if(ev.type == 'click'){
 							if(isVersionPer('tool')){return ;}
 							var link = DOM.attr(ev.currentTarget,'link');
-							window.location.href=link+'&p='+optimIndex.pageId;
+							window.open(link+'&p='+optimIndex.pageId);
 						}else if(ev.type == 'mouseover'){
 							optimIndex.showTitle('2');
 						}else if(ev.type == 'mouseout'){
@@ -202,5 +229,5 @@ KISSY.add(function(S,showPages){
 						
     	};
 },{
-	requires : ['utils/showPages/index']
+	requires : ['utils/showPages/index','bui/select']
 });

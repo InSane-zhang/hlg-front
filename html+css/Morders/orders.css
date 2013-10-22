@@ -12,10 +12,14 @@
  
 /*页面utils样式*/
 @import '../utils/ui-list.css';  /*列表*/
+@import '../utils/ui-step.css';  /*步骤条*/
+@import '../utils/ui-page.css'; /*分页*/
+@import '../utils/ui-tab.css';  /*tab*/
+@import '../utils/ui-calendar.css';  /*日历*/
 
 /*orders公共样式*/
 @import 'mods/public.css';
 
 
-
-
+/*订单index样式*/
+@import 'mods/index/index.css';

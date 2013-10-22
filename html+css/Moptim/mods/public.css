@@ -4,3 +4,19 @@
  
 **/
 
+.hlg-app .main .Moptim .margin-left-6 {margin-left: 6px;}
+.hlg-app .main .Moptim .margin-left-5{margin-left: 5px;}
+.hlg-app .main .Moptim .data-tip {height: 36px;overflow: hidden;margin:10px 0px;}
+.hlg-app .main .Moptim .data-tip .data-text{float:left;line-height:36px;}
+.hlg-app .main .Moptim .data-tip .data-text span {color: #fb6e52;}
+
+.hlg-app .main .Moptim .list-div .baobei {text-align: left;position: relative;}
+.hlg-app .main .Moptim .list-div .baobei img {width: 60px;height: 60px;border: 1px solid #B9B9B9;vertical-align: middle;}
+.hlg-app .main .Moptim .list-div .baobei span {display: block;position: absolute;left: 70px;top: 0px;width: 130px;height: 60px;overflow: hidden;line-height: 20px;}
+
+
+
+
+
+
+

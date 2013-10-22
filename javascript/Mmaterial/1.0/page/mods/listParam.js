@@ -6,7 +6,6 @@ KISSY.add(function (S) {
     // your code here
     
 	return listParam = {
-		
 		init :function(){
 				var str ='',
 					frameHtml = '',
@@ -14,7 +13,6 @@ KISSY.add(function (S) {
 					moreLinkHtml ='',
 					qualityPicsHtml = '',
 					keywordsHtml = '',
-					tishiMessHtml = '',
 					listParamsHtm1 = '',
 					listParamsHtm2 = '',
 					listParamsHtm3 = '',
@@ -25,11 +23,11 @@ KISSY.add(function (S) {
 					listParamsHtm8 = '';
 				S.each(list.listParams,function(item){
 					if(item['field_code'] == 'color'){
-						colorHtml +='<li class="min-height-40 J_ListParams" >'+
+						colorHtml +='<li class="J_ListParams" >'+
 									'<input type="hidden" id ="J_color"  value="'+item['value']+'"  class="J_Param_Value">'+
 									'<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>'+
-		        					'<div class="active-add-edit-title" style="width:16%;">列表颜色选择：</div>'+
-		           		 			'<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px">';
+		        					'<div class="ui-side-list">颜色选择：</div>'+
+		           		 			'<div class="ui-content-list ui-content-color">';
 								if(paramOptons['color']){
 									S.each(paramOptons['color'],function(col,index){
 										clos = col.split("_");
@@ -38,7 +36,7 @@ KISSY.add(function (S) {
 											colorHtml+='a-current';
 										}
 										colorHtml+='" data="'+col+'" >';
-										colorHtml +='<b style="background: #'+clos[0]+'"></b>';
+										colorHtml +='<b style="background-color: #'+clos[0]+'"></b>';
 //										S.each(clos,function(i){
 //											colorHtml +='<b style="background: #'+i+'"></b>';
 //										})
@@ -51,10 +49,15 @@ KISSY.add(function (S) {
 				         colorHtml+= '</div></li>';
 					}
 					if(item['field_code'] == 'items_per_line'){
-						frameHtml +='<li class="min-height-40 J_ListParams">';
-						frameHtml +='<div class="active-add-edit-title" style="width:16%;">';
+						// 搭配套餐 尺寸 样式 不同
+						var c = '';
 						if(mtype==7){
-							frameHtml += '规格x宽度x个数';
+							var c = 'mt-7';
+						}
+						frameHtml +='<li class="J_ListParams '+c+'">';
+						frameHtml +='<div class="ui-side-list">';
+						if(mtype==7){
+							frameHtml += '尺寸/宝贝数';
 							if(items_per_line==''){
 								var items_per_line_default =  item['value']
 							}else{
@@ -62,14 +65,16 @@ KISSY.add(function (S) {
 							}
 							var ttemps = items_per_line_default.split('_');
 							limit = parseInt(ttemps[3]);
+							var st = 'style=""';
 						}else{
-							frameHtml += '模板宽度';
+							frameHtml += '尺寸选择';
 							var items_per_line_default =  item['value']
 							limit = parseInt(limitNums[items_per_line_default.substr(0,3)]);
+							var st = 'style="width: auto;"';
 						}
 						//alert(limit);
 						frameHtml +='：</div>'+
-				            		'<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" id ="J_items_per_line_default"  value="'+items_per_line_default+'">'+
+				            		'<div class="ui-content-list menu-item" '+st+' ><input type="hidden" id ="J_items_per_line_default"  value="'+items_per_line_default+'">'+
 				        			'<input type="hidden" id ="J_items_per_line"  value="'+items_per_line_default+'"  class="J_Param_Value">'+
 									'<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
 						if(mtype==7){
@@ -81,9 +86,12 @@ KISSY.add(function (S) {
 								}else{
 									frameHtml+='class="off-center J_width"';
 								}
+								if( i>12){
+									frameHtml+='style="border-top: none;"';
+								}
 								var ffmat = associateFormats[i].substring(0,associateFormats[i].indexOf('-'));
 								ffmat = ffmat.split('_');
-								frameHtml+='><span  class="w-100 J_list_width" id="'+associateFormats[i]+'">'+ffmat[0]+'x'+ffmat[2]+'x'+ffmat[3]+'</span></a>';
+								frameHtml+='><span  class="w-100 J_list_width" id="'+associateFormats[i]+'">'+ffmat[0]+'/'+ffmat[3]+'</span></a>';
 							}
 							frameHtml +='</div></li>';
 						}else{
@@ -103,9 +111,9 @@ KISSY.add(function (S) {
 							}
 							frameHtml +='</div></li>';
 							frameHtml += '<li class="min-height-40">'+
-					        			 '<div class="active-add-edit-title" style="width:16%;">宝贝主图规格：</div>';
+					        			 '<div class="ui-side-list">宝贝主图尺寸：</div>';
 							for (var k in formats) {
-								frameHtml +='<div class="active-add-edit-edit relative  J_mainSize" id="J_mainSize'+k+'" style="width:80%;margin-bottom:10px;';
+								frameHtml +='<div class="ui-content-list relative  J_mainSize menu-item" id="J_mainSize'+k+'" style="width:auto;';
 								if(item['value'].split("_")[0]!=k){
 									frameHtml +='display:none';
 								};
@@ -147,23 +155,23 @@ KISSY.add(function (S) {
 							}
 							frameHtml +='</li>';
 							frameHtml +='<li class="min-height-40">'+
-				        	'<div class="active-add-edit-title" style="width:16%;">每行显示件：</div>'+
-				            '<div class="active-add-edit-edit relative" style="width:84%;margin-bottom:10px" ><span class="list-number" ><b id="J_item_pre_line">'+item['value'].split("_")[3]+'</b></span></div></li>';
+				        	'<div class="ui-side-list">每行显示：</div>'+
+				            '<div class="ui-content-list relative"><span class="list-number" ><b id="J_item_pre_line">'+item['value'].split("_")[3]+'</b></span></div></li>';
 						}
 					}
 					if(item['field_code'] == 'more_link'){
-						moreLinkHtml +='<li class="title-params min-height-40 J_ListParams" >'+
-				        			   '<div class="active-add-edit-title" style="width:16%;">更多：</div>'+
-				            		   '<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px">'+
+						moreLinkHtml +='<li class="title-params J_ListParams" >'+
+				        			   '<div class="ui-side-list">更多：</div>'+
+				            		   '<div class="ui-content-list">'+
 									   '<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
 								
-						moreLinkHtml+= '<input type="text" id="J_moreLink"  class="input-text w-360 J_Param_Value" value="'+item['value']+'">';
+						moreLinkHtml+= '<input type="text" id="J_moreLink"  class="input-text-3 J_Param_Value" value="'+item['value']+'">';
 						moreLinkHtml+= '</div></li>';
 					}
 					if(item['field_code'] == 'quality_pics'){
-						qualityPicsHtml +=  '<li class="title-params min-height-40 list-template-icon-img J_ListParams" id="">'+
-				        					'<div class="active-add-edit-title" style="width:16%;">品质图片：</div>'+
-			            					'<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" id ="J_QualityPics" class="J_Param_Value" value="'+item['value']+'"/>'+
+						qualityPicsHtml +=  '<li class="title-params list-template-icon-img J_ListParams" id="">'+
+				        					'<div class="ui-side-list">品质图片：</div>'+
+			            					'<div class="ui-content-list"><input type="hidden" id ="J_QualityPics" class="J_Param_Value" value="'+item['value']+'"/>'+
 			            					'<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
 						if(paramOptons['quality_pics']){
 							var defaultQuality = item['value'].split("#");
@@ -180,14 +188,11 @@ KISSY.add(function (S) {
 						qualityPicsHtml+= '</div></li>';
 					}
 					if(item['field_code'] == 'keywords'){
-						keywordsHtml +='<li class="title-params min-height-40 J_ListParams" >'+
-				        			   '<div class="active-add-edit-title" style="width:16%;">关键词：</div>'+
-				            		   '<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
-						keywordsHtml+= '<input type="text" id="J_keywords"  class="input-text w-360 J_Param_Value" value="'+item['value']+'">';
+						keywordsHtml +='<li class="title-params J_ListParams" >'+
+				        			   '<div class="ui-side-list">关键词：</div>'+
+				            		   '<div class="ui-content-list"><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
+						keywordsHtml+= '<input type="text" id="J_keywords"  class="input-text-3 J_Param_Value" value="'+item['value']+'">';
 						keywordsHtml+= '</div></li>';
-					}
-					if(7==mtype){
-						tishiMessHtml = '<li class="title-params min-height-40 clear" style="margin-top:20px">如在【选择宝贝】页面 选择了【官方搭配套餐】，以下内容会自动填充</li>';
 					}
 					if(item['field_code'] == 'list_param1'){
 						if(7==mtype){
@@ -195,10 +200,10 @@ KISSY.add(function (S) {
 						}else{
 							var show_title = '';
 						}
-						listParamsHtm1 +='<li class="title-params min-height-40 J_ListParams" >'+
-				        			   '<div class="active-add-edit-title" style="width:16%;">'+item['field_name']+'：</div>'+
-				            		   '<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
-						listParamsHtm1+= '<input type="text" id="J_list_param1" '+show_title+' class="input-text w-360 J_Param_Value" value="'+item['value']+'">';
+						listParamsHtm1 +='<li class="title-params J_ListParams" >'+
+				        			   '<div class="ui-side-list">'+item['field_name']+'：</div>'+
+				            		   '<div class="ui-content-list"><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
+						listParamsHtm1+= '<input type="text" id="J_list_param1" '+show_title+' class="input-text-3 J_Param_Value" value="'+item['value']+'">';
 						listParamsHtm1+= '</div></li>';
 					}
 					if(item['field_code'] == 'list_param2'){
@@ -207,10 +212,10 @@ KISSY.add(function (S) {
 						}else{
 							var show_title = '';
 						}
-						listParamsHtm2 +='<li class="title-params min-height-40 J_ListParams" >'+
-				        			   '<div class="active-add-edit-title" style="width:16%;">'+item['field_name']+'：</div>'+
-				            		   '<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
-						listParamsHtm2+= '<input type="text" id="J_list_param2" '+show_title+' class="input-text w-360 J_Param_Value" value="'+item['value']+'">';
+						listParamsHtm2 +='<li class="title-params J_ListParams" >'+
+				        			   '<div class="ui-side-list">'+item['field_name']+'：</div>'+
+				            		   '<div class="ui-content-list"><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
+						listParamsHtm2+= '<input type="text" id="J_list_param2" '+show_title+' class="input-text-3 J_Param_Value" value="'+item['value']+'">';
 						listParamsHtm2+= '</div></li>';
 					}
 					if(item['field_code'] == 'list_param3'){
@@ -219,10 +224,10 @@ KISSY.add(function (S) {
 						}else{
 							var show_title = '';
 						}
-						listParamsHtm3 +='<li class="title-params min-height-40 J_ListParams" >'+
-				        			   '<div class="active-add-edit-title" style="width:16%;">'+item['field_name']+'：</div>'+
-				            		   '<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
-						listParamsHtm3+= '<input type="text" id="J_list_param3"  '+show_title+' class="input-text w-360 J_Param_Value" value="'+item['value']+'">';
+						listParamsHtm3 +='<li class="title-params J_ListParams" >'+
+				        			   '<div class="ui-side-list">'+item['field_name']+'：</div>'+
+				            		   '<div class="ui-content-list" ><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
+						listParamsHtm3+= '<input type="text" id="J_list_param3"  '+show_title+' class="input-text-3 J_Param_Value" value="'+item['value']+'">';
 						listParamsHtm3+= '</div></li>';
 					}
 					if(item['field_code'] == 'list_param4'){
@@ -231,10 +236,10 @@ KISSY.add(function (S) {
 						}else{
 							var show_title = '';
 						}
-						listParamsHtm4 +='<li class="title-params min-height-40 J_ListParams" >'+
-				        			   '<div class="active-add-edit-title" style="width:16%;">'+item['field_name']+'：</div>'+
-				            		   '<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
-						listParamsHtm4+= '<input type="text" id="J_list_param4"  '+show_title+' class="input-text w-360 J_Param_Value" value="'+item['value']+'">';
+						listParamsHtm4 +='<li class="title-params  J_ListParams" >'+
+				        			   '<div class="ui-side-list">'+item['field_name']+'：</div>'+
+				            		   '<div class="ui-content-list" ><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
+						listParamsHtm4+= '<input type="text" id="J_list_param4"  '+show_title+' class="input-text-3 J_Param_Value" value="'+item['value']+'">';
 						listParamsHtm4+= '</div></li>';
 					}
 					if(item['field_code'] == 'list_param5'){
@@ -243,10 +248,10 @@ KISSY.add(function (S) {
 						}else{
 							var show_title = '';
 						}
-						listParamsHtm5 +='<li class="title-params min-height-40 J_ListParams" >'+
-				        			   '<div class="active-add-edit-title" style="width:16%;">'+item['field_name']+'：</div>'+
-				            		   '<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
-						listParamsHtm5+= '<input type="text" id="J_list_param5"  '+show_title+' class="input-text w-360 J_Param_Value" value="'+item['value']+'">';
+						listParamsHtm5 +='<li class="title-params J_ListParams" >'+
+				        			   '<div class="ui-side-list">'+item['field_name']+'：</div>'+
+				            		   '<div class="ui-content-list" ><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
+						listParamsHtm5+= '<input type="text" id="J_list_param5"  '+show_title+' class="input-text-3 J_Param_Value" value="'+item['value']+'">';
 						listParamsHtm5+= '</div></li>';
 					}
 					if(item['field_code'] == 'list_param6'){
@@ -255,10 +260,10 @@ KISSY.add(function (S) {
 						}else{
 							var show_title = '';
 						}
-						listParamsHtm6 +='<li class="title-params min-height-40 J_ListParams" >'+
-				        			   '<div class="active-add-edit-title" style="width:16%;">'+item['field_name']+'：</div>'+
-				            		   '<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
-						listParamsHtm6+= '<input type="text" id="J_list_param6"  '+show_title+' class="input-text w-360 J_Param_Value" value="'+item['value']+'">';
+						listParamsHtm6 +='<li class="title-params  J_ListParams" >'+
+				        			   '<div class="ui-side-list">'+item['field_name']+'：</div>'+
+				            		   '<div class="ui-content-list"><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
+						listParamsHtm6+= '<input type="text" id="J_list_param6"  '+show_title+' class="input-text-3 J_Param_Value" value="'+item['value']+'">';
 						listParamsHtm6+= '</div></li>';
 					}
 					if(item['field_code'] == 'list_param7'){
@@ -267,10 +272,10 @@ KISSY.add(function (S) {
 						}else{
 							var show_title = '';
 						}
-						listParamsHtm7 +='<li class="title-params min-height-40 J_ListParams" >'+
-				        			   '<div class="active-add-edit-title" style="width:16%;">'+item['field_name']+'：</div>'+
-				            		   '<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
-						listParamsHtm7+= '<input type="text" id="J_list_param7"  '+show_title+' class="input-text w-360 J_Param_Value" value="'+item['value']+'">';
+						listParamsHtm7 +='<li class="title-params J_ListParams" >'+
+				        			   '<div class="ui-side-list">'+item['field_name']+'：</div>'+
+				            		   '<div class="ui-content-list"><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
+						listParamsHtm7+= '<input type="text" id="J_list_param7"  '+show_title+' class="input-text-3 J_Param_Value" value="'+item['value']+'">';
 						listParamsHtm7+= '</div></li>';
 					}
 					if(item['field_code'] == 'list_param8'){
@@ -279,10 +284,10 @@ KISSY.add(function (S) {
 						}else{
 							var show_title = '';
 						}
-						listParamsHtm8 +='<li class="title-params min-height-40 J_ListParams" >'+
-				        			   '<div class="active-add-edit-title" style="width:16%;">'+item['field_name']+'：</div>'+
-				            		   '<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
-						listParamsHtm8+= '<input type="text" id="J_list_param8"  '+show_title+' class="input-text w-360 J_Param_Value" value="'+item['value']+'">';
+						listParamsHtm8 +='<li class="title-params  J_ListParams" >'+
+				        			   '<div class="ui-side-list">'+item['field_name']+'：</div>'+
+				            		   '<div class="ui-content-list"><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
+						listParamsHtm8+= '<input type="text" id="J_list_param8"  '+show_title+' class="input-text-3 J_Param_Value" value="'+item['value']+'">';
 						listParamsHtm8+= '</div></li>';
 					}
 					
@@ -302,10 +307,10 @@ KISSY.add(function (S) {
 				List_itemParam6Html = '';
 				S.each(list.defaultItemParams,function(item){
 						if(item['field_code'] == 'ori_price_writer'){
-							List_oriPriceWriterHtml +='<li class="title-params active-add-edit-li J_SetAllItem clear min-height-30" ><div class="active-add-edit-title fl w-200">原价文案：</div><div class="active-add-edit-edit fl  mr10">'+
-								'<input type="text" id ="J_oriPriceWriter" value="'+item['value']+'" title="原价文案" class="input-text w-100 J_Param_Value">'+
+							List_oriPriceWriterHtml +='<li class="title-params  J_SetAllItem clear min-height-30" ><div class="ui-side-list w-100">原价文案：</div><div class="ui-content-list">'+
+								'<input type="text" id ="J_oriPriceWriter" value="'+item['value']+'" title="原价文案" class="input-text-3 J_Param_Value">'+
 								'<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>'+
-								'</div><div class="fl"><select id="J_OPrice" name="oripricewriter" onchange="KISSY.DOM.val(\'#J_oriPriceWriter\',this.value)">';
+								'<select id="J_OPrice" name="oripricewriter" onchange="KISSY.DOM.val(\'#J_oriPriceWriter\',this.value)">';
 								if(paramOptons['ori_price_writer']){
 									S.each(paramOptons['ori_price_writer'],function(item){
 										List_oriPriceWriterHtml+=  '<option value="'+item+'">'+item+'</option>';
@@ -314,8 +319,8 @@ KISSY.add(function (S) {
 								List_oriPriceWriterHtml+='</select></div></li>';
 						}
 						if(item['field_code'] == 'cur_price_writer'){
-							List_curPriceWriterHtml +='<li class="title-params active-add-edit-li J_SetAllItem clear min-height-30" ><div class="active-add-edit-title fl w-200">现价文案：</div><div class="active-add-edit-edit fl mr10">'+
-							'<input type="text" id ="J_curPriceWriter" value="'+item['value']+'" title="现价文案" class="input-text w-100 J_Param_Value">'+
+							List_curPriceWriterHtml +='<li class="title-params  J_SetAllItem clear min-height-30" ><div class="ui-side-list w-100">现价文案：</div><div class="ui-content-list">'+
+							'<input type="text" id ="J_curPriceWriter" value="'+item['value']+'" title="现价文案" class="input-text-3 J_Param_Value">'+
 							'<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>'+
 							'</div><div class="fl"><select id="J_CPrice" name="oripricewriter" onchange="KISSY.DOM.val(\'#J_curPriceWriter\',this.value)">';
 							if(paramOptons['cur_price_writer']){
@@ -328,7 +333,7 @@ KISSY.add(function (S) {
 						/*宝贝标签*/
 						if(item['field_code'] == 'tiny_labels'){
 							var defaultTiny = item['value'].split("#");
-							List_tinyLabelsHtml +='<li class="title-params active-add-edit-li J_SetAllItem clear min-height-30" ><div class="active-add-edit-title fl w-200">小标签：</div><div class="active-add-edit-edit fl  mr10">'+
+							List_tinyLabelsHtml +='<li class="title-params  J_SetAllItem clear " ><div class="ui-side-list w-100">小标签：</div><div class="ui-content-list">'+
 								'<input type="hidden" class="J_Param_Value" id ="J_SetTinyLabels" value="'+item['value']+'"/><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
 								if(paramOptons['tiny_labels']){
 									S.each(paramOptons['tiny_labels'],function(ite){
@@ -345,50 +350,50 @@ KISSY.add(function (S) {
 						}
 						/*宝贝参数1*/
 						if(item['field_code'] == 'item_param1'){
-							List_itemParam1Html +='<li class="title-params active-add-edit-li J_SetAllItem clear min-height-30" ><div class="active-add-edit-title fl w-200">'+list.defaultItemFieldNames[item.field_code]+'：</div><div class="active-add-edit-edit fl  mr10">'+
-											 '<input type="text"  name="param1" value="'+item['value']+'" title="param1" class="J_Param_Value input-text w-200">'+
+							List_itemParam1Html +='<li class="title-params  J_SetAllItem clear min-height-30" ><div class="ui-side-list w-100">'+list.defaultItemFieldNames[item.field_code]+'：</div><div class="ui-content-list">'+
+											 '<input type="text"  name="param1" value="'+item['value']+'" title="param1" class="J_Param_Value input-text-3">'+
 											 '<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/></div></li>';
 						}
 						/*宝贝参数2*/
 						if(item['field_code'] == 'item_param2'){
-							List_itemParam2Html +='<li class="title-params active-add-edit-li J_SetAllItem clear min-height-30" ><div class="active-add-edit-title fl w-200">'+list.defaultItemFieldNames[item.field_code]+'：</div><div class="active-add-edit-edit fl  mr10">'+
-											 '<input type="text"  name="param2" value="'+item['value']+'" title="param2" class="J_Param_Value input-text w-200">'+
+							List_itemParam2Html +='<li class="title-params  J_SetAllItem clear min-height-30" ><div class="ui-side-list w-100">'+list.defaultItemFieldNames[item.field_code]+'：</div><div class="ui-content-list">'+
+											 '<input type="text"  name="param2" value="'+item['value']+'" title="param2" class="J_Param_Value input-text-3">'+
 											 '<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/></div></li>';
 						}
 						/* 宝贝参数3*/
 						if(item['field_code'] == 'item_param3'){
-							List_itemParam3Html +='<li class="title-params active-add-edit-li J_SetAllItem clear min-height-30" ><div class="active-add-edit-title fl w-200">'+list.defaultItemFieldNames[item.field_code]+'：</div><div class="active-add-edit-edit fl  mr10">'+
-											 '<input type="text"  name="param3" value="'+item['value']+'" title="param3" class="J_Param_Value input-text w-200">'+
+							List_itemParam3Html +='<li class="title-params  J_SetAllItem clear min-height-30" ><div class="ui-side-list w-100">'+list.defaultItemFieldNames[item.field_code]+'：</div><div class="ui-content-list">'+
+											 '<input type="text"  name="param3" value="'+item['value']+'" title="param3" class="J_Param_Value input-text-3">'+
 											 '<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/></div></li>';
 						}
 						/*宝贝参数4*/
 						if(item['field_code'] == 'item_param4'){
-							List_itemParam1Html +='<li class="title-params active-add-edit-li J_SetAllItem clear min-height-30" ><div class="active-add-edit-title fl w-200">'+list.defaultItemFieldNames[item.field_code]+'：</div><div class="active-add-edit-edit fl  mr10">'+
-											 '<input type="text"  name="param4" value="'+item['value']+'" title="param4" class="J_Param_Value input-text w-200">'+
+							List_itemParam1Html +='<li class="title-params  J_SetAllItem clear min-height-30" ><div class="ui-side-list w-100">'+list.defaultItemFieldNames[item.field_code]+'：</div><div class="ui-content-list">'+
+											 '<input type="text"  name="param4" value="'+item['value']+'" title="param4" class="J_Param_Value input-text-3">'+
 											 '<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/></div></li>';
 						}
 						/*宝贝参数5*/
 						if(item['field_code'] == 'item_param5'){
-							List_itemParam5Html +='<li class="title-params active-add-edit-li J_SetAllItem clear min-height-30" ><div class="active-add-edit-title fl w-200">'+list.defaultItemFieldNames[item.field_code]+'：</div><div class="active-add-edit-edit fl  mr10">'+
-											 '<input type="text"  name="param5" value="'+item['value']+'" title="param5" class="J_Param_Value input-text w-200">'+
+							List_itemParam5Html +='<li class="title-params  J_SetAllItem clear min-height-30" ><div class="ui-side-list w-100">'+list.defaultItemFieldNames[item.field_code]+'：</div><div class="ui-content-list">'+
+											 '<input type="text"  name="param5" value="'+item['value']+'" title="param5" class="J_Param_Value input-text-3">'+
 											 '<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/></div></li>';
 						}
 						/* 宝贝参数6*/
 						if(item['field_code'] == 'item_param6'){
-							List_itemParam6Html +='<li class="title-params active-add-edit-li J_SetAllItem clear min-height-30" ><div class="active-add-edit-title fl w-200">'+list.defaultItemFieldNames[item.field_code]+'：</div><div class="active-add-edit-edit fl  mr10">'+
-											 '<input type="text"  name="param6" value="'+item['value']+'" title="param6" class="J_Param_Value input-text w-200">'+
+							List_itemParam6Html +='<li class="title-params  J_SetAllItem clear min-height-30" ><div class="ui-side-list w-100">'+list.defaultItemFieldNames[item.field_code]+'：</div><div class="ui-content-list">'+
+											 '<input type="text"  name="param6" value="'+item['value']+'" title="param6" class="J_Param_Value input-text-3">'+
 											 '<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/></div></li>';
 						}
 				})
 				
 				
-				ListStr = colorHtml+frameHtml+moreLinkHtml+qualityPicsHtml+keywordsHtml+tishiMessHtml+listParamsHtm1+listParamsHtm2+listParamsHtm3+listParamsHtm4+listParamsHtm5+listParamsHtm6+listParamsHtm7+listParamsHtm8+listParamsConfirmHtm;
+				ListStr = colorHtml+frameHtml+moreLinkHtml+qualityPicsHtml+keywordsHtml+listParamsHtm1+listParamsHtm2+listParamsHtm3+listParamsHtm4+listParamsHtm5+listParamsHtm6+listParamsHtm7+listParamsHtm8+listParamsConfirmHtm;
 				if(mtype==7 && meal_id==0){
-					ListStr += '<li class="title-params"><div class="active-add-edit-title fl" style="width:16%;">&nbsp;</div><div class="active-add-edit-edit fl"><a href="http://bangpai.taobao.com/group/thread/609027-277801311.htm?spm=0.0.0.40.35d48a" target="_blank">没有链接？您可能没订购官方的搭配套餐，点击查看详情</a></div></li>'; 
+//					ListStr += '<li class="title-params"><div class="ui-side-list w-100" >&nbsp;</div><div class="ui-content-list"><a href="http://bangpai.taobao.com/group/thread/609027-277801311.htm?spm=0.0.0.40.35d48a" target="_blank">没有链接？您可能没订购官方的搭配套餐，点击查看详情</a></div></li>'; 
 				}
 				ItemStr = List_itemParamExplainHtml+List_oriPriceWriterHtml+List_curPriceWriterHtml+List_tinyLabelsHtml+List_itemParam1Html+List_itemParam2Html+List_itemParam3Html+List_itemParam4Html+List_itemParam5Html+List_itemParam6Html;
 				if(list.defaultItemParams.length>0){
-					ItemStr +=	'<li class="active-add-edit-li  clear min-height-30"><div class="active-add-edit-title fl w-200">&nbsp;</div><div class="active-add-edit-edit fl mr10"><a href="javascript:list.setAllItems();"><span class="gray-btm-h-20 w-100"><span>应用到以下宝贝</span></span></a><span id="J_setMsg" class="messages"></span></div></li>';
+					ItemStr +=	'<li class="  clear min-height-30"><div class="ui-side-list w-100">&nbsp;</div><div class="ui-content-list"><button class="btm-small button-gray" onclick="list.setAllItems();">应用到以下宝贝</button></div></li>';
 				}
 				DOM.html('#J_AllItemParams',ItemStr);
 				DOM.html('#J_listParams',ListStr);
@@ -439,7 +444,7 @@ KISSY.add(function (S) {
 					limit = parseInt(ttemps[3]);
 					//limit = parseInt(limitNums[guige_proto[0].substr(0,3)]);
 					if(guige_proto[1]!=protoId){
-						window.location = dapeiUrl+guige_proto[1]+"&items_per_line="+guige_proto[0];
+						window.location = dapeiUrl+guige_proto[1]+"&items_per_line="+guige_proto[0]+"&isShowFirst=0";
 					}
 				}else {
 					var w =this.id;

@@ -1,0 +1,21 @@
+/**
+ 
+	point公共样式文件public.css
+ 
+**/
+ /*积分样式*/
+.jf-icon-shoudong,.jf-icon-gouwu,.jf-icon-haopingsong,.jf-icon-duihuan{ width:53px; height:52px; cursor:pointer; background:url(http://cdn.huanleguang.com/img/hlg/crm/jf-icon.png) no-repeat;}.jf-icon-shoudong{ background-position:0 0;}.jf-icon-gouwu{ background-position:0 -52px;}.jf-icon-haopingsong{ background-position:0 -104px;}.jf-icon-duihuan{ background-position:0 -156px;}
+.date,.week,.month{display:inline-block; padding:0 20px;height:22px; line-height:24px;font-size:12px;}
+.date,.week,.month{ color:#8a8a8a; border:1px solid #e1e1e1;background-color:#f7f7f7;}
+.date,.current .date{border-radius:3px 0 0 3px;-moz-border-radius:3px 0 0 3px;-webkit-border-radius:3px 0 0 3px;}
+.week,.month,.current .month{border-left:0;}
+.current .date,.current .month,.current .week{background-color:#c2c2c2; border:1px solid #b4b4b4; color:#FFF;}
+.month,.current .month{border-radius:0 3px 3px 0;-moz-border-radius:0 3px 3px 0;-webkit-border-radius:0 3px 3px 0}
+.vertical-btm{vertical-align:bottom}
+.issue-category{ padding-top:25px; font-size:14px;}
+.the-details{ margin:0px 10px;}
+.props-list{ border:1px #dedede solid; border-top:0;}
+.theme{ height:30px; line-height:30px; border:1px #f1eff0 solid;}
+.festival-del{ cursor:pointer; color:#ff0000; margin-left:5px;}
+.main-content-preview{ border:1px solid #f1eff0; border-bottom:0; height:30px; line-height:26px;}
+.main-content-preview span{ background:url(http://cdn.huanleguang.com/img/hlg/crm/jifenshousuo.png) no-repeat; background-position:0 -13px;height:13px; width:13px; display:inline-block; padding-right:4px; margin-top:8px;}

@@ -2,7 +2,7 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,O) {
+KISSY.add(function (S,Overlay,beautifyForm) {
     // your code here
 	var DOM = S.DOM, Event = S.Event;	
 	
@@ -10,19 +10,16 @@ KISSY.add(function (S,O) {
 			panel: null,
 			meg : null,
 			init: function() {
-				
-					list.panel = new O.Dialog({
-					      width: 395,
-					      headerContent: '获取代码',
-					      bodyContent: '',
-					      mask: false,
-					      align: {
-					          points: ['cc', 'cc']
-					      },
-					      closable :true,
-					      draggable: true,
-					      aria:true
-					});
+					new beautifyForm();
+					
+					list.panel = new Overlay.Dialog({
+			  	            title:'获取代码',
+			  	            width:425,
+			  	            height:360,
+			  	            mask:false,
+			  	            footerStyle :{'display' : 'none'},
+			  	            bodyContent:''
+			  	          });
 					Event.on(DOM.query('.J_StartDesign'),'click',function(e){
 						e.preventDefault();
 						if(!showPermissions('editor_material','促销素材')){
@@ -71,10 +68,10 @@ KISSY.add(function (S,O) {
 	                }
 	                var submitHandle = function(o) {
 	                    	list.msg.hide();
-	                    	var cont = '<div><textarea style="width:380px;height:200px;margin:5px;" id="J_Templet_Content" onclick="this.select()">'+o.payload+'</textarea></br><span class="btm-68-gray fl"><a href="#2"  class="J_Copy"><span>点此复制</span></a></span><span style="height:31px; line-height:31px">鼠标于框内CTRL+C：复制、CTRL+V：粘贴</span></div>';
+	                    	var cont = '<div><textarea style="width:380px;height:200px;margin:5px;" id="J_Templet_Content" onclick="this.select()">'+o.payload+'</textarea></br><button class="btm-small button-green J_Copy">点此复制</button><span style="height:31px; line-height:31px">鼠标于框内CTRL+C：复制、CTRL+V：粘贴</span></div>';
 	                    	list.panel.set('bodyContent',cont);
 	                    	list.panel.show();
-							H.util.clipboard('.J_Copy','#J_Templet_Content');
+	                    	list.clipboard('.J_Copy','#J_Templet_Content');
 	                };
 		        	var errorHandle = function(o){
 						list.msg.hide();
@@ -103,7 +100,7 @@ KISSY.add(function (S,O) {
 					window.location.href = designUrl+"&proto_id="+tempFormatProto[1]+"&items_per_line="+tempFormatProto[0];
 				},
 				turn : function(shareId, protoId){
-					alert('a');
+					//alert('a');
 				},
 				collect : function(share_id){
 					var submitHandle = function(o) {
@@ -134,8 +131,69 @@ KISSY.add(function (S,O) {
 		    	    var data = "favorite_id="+favorite_id;
 		        	new H.widget.asyncRequest().setURI(cancelCollectUrl).setMethod("GET").setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).send();
 					
+				},/*复制功能*/
+				clipboard: function(el,contain){
+					Event.on(el,'click',function(ev){
+						var copy = DOM.val(contain);
+						if (window.clipboardData){
+							 window.clipboardData.clearData();
+							 window.clipboardData.setData("Text", copy);
+							 new H.widget.msgBox({ 
+							 			type: "success", 
+							 			content: "已成功复制",
+										dialogType:"msg", 
+										autoClose:true, 
+										timeOut:3000
+									});
+							
+						}else if (window.netscape){
+								 try{
+										netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+									}catch(e){
+										 new H.widget.msgBox({ 
+								 			type: "error", 
+								 			content: "您的firefox安全限制限制您进行剪贴板操作，请打开'about:config'将signed.applets.codebase_principal_support'设置为true'之后重试，相对路径为firefox根目录/greprefs/all.js",
+											dialogType:"msg", 
+											autoClose:true, 
+											timeOut:3000
+										});
+										return false;
+									}
+								//netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+								var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+								if (!clip) return;
+								var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
+								if (!trans) return;
+								trans.addDataFlavor('text/unicode');
+								var str = new Object();
+								var len = new Object();
+								var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+								var copytext=copy;
+								str.data=copytext;
+								trans.setTransferData("text/unicode",str,copytext.length*2);
+								var clipid=Components.interfaces.nsIClipboard;
+								if (!clip) return false;
+								clip.setData(trans,null,clipid.kGlobalClipboard);
+								 new H.widget.msgBox({ 
+							 			type: "success", 
+							 			content: "已成功复制",
+										dialogType:"msg", 
+										autoClose:true, 
+										timeOut:3000
+									});
+							}else if(KISSY.UA.core == 'webkit'){
+								 new H.widget.msgBox({ 
+								 			type: "error", 
+								 			content: "该浏览器暂不支持，请用 Ctrl+c 复制",
+											dialogType:"msg", 
+											autoClose:true, 
+											timeOut:3000
+										});
+							}
+						return false;
+					})
 				}
 			}
 }, {
-    requires: ['overlay']
+    requires: ['bui/overlay','utils/beautifyForm/index']
 });

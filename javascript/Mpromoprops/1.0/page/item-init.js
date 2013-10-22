@@ -2,15 +2,156 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,showPages) {
+KISSY.add(function (S,showPages,beautifyForm,Select,Switchable) {
     	// your code here
 	 	var DOM = S.DOM, Event = S.Event;
     	return PromopropsItem = {
 			    	panel : null,
 	                msg : null,
+	                currentMode : step,
 	         		paginator : null,
 					promotionItemPaginator: null,
 	                init : function(){
+    		
+    						PromopropsItem.Form = new beautifyForm();
+    						iconTabs = new Switchable.Tabs('#J_main',{
+	   							 navCls:'ks-switchable-nav',
+	   							 contentCls:'main-content',
+	   							 activeTriggerCls:'current',
+	   							 triggerType: 'click'
+	   						}).on('switch',function(ev){
+	   							var index = ev.currentIndex;
+									if(index == 1){
+										PromopropsItem.currentMode = '2';
+										DOM.hide('.J_Seach_1');
+										DOM.show('.J_Seach_2');
+										if(PromopropsItem.promotionItemPaginator){
+											PromopropsItem.promotionItemPaginator.toPage(PromopropsItem.promotionItemPaginator.page);
+										}else{
+											PromopropsItem.loadPromotionItems();
+										}
+										DOM.addClass('#J_Step_1','current');
+									}else{
+										PromopropsItem.currentMode = '1';
+										DOM.show('.J_Seach_1');
+										DOM.hide('.J_Seach_2');
+										if(PromopropsItem.paginator){
+											PromopropsItem.paginator.toPage(PromopropsItem.paginator.page);
+										}else{
+											PromopropsItem.searchTbItems();
+										}
+										
+									}
+	   						})
+	   						Event.on(doc, 'keydown', function(evt) {
+								if ( evt.which === 13) {
+									if(PromopropsItem.paginator){
+										PromopropsItem.paginator.toPage(PromopropsItem.paginator.page);
+									}else{
+										PromopropsItem.searchTbItems();
+									}
+								}
+							})
+							if(PromopropsItem.currentMode == 1){
+								PromopropsItem.searchTbItems()
+							}else{
+								iconTabs.switchTo(1);
+							}
+    						   /*下一步*/
+	   		     	         Event.on('#J_NextStep','click',function(ev){
+	   		     	        	iconTabs.switchTo(1);
+	   						 });	
+	   						 /*上一步*/
+	   		     	         Event.on('#J_BaceStep','click',function(ev){
+	   		     	        	iconTabs.switchTo(0);
+	   						 });
+    						//选择分类
+    					    promoSelect = new Select.Select({  
+    						    render:'#J_SelectItemCidBox',
+    					      	valueField:'#J_SelectItemCid',
+    					      	items:S.JSON.parse(sellerCats),
+    					      	visibleMode : 'display'
+    						});
+    						promoSelect.render();
+    						promoSelect.setSelectedValue('0');
+    						DOM.css(DOM.get('.bui-list-picker'),{'left':'-999px','top':'-999px'});
+    						// 全部 出售中 库中
+    						var Sellingitems = [
+    					      {text:'全部',value:'0'},
+    					      {text:'出售中',value:'1'},
+    					      {text:'库中',value:'2'}
+    					    ],
+    					    SellingSelect = new Select.Select({  
+    						    render:'#J_SelectItemSelling',
+    					      	valueField:'#J_SearchSelling',
+    					      	items:Sellingitems
+    						});
+    						SellingSelect.render();
+    						SellingSelect.setSelectedValue('0');
+    						
+    						//默认排序
+    						var items3 = [
+    							{text:'默认排序',value:'3'},
+    							{text:'上架时间:早',value:'0'},
+    							{text:'上架时间:晚',value:'1'}
+    								     
+    						],
+    						sortSelect = new Select.Select({  
+    							render:'#J_SelectItemSort',
+    							valueField:'#J_SelectItemSortHide',
+    							items:items3
+    						});
+    						sortSelect.render();
+    						sortSelect.setSelectedValue('0');
+    						sortSelect.on('change', function(ev){
+    							PromopropsItem.searchTbItems();
+    						});
+    						var items4 = [
+    							{text:'状态',value:'0'},
+    							{text:'等待处理',value:'2'},
+    							{text:'处理失败',value:'1'},
+    							{text:'成功加入',value:'3'}
+    								     
+    						],
+    						statusSelect = new Select.Select({  
+    							render:'#J_SearchStatusBox',
+    							valueField:'#J_SearchStatus',
+    							items:items4
+    						});
+    						statusSelect.render();
+    						statusSelect.setSelectedValue(status);
+    						statusSelect.on('change', function(ev){
+    							PromopropsItem.loadPromotionItems();
+    						});
+    		
+    						 Event.on(DOM.query('.J_Tiger'),'mouseenter mouseleave',function(ev){
+   		     	        	  if(ev.type == 'mouseenter'){
+   		     	        		  DOM.addClass(ev.currentTarget,'current');
+   		     	        	  }else{
+   		     	        		 DOM.removeClass(ev.currentTarget,'current');
+   		     	        	  }
+	   		     	          })
+	   		     	          Event.on(DOM.query('.J_Page'),'click',function(ev){
+	   		     	        	  var v = DOM.attr(ev.currentTarget,'data');
+	   			 					if (PromopropsItem.currentMode == '1' ) {
+	   			 						 DOM.removeClass(DOM.query('#J_TopLeft .J_Page'),'active');
+	   			 						 DOM.addClass(ev.currentTarget,'active');
+	   			 						DOM.html(DOM.get('#J_TopLeft .value'),v);
+	   			 						 DOM.val('#J_SelectItemPage',v);
+	   			 						PromopropsItem.searchTbItems();
+	   			 					}else{
+	   			 						DOM.removeClass(DOM.query('#J_TopRight .J_Page'),'active');
+	   			 						DOM.addClass(ev.currentTarget,'active');
+	   			 						DOM.html(DOM.get('#J_TopRight .value'),v);
+	   			 						 DOM.val('#J_RightSelectItemPage',v);
+	   			 						PromopropsItem.loadPromotionItems();
+	   			 					}
+	   		     	          })
+	   		     	  	
+						
+	   		     	          
+	   		     	          
+    		
 						/*编辑活动*/
 						 Event.delegate(document,'click','.J_Editor_Promo', function(ev) {
 							if(!showPermissions('editor_promoprops','促销道具')){
@@ -73,16 +214,27 @@ KISSY.add(function (S,showPages) {
 						 		var data = 'promo_id='+pid;
 						  	    new H.widget.asyncRequest().setURI(getPromoItemNumUrl).setMethod("GET").setHandle(sucess).setErrorHandle(error).setData(data).send();
 						})
+						Event.on('#J_RightSearchBtn','click',function(ev){
+							if(PromopropsItem.currentMode == '1'){
+								PromopropsItem.searchTbItems();
+							} else if(PromopropsItem.currentMode == '2'){
+								PromopropsItem.loadPromotionItems();
+							}
+						});	
+						
 		    	    	Event.on('#J_TopCheckAll','click',PromopropsItem.checkAll);  //淘宝宝贝全选
-		    	    	Event.on('#J_RightSearchBtn','click',PromopropsItem.loadPromotionItems); //搜索活动中宝贝
-		 	    	    Event.on('#J_RightCheckAll','click',PromopropsItem.rightCheckAll); //活动中宝贝全选
+		    	    	
+		    	    	
+		 	    	    Event.on("#J_RightCheckAll", "click", PromopropsItem.rightCheckAll);
+			    	    Event.on("#J_RightBottonCheckAll", "click", PromopropsItem.rightCheckAll);
+			    	    
+			    	    
 		 	    	    Event.on('#J_BatchAddBtn','click',PromopropsItem.batchAddItems); //批量添加到活动中
 		 	    	    Event.on('#J_RemovePromotionItems','click',PromopropsItem.removePromotionItemHandle); //从活动
 	                }, 	
 	         		searchTbItems : function(flag) {
 		                var submitHandle = function(o) {
 		                	DOM.removeClass(".J_ItemSelectBtnHolder",'ks-hidden');
-		                	DOM.get("#J_NoteIcon").style.display = 'none';
 			        	    totalRecords = o.payload.totalRecords;
 							if(totalRecords > 0){
 								DOM.get('#J_LEmpty').style.display = 'none';
@@ -91,35 +243,7 @@ KISSY.add(function (S,showPages) {
 								DOM.get('#J_LEmpty').style.display = '';
 								DOM.css(DOM.query(".J_ItemSelectBtnHolder"),'display' ,'none');
 							}
-							DOM.html(DOM.get("#J_TbItemList"), o.payload.body,true);
-							var lis = DOM.query("#J_TbItemList .J_TbItem");
-				        	Event.on(lis, "mouseenter mouseleave click", function(ev){
-				        		var el = DOM.get('.J_CheckBox',ev.currentTarget);
-	        					if(el.disabled) return;
-				        			if(ev.type == 'mouseenter' ){
-					            		DOM.addClass(ev.currentTarget, 'mouseover');
-					        		}else if(ev.type == 'mouseleave'){
-					        			DOM.removeClass(ev.currentTarget, 'mouseover');
-					            	}else if(ev.type == 'click'){
-					        			if(el.checked == false){
-					        				DOM.addClass(ev.currentTarget,'selected');
-					        				el.checked = true;
-					        			}else{
-					        				DOM.removeClass(ev.currentTarget,'selected');
-											DOM.attr('#J_TopCheckAll','checked',false);
-					        				el.checked = false;
-					        			}
-				        		}
-				        	});
-							Event.on(DOM.query('#J_TbItemList .J_CheckBox'),'click',function(ev){
-				        		ev.stopPropagation();
-				        		var iid = ev.currentTarget.value
-				        		if(ev.currentTarget.checked == true){
-				        			DOM.addClass('#J_TbItem_'+iid,'selected');
-				        		}else{
-				        			DOM.removeClass('#J_TbItem_'+iid,'selected');
-				        		}
-				        	});
+							PromopropsItem.renderItems(o.payload.body);
 							pageCount = Math.ceil(totalRecords/o.payload.pageNum); 
 							PromopropsItem.paginator = new showPages('PromopropsItem.paginator').setRender(PromopropsItem.handlePagination).setPageCount(pageCount).printHtml('#J_Paging',2);
 							PromopropsItem.paginator.printHtml('#J_TopPaging',3);
@@ -148,15 +272,38 @@ KISSY.add(function (S,showPages) {
 		    	    	var data = "q="+title+"&cid="+cid+"&type="+type;
 		            	    data +="&itemOrder="+itemOrder+"&pageSize="+itemPage;
 							data +="&pid="+pid
-		    	    	if (type == 0) {
+//		    	    	if (type == 0) {
 							//价格区间
 							var startPrice = DOM.val(DOM.get("#J_StartPrice"));
 							var endPrice = DOM.val(DOM.get("#J_EndPrice"));
 							data += "&start_price="+startPrice+"&end_price="+endPrice;
-						}
+//						}
 						DOM.show('#J_LeftLoading');
 					    DOM.hide('#J_MainLeftContent');
 		        	    new H.widget.asyncRequest().setURI(getItemsFromTbUrl).setMethod("GET").setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).setDataType('json').send();
+					},
+					renderItems: function(c) {
+						DOM.html(DOM.get("#J_TbItemList"), c ,true);
+			            var lis = DOM.query("#J_TbItemList .J_TbItem");
+			        	Event.on(lis, "mouseenter mouseleave click", function(ev){
+			        		var el = DOM.get('.J_CheckBox',ev.currentTarget);
+        					if(el.disabled) return;
+			        			if(ev.type == 'mouseenter' ){
+				            		DOM.addClass(ev.currentTarget, 'mouseover');
+				        		}else if(ev.type == 'mouseleave'){
+				        			DOM.removeClass(ev.currentTarget, 'mouseover');
+				            	}else if(ev.type == 'click'){
+							      	if(el.checked == false){
+			        				DOM.addClass(ev.currentTarget,'selected');
+			        				el.checked = true;
+			        			}else{
+			        				DOM.removeClass(ev.currentTarget,'selected');
+			        				PromopropsItem.Form.setCheckboxOff(DOM.get('#J_TopCheckAll'));
+			        				el.checked = false;
+			        			}
+			        		}
+			        	});
+	    				PromopropsItem.Form.setCheckboxOff(DOM.get('#J_TopCheckAll'));
 					},
 					checkAll : function(e) {
 						checkBoxs = DOM.query('#J_TbItemList .J_CheckBox');
@@ -177,7 +324,6 @@ KISSY.add(function (S,showPages) {
 				    	pageId = turnTo;
 			    		var submitHandle = function(o) {
 			    			 totalRecords = o.payload.totalRecords;
-							 DOM.attr('#J_TopCheckAll','checked',false);
 							if(totalRecords > 0){
 								DOM.get('#J_LEmpty').style.display = 'none';
 								DOM.css(DOM.query(".J_ItemSelectBtnHolder"),'display' ,'');
@@ -188,35 +334,7 @@ KISSY.add(function (S,showPages) {
 							 pageCount = Math.ceil(totalRecords/o.payload.pageNum); 
 			    			PromopropsItem.paginator.setPage(pageId).setPageCount(pageCount).printHtml('#J_Paging',2);
 			    			PromopropsItem.paginator.setPage(pageId).setPageCount(pageCount).printHtml('#J_TopPaging',3);
-			    			DOM.html(DOM.get("#J_TbItemList"), o.payload.body,true);
-			        	    var lis = DOM.query("#J_TbItemList .J_TbItem");
-				        	Event.on(lis, "mouseenter mouseleave click", function(ev){
-				        		var el = DOM.get('.J_CheckBox',ev.currentTarget);
-	        					if(el.disabled) return;
-				        			if(ev.type == 'mouseenter' ){
-					            		DOM.addClass(ev.currentTarget, 'mouseover');
-					        		}else if(ev.type == 'mouseleave'){
-					        			DOM.removeClass(ev.currentTarget, 'mouseover');
-					            	}else if(ev.type == 'click'){
-								      	if(el.checked == false){
-				        				DOM.addClass(ev.currentTarget,'selected');
-				        				el.checked = true;
-				        			}else{
-				        				DOM.removeClass(ev.currentTarget,'selected');
-										DOM.attr('#J_TopCheckAll','checked',false);
-				        				el.checked = false;
-				        			}
-				        		}
-				        	});
-							Event.on(DOM.query('#J_TbItemList .J_CheckBox'),'click',function(ev){
-				        		ev.stopPropagation();
-				        		var iid = ev.currentTarget.value
-				        		if(ev.currentTarget.checked == true){
-				        			DOM.addClass('#J_TbItem_'+iid,'selected');
-				        		}else{
-				        			DOM.removeClass('#J_TbItem_'+iid,'selected');
-				        		}
-				        	});
+			    			PromopropsItem.renderItems(o.payload.body);
 							DOM.hide('#J_LeftLoading');
 					    	DOM.show('#J_MainLeftContent');
 	//						PromopropsItem.msg.hide();
@@ -249,7 +367,8 @@ KISSY.add(function (S,showPages) {
 							return ;
 						}
 						DOM.attr('#J_TopAddToPromo','disabled',true);
-						DOM.replaceClass('#J_TopAddToPromo','btm-caozuo-orange','btm-caozuo-gray-none');
+						DOM.addClass('#J_TopAddToPromo','button-disabled');
+						
 						checkBoxs = DOM.query("#J_TbItemList .J_CheckBox");
 						var json = [];
 						len = checkBoxs.length;
@@ -300,13 +419,13 @@ KISSY.add(function (S,showPages) {
 									
 									});
 							DOM.attr('#J_TopAddToPromo','disabled',false);
-							DOM.replaceClass('#J_TopAddToPromo','btm-caozuo-gray-none','btm-caozuo-orange');
+							DOM.removeClass('#J_TopAddToPromo','button-disabled');
 							return;
 						}
 			            var itemsJson = KISSY.JSON.stringify(json);
 			            var submitHandle = function(o) {
 			            	DOM.attr('#J_TopAddToPromo','disabled',false);
-							DOM.replaceClass('#J_TopAddToPromo','btm-caozuo-gray-none','btm-caozuo-orange');
+							DOM.removeClass('#J_TopAddToPromo','button-disabled');
 			            	if (o.payload.limit != null) {
 								new H.widget.msgBox({
 								    title:"操作失败",
@@ -322,7 +441,7 @@ KISSY.add(function (S,showPages) {
 		        	    };
 		        	    var errorHandle = function(o) {
 		        	    	DOM.attr('#J_TopAddToPromo','disabled',false);
-							DOM.replaceClass('#J_TopAddToPromo','btm-caozuo-gray-none','btm-caozuo-orange');
+							DOM.removeClass('#J_TopAddToPromo','button-disabled');
 							new H.widget.msgBox({
 									    title:"错误提示",
 									    content:o.desc,
@@ -379,31 +498,42 @@ KISSY.add(function (S,showPages) {
 					
 					renderPromoItems : function(){
 						var lis = DOM.query("#J_PromotionItemList .J_TbItem");
-			        	Event.on(lis, "mouseenter mouseleave click", function(ev){
+			        	Event.on(lis, "mouseenter mouseleave", function(ev){
 			        		var el = DOM.get('.J_CheckBox' ,ev.currentTarget);
 			        		if(el.disabled) return;
 			        		if(ev.type == 'mouseenter'){
 								DOM.addClass(ev.currentTarget,'hover');
 			        		}else if(ev.type == 'mouseleave'){
 								DOM.removeClass(ev.currentTarget,'hover')
-							}else if(ev.type == 'click'){
-			        			if(el.checked == false){
-			        				el.checked = true;
-			        			}else{
-									DOM.attr('#J_RightCheckAll','checked',false);
-			        				el.checked = false;
-			        			}
-			        		}
+							}
 			        	})
-						Event.on(DOM.query('#J_PromotionItemList .J_CheckBox'),'click',function(ev){
-			        		ev.stopPropagation();
-			        		var iid = ev.currentTarget.value
-			        		if(ev.currentTarget.checked == true){
-			        			DOM.addClass('#J_Item_'+iid,'selected');
+			        	PromopropsItem.Form.setCheckboxOff(DOM.get('#J_RightBottonCheckAll'));
+	    				PromopropsItem.Form.setCheckboxOff(DOM.get('#J_RightCheckAll'));
+	    				PromopropsItem.Form.renderAll('#J_PromotionItemList');
+			        	
+			        	Event.on(DOM.query('#J_PromotionItemList .J_CheckBox'),'click',function(ev){
+			        		//ev.stopPropagation();
+			        		var iid = ev.currentTarget.value;
+			        		if(this.checked){
+			        			var checkBoxs = DOM.query("#J_PromotionItemList .J_CheckBox");
+			        			var len = checkBoxs.length;
+			        			var allFlag = true;
+			        			for(i=0; i<len; i++){
+									if(checkBoxs[i].disabled) continue;
+									if(!checkBoxs[i].checked){
+										allFlag = false;
+										break;
+									} 
+								}
+			        			if(allFlag){
+			        				PromopropsItem.Form.setCheckboxOn(DOM.get('#J_RightBottonCheckAll'));
+									PromopropsItem.Form.setCheckboxOn(DOM.get('#J_RightCheckAll'));
+			        			}
 			        		}else{
-			        			DOM.removeClass('#J_Item_'+iid,'selected');
+			        			PromopropsItem.Form.setCheckboxOff(DOM.get('#J_RightBottonCheckAll'));
+			        			PromopropsItem.Form.setCheckboxOff(DOM.get('#J_RightCheckAll'));
 			        		}
-		        		});
+			        	});
 					},
 					promotionItemPaginationHandle : function(turnTo) {
 						pageId = turnTo;
@@ -457,7 +587,7 @@ KISSY.add(function (S,showPages) {
 							return ;
 						}
 						DOM.attr('#J_RemovePromotionItems','disabled',true);
-						DOM.replaceClass('#J_RemovePromotionItems','btm-caozuo-orange','btm-caozuo-gray-none');
+						DOM.addClass('#J_RemovePromotionItems','button-disabled');
 						itemIds = [];
 						if(promo_itemid && pidi){
 							itemIds.push(promo_itemid);
@@ -481,12 +611,12 @@ KISSY.add(function (S,showPages) {
 									
 									});
 								DOM.attr('#J_RemovePromotionItems','disabled',false);
-							    DOM.replaceClass('#J_RemovePromotionItems','btm-caozuo-gray-none','btm-caozuo-orange');
+								DOM.removeClass('#J_RemovePromotionItems','button-disabled');
 							return ;
 						}
 						var submitHandle = function(o) {
 							DOM.attr('#J_RemovePromotionItems','disabled',false);
-							DOM.replaceClass('#J_RemovePromotionItems','btm-caozuo-gray-none','btm-caozuo-orange');
+							DOM.removeClass('#J_RemovePromotionItems','button-disabled');
 							
 							if(type != 'promoItems'){
 				        		PromopropsItem.loadPromotionItems();
@@ -503,15 +633,26 @@ KISSY.add(function (S,showPages) {
 					},
 					//活动中宝贝全选
 					rightCheckAll : function(e) {
-						checkBoxs = DOM.query('#J_PromotionItemList .J_CheckBox');
+						//e.stopPropagation();
+						checkBoxs = DOM.query("#J_PromotionItemList .J_CheckBox");
 						len = checkBoxs.length;
 						for(i=0; i<len; i++){
 							var iid = checkBoxs[i].value;
 							if(checkBoxs[i].disabled) continue;
 							if(this.checked){
-								checkBoxs[i].checked = true;
+								if(e.currentTarget.id == 'J_RightCheckAll'){
+									PromopropsItem.Form.setCheckboxOn(DOM.get('#J_RightBottonCheckAll'));
+								}else{
+									PromopropsItem.Form.setCheckboxOn(DOM.get('#J_RightCheckAll'));
+								}
+								PromopropsItem.Form.setCheckboxOn(checkBoxs[i]);
 							} else {
-								checkBoxs[i].checked = false;
+								if(e.currentTarget.id == 'J_RightCheckAll'){
+									PromopropsItem.Form.setCheckboxOff(DOM.get('#J_RightBottonCheckAll'));
+								}else{
+									PromopropsItem.Form.setCheckboxOff(DOM.get('#J_RightCheckAll'));
+								}
+								PromopropsItem.Form.setCheckboxOff(checkBoxs[i]);
 							}
 						}
 					},
@@ -541,5 +682,5 @@ KISSY.add(function (S,showPages) {
 					
 		    	};
 }, {
-    requires: ['utils/showPages/index']
+    requires: ['utils/showPages/index','utils/beautifyForm/index','bui/select','switchable']
 });

@@ -1,4 +1,4 @@
-KISSY.add(function(S,showPages){
+KISSY.add(function(S,showPages,beautifyForm,Select,Calendar){
 	var S = KISSY,DOM = S.DOM,Event = S.Event,doc = document,focusElemVal = 0;
 	return relistCreate = {
 			paginator : null,
@@ -8,9 +8,11 @@ KISSY.add(function(S,showPages){
 			planCats : null,//分类
 			timer : null,
 			planIdFromUrl : null,
+			x : new beautifyForm,
 			init : function(){
+				//relistCreate.x.renderAll('#J_Step1check');
 				relistCreate.planIdFromUrl = DOM.val('#J_PlanIdFromUrl');
-				var stepFromUrl = DOM.val('#J_StepFromUrl');
+				var stepFromUrl = DOM.val('#J_StepFromUrl'); 
 				if(relistCreate.planIdFromUrl && relistCreate.planIdFromUrl>0){
 					if(stepFromUrl == 1){
 						DOM.show('#J_StepCont1');
@@ -29,12 +31,43 @@ KISSY.add(function(S,showPages){
 						relistCreate.showRelistView();
 						relistCreate.getPlanItems();
 						scroll(0,0);
+						var items = [
+							{text:'全部',value:'0'},
+							{text:'已排除',value:'1'},
+							{text:'待调整',value:'2'},
+							{text:'调整成功',value:'3'},
+							{text:'调整失败',value:'4'}
+						],
+						select = new Select.Select({  
+							render:'#J_Step4Status',
+							valueField:'#hide3',
+							items:items
+						});
+						select.render();
+						select.setSelectedValue('0');
+						var items = [
+							{text:'星期',value:'0'},
+							{text:'周一',value:'1'},
+							{text:'周二',value:'2'},
+							{text:'周三',value:'3'},
+							{text:'周四',value:'4'},
+							{text:'周五',value:'5'},
+							{text:'周六',value:'6'},
+							{text:'周日',value:'7'}
+						],
+						select = new Select.Select({  
+							render:'#J_Step4Week',
+							valueField:'#hide4',
+							items:items
+						});
+						select.render();
+						select.setSelectedValue('0');
 					}
-				}else{
+				}else{	
 					DOM.show('#J_StepCont1');
 				}
 				//第一步勾选自动加入提示
-				Event.on('#J_Step1PromptClick','click',function(){
+				Event.on('#J_Step1PromptClick','click',function(ev){
 					if(DOM.prop('#J_AtuoRadio','checked')){
 						DOM.css('#J_Step1PromptCont','visibility','visible');
 					}else{
@@ -99,13 +132,14 @@ KISSY.add(function(S,showPages){
 					    type:"error"
 					});
 					return;
+					
 				}
 				var planName = DOM.val('#J_PlanName');
 				if(planName == ''){
 					DOM.css('#J_PlanName','border','1px solid red');
 					return;
 				}
-				if(DOM.prop('#J_AtuoRadio','checked')){
+				if(DOM.prop('#J_AtuoRadio','checked') == true){
 					var add_way = 0;
 				}else{
 					var add_way = 1;
@@ -114,10 +148,11 @@ KISSY.add(function(S,showPages){
 					relistCreate.setStep2BaseHtml();
 				}else{
 					var data = 'plan_id=0&step=1&planName='+planName+'&add_way='+add_way;
-					relistCreate.msg = new H.widget.msgBox({ type: "error",
-												                content: "系统正在处理中",
-												 				dialogType:"loading"
-												            });
+					relistCreate.msg = new H.widget.msgBox({ 
+						type: "error",
+						content: "系统正在处理中",
+						dialogType:"loading"
+					});
 					new H.widget.asyncRequest().setURI(saveUrl).setMethod("POST").setHandle(submitHandle).setErrorHandle(errorHandle).setForm(J_subform).setData(data).send();
 				}
 			},
@@ -127,6 +162,31 @@ KISSY.add(function(S,showPages){
 				var step2Html = DOM.html('#J_StepCont2');
 //				var step2Html = '<div class="p10"><div class="clear ks-clear mt15"><div class="fl color-gray">已排除<span id="J_Step2ExcludeNum">0</span>个宝贝</div><ul class="fr"><li class="fl mr8"><input type="text"value="关键字、商品链接、商品编码"id="J_Step2SearchTitle"class="input-text w-180"onfocus="this.className=\'input-text input-text-on w-180\';if(this.value==\'关键字、商品链接、商品编码\'){this.value = \'\';}"onblur="this.className=\'input-text w-180\';if(this.value==\'\'){this.value = \'关键字、商品链接、商品编码\'}"></li><li class="fl mr8"><select id="J_Step2Status"><option value="0">全部</option><option value="1">已排除</option></select></li><li class="fl mr8"><select id="J_Step2Cat"style="display:none;"></select></li><li class="fl"><a id="J_Step2Search"href="#2"onclick="relistCreate.searchStep2()"><span class="btm-sousuo"title="搜索"></span></a></li></ul></div><div class="ui-list-title mt15"><ul><li style="width:40%;">宝贝标题</li><li style="width:30%;">下架时间</li><li style="width:30%;">操作</li></ul></div><div style="display:none;"id="J_Step2Loading"class="center loading"></div><div id="J_Step2Cont"class="ui-list"style=""><!--ui-list start--><div id="J_Step2Empty"class="no-details"style="display:none;"><div><span class="no-details-pic"></span><span class="prompt-1">亲，没有找到任何宝贝</span></div></div><ul id="J_Step2List"class="list-view"></ul><div class="J_Step2Holder"><div style="height:40px; padding-bottom:15px"class="ui-page"id="J_Step2Paging"></div></div><div style="text-align:center;margin:15px auto;"><input type="button"class="btm-orange"value="下一步，配置"id="J_Step2Save"style="font-size:13px;"></div></div></div>';
 				DOM.html('#J_StepCont',step2Html);
+				var items = [
+					{text:'全部',value:'0'},
+					{text:'已排除',value:'1'},
+					{text:'未排除',value:'5'}
+				],
+				select = new Select.Select({  
+					render:'#J_Step2Status',
+					valueField:'#hide1',
+					items:items
+				});
+				select.render();
+				select.setSelectedValue('0');
+				
+				var items = [
+					{text:'全部',value:'0'},
+					{text:'已排除',value:'1'}
+				],
+				select = new Select.Select({  
+					render:'#J_Step2Status_1',
+					valueField:'#hide1',
+					items:items
+				});
+				select.render();
+				select.setSelectedValue('0');
+				
 				if(!relistCreate.planCats){
 					relistCreate._getPlanCats();
 				}
@@ -155,7 +215,7 @@ KISSY.add(function(S,showPages){
 				if(q == '关键字、商品链接、商品编码'){
 					q = '';
 				}
-				var status = DOM.val('#J_Step2Status');
+				var status = DOM.val('#hide1');
 				var cid = DOM.val('#J_Step2Cat');
 				var plan_id = relistCreate.planIdFromUrl||DOM.val('#J_PlanId');
 				var data = 'plan_id='+plan_id+'&pageSize=10&q='+q+'&status='+status+'&cid='+cid;
@@ -168,6 +228,17 @@ KISSY.add(function(S,showPages){
 			_getPlanCats : function(){
 				var sHandle = function(e){
 					relistCreate.planCats = e.payload;
+					
+					/*promoSelect = new Select.Select({  
+					    render:'#J_Step2Cat',
+				      	valueField:'#hide2',
+				      	items:e.payload,
+				      	visibleMode : 'display'
+					});
+					promoSelect.render();
+					promoSelect.setSelectedValue('0');
+					DOM.css(DOM.get('.bui-list-picker'),{'left':'-999px','top':'-999px'});*/
+					
 					DOM.html('#J_Step2Cat',relistCreate.planCats);
 					DOM.show('#J_Step2Cat');
 					relistCreate.searchStep2();
@@ -210,7 +281,7 @@ KISSY.add(function(S,showPages){
 				if(q == '关键字、商品链接、商品编码'){
 					q = '';
 				}
-				var status = DOM.val('#J_Step2Status');
+				var status = DOM.val('#hide1');
 				var cid = DOM.val('#J_Step2Cat');
 				var plan_id = relistCreate.planIdFromUrl||DOM.val('#J_PlanId');
 				var data = 'plan_id='+plan_id+'&pageSize=10&q='+q+'&status='+status+'&cid='+cid+'&page_id='+pageId;
@@ -694,7 +765,7 @@ KISSY.add(function(S,showPages){
 						if(o.payload.percent == 100){
 							relistCreate.timer.cancel();
 							//第四步--下一步，预览
-							DOM.replaceClass('#J_Step4ToPreview','btm-gray','btm-orange');
+							DOM.replaceClass('#J_Step4ToPreview','button-disabled','button-green');
 //							Event.on('#J_Step4ToPreview','click',function(){
 								var step4PreviewHtml = DOM.html('#J_StepCont4Preview');
 								DOM.html('#J_StepCont',step4PreviewHtml);
@@ -840,8 +911,8 @@ KISSY.add(function(S,showPages){
 				if(q == '关键字、商品链接'){
 					q = '';
 				}
-				var status = DOM.val('#J_Step4Status');
-				var week = DOM.val('#J_Step4Week');
+				var status = DOM.val('#hide3');
+				var week = DOM.val('#hide4');
 				var data = 'plan_id='+plan_id+"&pageSize=10"+"&status="+status+"&week="+week+"&q="+q;
 	 			DOM.show('#J_RightLoading');
 				DOM.hide('#J_MainRightContent');
@@ -870,8 +941,8 @@ KISSY.add(function(S,showPages){
 				if(q == '关键字、商品链接'){
 					q = '';
 				}
-				var status = DOM.val('#J_Step4Status');
-				var week = DOM.val('#J_Step4Week');
+				var status = DOM.val('#hide3');
+				var week = DOM.val('#hide4');
 				var data = 'plan_id='+plan_id+"&pageSize=10"+"&status="+status+"&week="+week+"&q="+q+"&page_id="+pageId;
     	        DOM.show('#J_RightLoading');
 				DOM.hide('#J_MainRightContent');
@@ -894,10 +965,10 @@ KISSY.add(function(S,showPages){
 				DOM.hide(DOM.get('.J_EditorListTime','#J_Promo_'+pid));	
 		 		var SpromoTime = KISSY.trim(DOM.val('#J_SouceListTime_'+pid));
 				var str = '<div class="bianji-shijian w-170">'+
-		            '<span class="block riqi">&nbsp;<input style="*width:135px;" type="text" readonly="readonly" id="J_ScheListDate_'+pid+'" name="start_date" class="input-text input-day-2" value="'+SpromoTime+'" title="上架时间">'+
+		            '<span class="block riqi">&nbsp;<input style="*width:135px;" type="text" readonly="readonly" id="J_ScheListDate_'+pid+'" name="start_date" class="calendarImg input-day-2" value="'+SpromoTime+'" title="上架时间">'+
 		            '</span>'+
 		            '<span class="block clear"></span>'+
-		        	'<div style=" margin:0px 2px 0px 4px; _display:inline;" class="gray-btm-h-20 w-70 fl" id="J_SaveTime_'+pid+'" data="'+pid+'">保存</div><div class="gray-btm-h-20 w-70" id="J_CancelTime_'+pid+'" data="'+pid+'">取消</div>'+
+		        	'<div style=" margin:0px 2px 0px 4px; _display:inline;" class="btm-small button-green w-70 fl" id="J_SaveTime_'+pid+'" data="'+pid+'">保存</div><div class="btm-small button-green w-70" id="J_CancelTime_'+pid+'" data="'+pid+'">取消</div>'+
 		        	'</div>';
 				DOM.html('#J_ShowEditorListTime_'+pid,str);
 				DOM.show('#J_ShowEditorListTime_'+pid);
@@ -949,7 +1020,33 @@ KISSY.add(function(S,showPages){
 			},
 			//修改活动时间日历
 			Calendar : function($id,pid){
-				var c =new S.Calendar('#'+$id+pid,{
+				var datepicker = new Calendar.DatePicker({
+   	              trigger:'#'+$id+pid,
+   	              showTime:true,
+	              autoRender : true,
+	              date :new Date(),
+	              minDate:new Date(),
+	              autoSetValue :false,
+	              textField  : '2'
+   	            });
+				  
+     	        datepicker.on('selectedchange',function (e) {
+     	        		var nowDate = new Date();
+     	        		var startDate   = e.value;
+     	        		var id = this.id,self = this;
+     	        		if(startDate<=nowDate){
+     	        			new H.widget.msgBox({
+							    title:"上架时间不能小于当前时间，请重新选择",
+							    content:o.desc,
+							    type:"error"
+							});
+				 			relistCreate.msg.hide(true);
+						}else{
+							S.one('#J_ScheListDate_'+pid).val(e.text);
+							self.hide();
+						}
+     	         });
+				/*var c =new S.Calendar('#'+$id+pid,{
 							popup:true,
 							triggerType:['click'],
 							showTime:true,
@@ -973,9 +1070,9 @@ KISSY.add(function(S,showPages){
 									self.hide();
 								}
 								
-						});
-				}		
+						});*/
+			}		
 	};
 },{
-	requires : ['utils/showPages/index']
+	requires : ['utils/showPages/index','utils/beautifyForm/index','bui/select','bui/calendar']
 });

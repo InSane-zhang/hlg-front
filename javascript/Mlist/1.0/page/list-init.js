@@ -2,12 +2,54 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,showPages) {
+KISSY.add(function (S,showPages,Select) {
     // your code here
 	var DOM = S.DOM, Event = S.Event;	
 	
 	return listControl = {
 			init : function() {
+				var items = [
+				  {text:'投放位置',value:'0'},
+		   	      {text:'位置1',value:'1'},
+		   	      {text:'位置2',value:'2'},
+		   	      {text:'位置3',value:'3'},
+		   	      {text:'位置4',value:'4'},
+		   	      {text:'位置5',value:'5'},
+		   	      {text:'位置6',value:'6'}
+		   	    ],
+		   	    select = new Select.Select({  
+		   		    render:'#J_Pos',
+		   	      	valueField:'#hide',
+		   	      	items:items
+		   		});
+		   		select.render();
+		   		if(pos){
+		   			select.setSelectedValue(pos);						
+		   		}else{
+		   			select.setSelectedValue('0');
+		   		}
+		   		var items1 = [
+   		   	      {text:'素材类型',value:'00'},
+   		   	      {text:'海报',value:'2'},
+   		   	      {text:'关联列表',value:'3'},
+   		   	      {text:'搭配套餐',value:'7'},
+   		   	      {text:'团购模版',value:'6'},
+   		   	      {text:'客服模板',value:'8'},
+   		   	      {text:'分类模板',value:'9'},
+   		   	      {text:'自定义',value:'1'}
+   		   	    ],
+   		   	    select1 = new Select.Select({  
+   		   		    render:'#J_Mtype',
+   		   	      	valueField:'#hide1',
+   		   	      	items:items1
+   		   		});
+   		   		select1.render();
+	   		   	if(mt){
+		   			select1.setSelectedValue(mt);						
+		   		}else{
+		   			select1.setSelectedValue('00');
+			   	}
+		   		
 				var Temple = DOM.query('.J_Height');
 				for(i=0;i<10;i++){
 					Height = DOM.height(Temple[i]);
@@ -88,9 +130,9 @@ KISSY.add(function (S,showPages) {
 			
 			search : function(){
 				var list_id = DOM.val('#J_SearchListId');
-				var pos = DOM.val('#J_Pos');
-				var mt = DOM.val('#J_Mtype');	
-				if(DOM.val(DOM.get("#J_SearchName")) != '输入素材名称'){
+				var pos = DOM.val('#hide');
+				var mt = DOM.val('#hide1');	
+				if(DOM.val(DOM.get("#J_SearchName")) != '输入素材关键字'){
 					var searchName = encodeURIComponent(DOM.val(DOM.get("#J_SearchName"))); //标题
 		    	}else{
 		    	    var searchName ='';
@@ -101,5 +143,5 @@ KISSY.add(function (S,showPages) {
 		
 	}
 }, {
-    requires: ['utils/showPages/index']
+    requires: ['utils/showPages/index','bui/select']
 });

@@ -72,7 +72,7 @@ KISSY.add(function (S) {
 	    self.image = "";
 	    switch (self.options.type && self.options.dialogType == 'dialog') {
 	        case "alert":
-	            image = "alert.png";
+	            image = "success.png";
 	            break;
 	        case "info":
 	            image = "info.png";
@@ -83,6 +83,8 @@ KISSY.add(function (S) {
 	        case "confirm":
 	            image = "confirm.png";
 	            break;
+	        case "popup":
+	            image = "info.png";
 	        default:
 	            image = "alert.png";
 	    }
@@ -107,9 +109,9 @@ KISSY.add(function (S) {
 					var buttons = "";
 					S.each(self.options.buttons, function(button, index){
 						if(index == 0){
-							buttons += "<span><input class=\"btm-68-orange msgButton \" type=\"button\" name=\"" + button.value + "\" value=\"" + button.value + "\" /></span>";
+							buttons += "<span class=\"msg-btn-orange\"><input class=\"msgButton\" type=\"button\" name=\"" + button.value + "\" value=\"" + button.value + "\" /></span>";
 						}else{
-							buttons += "<span><input class=\"btm-68-gray msgButton \" type=\"button\" name=\"" + button.value + "\" value=\"" + button.value + "\" /></span>";
+							buttons += "<span class=\"msg-btn-gray\"><input class=\"msgButton\" type=\"button\" name=\"" + button.value + "\" value=\"" + button.value + "\" /></span>";
 						}
 					})
 					var inputs = "";
@@ -151,8 +153,17 @@ KISSY.add(function (S) {
 						}
 					})
 					var divBackGround = "<div id=" + divMsgBoxBackGroundId + " class=\"msgBoxBackGround\"></div>";
-					var divTitle = "<div class=\"msgBoxTitle\">" + self.options.title + "</div>";
-					var divContainer = "<div class=\"msgBoxContainer\"><div id=" + divMsgBoxImageId + " class=\"msgBoxImage\"><img src=\"" + self.msgBoxImagePath + image + "\"/></div><div id=" + divMsgBoxContentId + " class=\"msgBoxContent\"><p><span>" + options.content + "</span></p></div></div>";
+					if(options.type == 'popup'){
+						var divTitle = "<div class=\"msgBoxTitle\"><span>" + self.options.title + "</span></div>";
+					}else{
+						var divTitle = "<div class=\"msgBoxTitle\"><span>" + self.options.title + "</span> <a class=\"closeButton \"></a></div>";
+					}
+					if(options.content.search('div') < 0){
+						var content = "<p><span>" + options.content + "</span></p>";
+					}else{
+						var content =  options.content ;
+					}
+					var divContainer = "<div class=\"msgBoxContainer\"><div id=" + divMsgBoxImageId + " class=\"msgBoxImage\"><img src=\"" + self.msgBoxImagePath + image + "\"/></div><div id=" + divMsgBoxContentId + " class=\"msgBoxContent\">"+content+"</div></div>";
 					var divButtons = "<div id=" + divMsgBoxButtonsId + " class=\"msgBoxButtons\">" + buttons + "</div>";
 					var divInputs = "<div class=\"msgBoxInputs\">" + inputs + "</div>";
 					
@@ -190,6 +201,9 @@ KISSY.add(function (S) {
 				        }else {
 				            self.getFocus();
 				        }
+					});
+					Event.on(DOM.get('.closeButton'),'click',function (e) {
+				            self.hide();
 					});
 					Event.on(DOM.query('.msgButton'),'click',function(ev){
 						ev.preventDefault();

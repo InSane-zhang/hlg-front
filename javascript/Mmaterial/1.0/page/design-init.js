@@ -2,7 +2,7 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {   
+KISSY.add(function (S,showPages,TShop,ListParam,designControl,Switchable,Select,Overlay,beautifyForm) {   
     // your code here
 	var DOM = S.DOM, Event = S.Event;	
 	
@@ -11,7 +11,7 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 				selectItem : eval('('+ itemsJson+')'),   //已加入列表的宝贝
 				preSelectItem : [], //预加入列表的宝贝（已选中）
 				savedPics : [],//针对成人用品店已经保存的宝贝主图地址
-			
+				dialog : null,
 				defaultItemFieldNames : {},
 				defaultItemParams : eval('('+ defaultItemParamsJson+')'),
 				defaultRateMess : {buyer_nick:"",buyer_level:"",content:""},
@@ -42,41 +42,68 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 				meals : [],
 				useMeal : false,
 				init : function() {
-				    //先定义-投手
+					//先定义-投手
                     S.each(list.defaultItemParams,function(item){
                         //自定义的宝贝级别参数名
                         list.defaultItemFieldNames[item.field_code] = item.field_name;
                     });
 					//列表参数 宝贝参数 初始化
-					ListParam.init();
-					//window.g_ds_del_list = [];
-					if(DOM.hasClass('#body-html','w-1000')){
-			  	        var str ='<select id="J_SelectItemPage" name="Page">'+
-					  	        '<option selected="selected" value="10">10条</option>'+
-					  	        '<option value="20">20条</option>'+
-					  	        '<option value="30">30条</option>'+
-					  	        '<option value="40">40条</option>'+
-					  	        '<option value="50">50条</option>'+
-					  	        '<option value="100">100条</option>'+
-					  	        '</select>';
-	  	        		DOM.html('#J_SelectPage',str);
-			  	     }else{
-			  	            var str ='<select id="J_SelectItemPage" name="Page">'+
-			  	  	        '<option selected="selected" value="12">12条</option>'+
-			  	  	        '<option value="24">24条</option>'+
-			  	  	        '<option value="36">36条</option>'+
-			  	  	        '<option value="48">48条</option>'+
-			  	  	        '<option value="60">60条</option>'+
-			  	  	        '</select>';
-			  	        	DOM.html('#J_SelectPage',str);
-			  		 }	
+					ListParam.init(); 
+				
+					//默认排序
+					var items1 = [
+						{text:'12条',value:'12'},
+						{text:'24条',value:'24'},
+						{text:'36条',value:'36'}
+					],
+					sortSelect = new Select.Select({  
+						render:'#J_SelectPage',
+						valueField:'#J_SelectItemPage',
+						items:items1
+					});
+					sortSelect.render();
+					sortSelect.setSelectedValue('12');
+					//选择分类
+				    cidSelect = new Select.Select({  
+					    render:'#J_SelectItemCidBox',
+				      	valueField:'#J_SelectItemCid',
+				      	items:S.JSON.parse(sellerCats),
+				      	visibleMode : 'display'
+					});
+				    cidSelect.render();
+				    cidSelect.setSelectedValue('0');
+					DOM.css(DOM.query('.bui-list-picker'),{'left':'-999px','top':'-999px'});
+					//选择活动
+				    promoSelect = new Select.Select({  
+					    render:'#J_PromoIdBox',
+				      	valueField:'#J_PromoId',
+				      	items:S.JSON.parse(ptomoLists),
+				      	visibleMode : 'display'
+					});
+					promoSelect.render();
+					promoSelect.setSelectedValue('0');
+					//出售中
+					var items2 = [
+									{text:'全部',value:'0'},
+									{text:'出售中',value:'1'},
+									{text:'仓库中',value:'2'}
+								],
+				    sellSelect = new Select.Select({  
+					    render:'#J_SearchSellingBox',
+				      	valueField:'#J_SearchSelling',
+				      	items:items2,
+				      	visibleMode : 'display'
+					});
+				    sellSelect.render();
+				    sellSelect.setSelectedValue('1');
+					
 					if(cid=='27' || hand_img_url=='1'){
 						for(var k=0;k<list.selectItem.length;k++){
 							var tempItem = list.selectItem[k];
 							list.savedPics[tempItem.id] = tempItem.pic_url;
 						}
 					}
-					window.iconTabs = new S.Tabs('#J_main',{
+					window.iconTabs = new Switchable.Tabs('#J_main',{
 							 		 navCls:'ks-switchable-nav',
 							 		 contentCls:'main-content',
 							 		 activeTriggerCls:'current',
@@ -87,53 +114,53 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 								 			case 0:
 								 				DOM.show('#J_Preview_Box');
 								 				Event.remove('#J_SaveBtn');
-								 				DOM.replaceClass(DOM.get('#J_SaveBtn'),'btm-gray-xiayibu btm-orange-baocun','btm-orange-xiayibu');
+								 				DOM.html('#J_SaveBtn','下一步');
 								 				Event.on('#J_SaveBtn','click',function(){
 								 				    list.preview();
 								 				    iconTabs.switchTo(1);
-								 				    if(list.useMeal && meal_id!='0'){
-							                            new H.widget.msgBox({
-							                                title:"温馨提示",
-							                                content:'您已开通官方搭配套餐服务，可以在下方选择官方搭配套餐！',
-							                                type: "confirm",
-					                                        buttons: [{ value: "明白" }],
-					                                        success: function (result) {
-							                                
-					                                        }
-							                            });
-								 				   }
 							 				    });
 								 				
 								 				Event.remove('#J_PreviewBtn');
 								 				if(list.preSelectItem.length>0 || list.selectItem.length>0){
 								 					Event.on('#J_PreviewBtn','click',function(){list.preview();});
-								 					DOM.replaceClass(DOM.get('#J_PreviewBtn'), 'btm-gray-yulan','btm-orange-yulan');
+								 					DOM.attr('#J_PreviewBtn','disabled',false);
+													DOM.removeClass('#J_PreviewBtn','button-disabled');
 								 				}else{
-								 					DOM.replaceClass(DOM.get('#J_PreviewBtn'), 'btm-orange-yulan','btm-gray-yulan');
+								 					DOM.attr('#J_PreviewBtn','disabled',true);
+													DOM.addClass('#J_PreviewBtn','button-disabled');
 								 				}
 								 			break;
 								 			case 1:
 								 				DOM.show('#J_Preview_Box');
 								 				list.renderItems(list.tbItem);
-								 				
 								 				Event.remove('#J_SaveBtn');
-								 				DOM.replaceClass(DOM.get('#J_SaveBtn'),'btm-gray-xiayibu btm-orange-baocun','btm-orange-xiayibu');
+								 				DOM.html('#J_SaveBtn','下一步');
 								 				Event.on('#J_SaveBtn','click',function(){
-								 					list.addItems();
-								 					list.preview();
-								 					list.renderSelectItems(1);
-								 					iconTabs.switchTo(2);
+								 					
+								 					if(mtype==7 && !list.useMeal){
+//								 							//弹框 输入套餐参数
+								 							list.dialog.show();
+								 					}else{
+								 						list.addItems();
+									 					list.preview();
+									 					list.renderSelectItems(1);
+									 					iconTabs.switchTo(2);
+								 					}
+								 					
 								 				});
 								 				Event.remove('#J_PreviewBtn');
 								 				if(list.preSelectItem.length>0 || list.selectItem.length>0){
 								 					Event.on('#J_PreviewBtn','click',function(){list.preview();});
-								 					DOM.replaceClass(DOM.get('#J_PreviewBtn'), 'btm-gray-yulan','btm-orange-yulan');
+								 					DOM.attr('#J_PreviewBtn','disabled',false);
+													DOM.removeClass('#J_PreviewBtn','button-disabled');
 								 				}else{
-								 					DOM.replaceClass(DOM.get('#J_PreviewBtn'), 'btm-orange-yulan','btm-gray-yulan');
+								 					DOM.attr('#J_PreviewBtn','disabled',true);
+													DOM.addClass('#J_PreviewBtn','button-disabled');
 								 				}
+								 				DOM.addClass('#J_Step_1','current');
+								 				DOM.addClass('#J_Step_2','current');
 								 			break;
 								 			case 2:
-								 				//alert('switch-2');
 								 				if(mtype==7){
 								 					if(meal_id != '0'){
 								 						DOM.hide('.status-pendding');
@@ -142,7 +169,7 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 								 					}
 								 				}
 								 				Event.remove('#J_SaveBtn');
-								 				DOM.replaceClass(DOM.get('#J_SaveBtn'),'btm-gray-xiayibu btm-orange-xiayibu','btm-orange-baocun');
+								 				DOM.html('#J_SaveBtn','保存');
 								 				Event.remove('#J_PreviewBtn');
 								 				if(list.selectItem.length>0){
 								 					Event.on('#J_PreviewBtn','click',function(){
@@ -153,14 +180,19 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 								 						list.tempSave();
 								 						list.save()
 								 					});
-								 					DOM.replaceClass(DOM.get('#J_PreviewBtn'), 'btm-gray-yulan','btm-orange-yulan');
+								 					DOM.attr('#J_PreviewBtn','disabled',false);
+													DOM.removeClass('#J_PreviewBtn','button-disabled');
 								 				}else{
-								 					DOM.replaceClass(DOM.get('#J_PreviewBtn'), 'btm-orange-yulan','btm-gray-yulan');
+								 					DOM.attr('#J_PreviewBtn','disabled',true);
+													DOM.addClass('#J_PreviewBtn','button-disabled');
 								 					DOM.hide('#J_Preview_Box');
 								 				}
+								 				DOM.addClass('#J_Step_1','current');
+								 				DOM.addClass('#J_Step_2','current');
 								 				break;	
 								 		}
 			 					})
+			 					
 					if(mtype==7){
 						list.meals = eval('('+ mealListJson+')')
 						if(list.meals.length>0){
@@ -174,96 +206,92 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 						list.getMeals();
 						list.getMealParam();
 					}else{
-						DOM.hide('.J_TurnTbItemButt');
-						DOM.hide('.J_TurnMealButt');
-						DOM.hide('#J_TurnSelItemLi');
+						
+						
 					}
-//				 	if(list.useMeal){
-//				 		DOM.show('#J_ShowMealDiv');
-//				 	}else {
-				 		list.searchTbItems();
-				 		DOM.show('#J_ShowTbItemDiv');
-//				 	}
+				 	if(list.useMeal){
+				 		// 有官方搭配套餐的 处理
+				 		DOM.hide('#J_FirstStepBox');
+		 				DOM.show('#J_ToggleC');
+				 		DOM.show('#J_IndexMain');
+				 		DOM.show('#J_ShowMealDiv');//显示官方搭配套餐
+				 		DOM.show('#J_StepBox');  //显示下一步 预览
+				 	}else {
+				 		// 没有官方搭配套餐的 处理
+				 		if(mtype==7){
+				 			DOM.show('#J_FirstStepBox');
+				 			list.searchTbItems();
+				 			Event.on('#J_NoOrderDapei','click',function(ev){
+				 				DOM.show('#J_StepBox');
+				 				DOM.show('#J_ToggleC');
+				 				DOM.hide('#J_FirstStepBox');
+				 				DOM.show('#J_ShowTbItemDiv');
+				 				DOM.show('#J_IndexMain');
+				 			});
+				 			if(isShowFirst == 0){
+				 				Event.fire('#J_NoOrderDapei','click');
+				 			}
+				 		}else{
+				 			DOM.show('#J_StepBox');
+			 				DOM.show('#J_ToggleC');
+				 			list.searchTbItems();
+				 			DOM.show('#J_IndexMain');
+				 			DOM.show('#J_ShowTbItemDiv');
+				 		}
+				 	}
 			 		//在编辑列表中显示已经选中的宝贝
 				 	if (list.selectItem.length > 0) {
 				 		list.renderSelectItems(1, true);
 				 		list.editFlag = true;
 				 	}
-			
+			 		
 					Event.on('#J_SearchBtn','click',list.searchTbItems);
-					//Event.on('#J_TCheckAll','click',list.checkAll);
 					Event.on('#J_ListBoxToggle','click',list.toggle);
 					
+//					Event.on('.J_TurnMealButt','click',function(){
+//						var meal = list.meals;
+//						var mealCheckTrue = false;
+//						var mealLimitNum = '';
+//						for(var i=0;i<meal.length;i++){
+//    		                if(meal[i].item_list.length == limit){
+//    		                    mealCheckTrue = true; 
+//    		                    break;
+//    		                }else{
+//    		                    mealLimitNum += meal[i].item_list.length + ',';
+//    		                }
+//						}
+//                        var delComma = new RegExp(",$","g");
+//						mealLimitNum = mealLimitNum.replace(delComma,'');
+//						if(!mealCheckTrue){
+//						    new H.widget.msgBox({
+//						        title:"错误提示",
+//						        content:'您选中的模板规格支持的宝贝数为:'+limit+'个,与您的官方搭配套餐支持的宝贝数('+mealLimitNum+')不符!请返回第二步选择合适的“规格x宽度x个数”',
+//						        type: "confirm",
+//                                buttons: [{ value: "返回第二步" }, { value: "取消" }],
+//                                success: function (result) {
+//                                    if (result == "返回第二步") {
+//                                        iconTabs.switchTo(0);
+//                                    }
+//                                }
+//						    });
+//                            return;
+//						}
+//						list.selectItem = [];
+//						list.preSelectItem = [];
+//						if(list.lastedMealOffset != null) {
+//							meal_id = list.meals[list.lastedMealOffset].meal_id;
+//							list.addMeal(list.lastedMealOffset);
+//						}
+//						list.preview();
+//						list.renderSelectItems();
+//						DOM.hide('#J_ShowTbItemDiv');
+//						DOM.show('#J_ShowMealDiv');
+//					})
 					
-
-					Event.on('.J_TurnTbItemButt','click',function(){
-						meal_id = '0';
-						list.selectItem = [];
-						list.preSelectItem = [];
-						list.searchTbItems();
-						list.renderSelectItems();
-						//list.preview();
-						DOM.hide('#J_ShowMealDiv');
-						DOM.show('#J_ShowTbItemDiv');
-					})
-					Event.on('.J_TurnMealButt','click',function(){
-						if(list.meals.length==0){
-							new H.widget.msgBox({
-							    title:"错误提示",
-							    content:'您未开通官方搭配套餐服务或者没有搭配套餐！',
-							    type:"error"
-							});
-							return;
-						}
-						
-						var meal = list.meals;
-						var mealCheckTrue = false;
-						var mealLimitNum = '';
-						for(var i=0;i<meal.length;i++){
-    		                if(meal[i].item_list.length == limit){
-    		                    mealCheckTrue = true; 
-    		                    break;
-    		                }else{
-    		                    mealLimitNum += meal[i].item_list.length + ',';
-    		                }
-						}
-                        var delComma = new RegExp(",$","g");
-						mealLimitNum = mealLimitNum.replace(delComma,'');
-						if(!mealCheckTrue){
-						    new H.widget.msgBox({
-						        title:"错误提示",
-						        content:'您选中的模板规格支持的宝贝数为:'+limit+'个,与您的官方搭配套餐支持的宝贝数('+mealLimitNum+')不符!请返回第二步选择合适的“规格x宽度x个数”',
-						        type: "confirm",
-                                buttons: [{ value: "返回第二步" }, { value: "取消" }],
-                                success: function (result) {
-                                    if (result == "返回第二步") {
-                                        iconTabs.switchTo(0);
-                                    }
-                                }
-						    });
-                            return;
-						}
-						
-						list.selectItem = [];
-						list.preSelectItem = [];
-						if(list.lastedMealOffset != null) {
-							meal_id = list.meals[list.lastedMealOffset].meal_id;
-							list.addMeal(list.lastedMealOffset);
-						}
-						list.preview();
-						list.renderSelectItems();
-						DOM.hide('#J_ShowTbItemDiv');
-						DOM.show('#J_ShowMealDiv');
-					})
-					//默认 按钮的 时间
-					Event.on('#J_NavDisabled','click',function(){
-						iconTabs.switchTo(1);
-					})
-					DOM.replaceClass(DOM.get('#J_SaveBtn'),'btm-gray-xiayibu','btm-orange-xiayibu');
+					
+					
 					Event.on('#J_SaveBtn','click',function(){list.preview();iconTabs.switchTo(1);});
-					Event.on('#J_PreviewBtn','click',function(){list.subListParam();});
-			 		
-		  		
+					Event.on('#J_PreviewBtn','click',function(){list.preview();});
 			},
 			// 设置 所有宝贝
 			setAllItems : function(){
@@ -353,28 +381,98 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 				list.preview();
 			},
 			getMealParam : function(){
+				var str ='<ul class="ui-about-list" >';
 				for(k=1; k<=5; k++){
 	            	var list_par = DOM.get('#J_list_param'+k);
 	            	if(list_par){
 	                	switch(list_par.title){
 	                		case '套餐原价':
 								list.meal_price = list_par;
-	                    		break;
+								str += '<li class=""><div class="ui-side-list">套餐原价：</div><div class="ui-content-list"><input type="text" id="J_MealPrice" title="套餐原价" class="input-text-3" value="'+list.meal_price.value+'"></div></li>';
+	                    		DOM.hide(DOM.parent(list_par,2));
+								break;
 	                		case '套餐折扣':
 	                			list.meal_discount = list_par;
-	                    		break;
+	                			str += '<li class=""><div class="ui-side-list">套餐折扣：</div><div class="ui-content-list"><input type="text" id="J_MealDiscount" title="套餐折扣" class="input-text-3" value="'+list.meal_discount.value+'"></div></li>';
+	                			DOM.hide(DOM.parent(list_par,2));
+	                			break;
 	                		case '节省的钱':
 	                			list.meal_save = list_par;
-	                    		break;
+	                			str += '<li class=""><div class="ui-side-list">节省的钱：</div><div class="ui-content-list"><input type="text" id="J_MealSave" title="节省的钱" class="input-text-3" value="'+list.meal_save.value+'"></div></li>';
+	                			DOM.hide(DOM.parent(list_par,2));
+	                			break;
 	                		case '套餐现价':
 	                			list.meal_meal_price = list_par;
+	                			str += '<li class=""><div class="ui-side-list">套餐现价：</div><div class="ui-content-list"><input type="text" id="J_MealMealPrice" title="套餐现价" class="input-text-3" value="'+list.meal_meal_price.value+'"></div></li>';
+	                			DOM.hide(DOM.parent(list_par,2));
 	                    		break;
 	                		case '套餐链接':
 	                			list.meal_url = list_par;
+	                			DOM.hide(DOM.parent(list_par,2));
+	                			str += '<li class=""><div class="ui-side-list">套餐链接：</div><div class="ui-content-list">';
+	                			str += '<label class="beautify_radio" for="J_ShopUrl"><input name="shop_url" class="J_radio" id="J_ShopUrl" value="1" type="radio" checked="checked">使用店铺地址</label>';
+	                			str += '<label class="beautify_radio" for="J_ItemUrl"><input name="shop_url" class="J_radio" id="J_ItemUrl" value="1" type="radio">宝贝地址</label><br/>';
+	                			str += '<input type="text" id="J_MealUrlForShop" title="套餐链接" class="input-text-3 dapeitaocan-mt8" value="'+shopUrl+'">';
+	                			str += '<input type="text" style="display:none"id="J_MealUrlForItem" title="套餐链接" class="input-text-3" value="可以输入宝贝id即可" onfocus="if(this.value==\'可以输入宝贝id即可\'){this.value = \'\';}" onblur="if(this.value==\'\'){this.value = \'可以输入宝贝id即可\'}">';
+	                			str += '</div></li>';
 	                    		break;
 	                	}
 	            	}
 	    		}
+				str += '<li class="title-params"><div style="text-align: center;"><span style="color:#ffce55">如果需要生成搭配套餐链接功能，请订购</span><a href="" target="_blank">官方的搭配套餐</a></div></li></ul> '
+			
+				list.dialog = new Overlay.Dialog({
+     	            title:'输入搭配信息<span class="color-v4" style="font-weight: 100;font-size: 12px;">本模板纯粹展示，无配套餐功能</span>',
+     	            width:450,
+     	            height:450,
+     	            elAttrs :{id : 'J_DapeiDialog'},   
+     	            mask:false,
+     	            buttons:[
+     	                   {
+     	                     text:'确定',
+     	                     elCls : 'bui-button bui-button-primary',
+     	                     handler : function(){
+     	                	    list.checkDapei();
+     	                     }
+     	                   },{
+     	                     text:'关闭',
+     	                     elCls : 'bui-button',
+     	                     handler : function(){
+     	                       this.hide();
+     	                     }
+     	                   }
+     	                 ],
+     	                bodyContent : str
+     	          });
+				list.dialog.render();
+				list.beautifyForm = new beautifyForm();
+				 Event.on('.J_radio','click',function(ev){
+	            	 if(DOM.get('#J_ShopUrl').checked){
+	            		 DOM.show('#J_MealUrlForShop');
+	            		 DOM.hide('#J_MealUrlForItem');
+	            	 }else{
+	            		 DOM.hide('#J_MealUrlForShop');
+	            		 DOM.show('#J_MealUrlForItem');
+	            	 }
+	             })
+				//list.dialog.show();
+			},
+			// 没有官方搭配套餐的 填写 搭配套餐信息后的判断
+			checkDapei : function(){
+					list.meal_price.value = DOM.val('#J_MealPrice'); 
+					list.meal_discount.value = DOM.val('#J_MealDiscount'); 
+					list.meal_save.value = DOM.val('#J_MealSave'); 
+					list.meal_meal_price.value =DOM.val('#J_MealMealPrice');  
+					if(DOM.get('#J_ShopUrl').checked){
+						list.meal_url.value = DOM.val('#J_MealUrlForShop');  
+		           	 }else{
+		           		list.meal_url.value = DOM.val('#J_MealUrlForItem');  
+		           	}
+				 	list.addItems();
+					list.preview();
+					list.renderSelectItems(1);
+					iconTabs.switchTo(2);
+					list.dialog.hide();
 			},
 			//选择套餐，显示变化、预览（直接加入selectItem）(宝贝不可取消,只可通过套餐来取消)
 			selectMeal : function(offset){
@@ -386,7 +484,7 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 							    content:'您选中的模板规格支持的宝贝数为:'+limit+'个!',
 							    type:"error",
 								autoClose : true,
-								timeOut : 1000
+								timeOut : 3000
 							});
 					return;
 				}
@@ -452,9 +550,9 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 	                    	}
 	                	}
 	                	
-	                	str += '<div class="taocan-choose fl relative" style="height:240px;">';
+	                	str += '<div class="inner"><div class="taocan-choose fl relative" style="height:240px;">';
 	                	str +=      '<div class="taocan-content">';
-	                	str += 			'<span style=" padding:10px 0 0 0; color:#666; display:block">套餐名称：'+meal.meal_name+'</span><br/>';
+	                	str += 			'<span style=" padding:10px 0 0 0; color:#656d7a; display:block;font-weight: bold;">套餐名称：'+meal.meal_name+'</span><br/>';
 	                	str += 			'原价：'+meal.price+'<br/>现价：'+meal.meal_price+'<br/> 当前状态：';
 	                	if(meal.status != 'VALID'){
 	                		str += '无效';	
@@ -465,13 +563,13 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 	                	str += 		'</div>';
 	                	
 	                	str += 		'<div class="taocan-btm btm-style-1">';
-	                	str += 			'<span class="m-auto background-FFF"><a onclick="list.selectMeal('+i+')" href="#2"><font>选择此套餐</font></a></span>';
+	                	str += 			'<button class="button button-green" onclick="list.selectMeal('+i+')">选择此套餐</button>';
 	                	str += 		'</div>';
 	                	str += 		'<div class="taocan-btm btm-style-2">';
-	                	str += 			'<span class="m-auto background-FFF"><a href="#2"><font>已选择套餐</font></a></span>';
+	                	str += 			'<button class="button button-green">已选择套餐</button>';
 	                	str += 		'</div>';
 	                	str += 		'<div class="taocan-btm btm-style-3">';
-	                	str += 			'<span class="m-auto background-FFF"><a href="#2"><font>不可选套餐</font></a></span>';
+	                	str += 			'<button class="button button-gray">不可选套餐</button>';
 	                	str += 		'</div>';
 	                	
 	                	str += 		'<div class="float-img"></div>';
@@ -498,7 +596,7 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 	                	str += '</div>';
 	                	str += '<div class="opacity"></div>';
 	                	str += '<div class="success-img"></div>';
-	                	str += '<div class="clear"></div>';
+	                	str += '<div class="clear"></div></div>';
 	                	str += '</div>';
 	            	}
 	            	str += '</div>';
@@ -510,19 +608,19 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 					renderMeals(turnTo);
 					//显示分页
 					list.mealPaginator.setPage(turnTo).printHtml('#J_MealBottomPaging',2);
-					list.mealPaginator.setPage(turnTo).printHtml('#J_MealTopPaging',3);
+					//list.mealPaginator.setPage(turnTo).printHtml('#J_MealTopPaging',3);
 				}
 				
 				var pageCount = Math.ceil(list.meals.length/list.mealPageNum); 
 				list.mealPaginator = new showPages('list.mealPaginator').setRender(handlePagination).setPageCount(pageCount).printHtml('#J_MealBottomPaging',2);
-				list.mealPaginator.printHtml('#J_MealTopPaging',3);
-//				if(list.useMeal) {
-//					list.initPreMealItem();
-//				}
+				//list.mealPaginator.printHtml('#J_MealTopPaging',3);
+				if(list.useMeal) {
+					list.initPreMealItem();
+				}
 				handlePagination(list.mealPageId);
-//				if(list.useMeal && meal_id!='0'){
-//					list.preview();
-//				}
+				if(list.useMeal && meal_id!='0'){
+					list.preview();
+				}
 			},
 			//初始化meal_id、mealPageId、设置套餐参数、把宝贝加入selectItem
 			initPreMealItem : function(){
@@ -540,18 +638,49 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 						}
 					}
 				}else {
+					var isSelect = false ;
+					var str = '您的官方搭配套餐的宝贝个数为';
+					var b= '';
+					var provisionalTable = {};
 					for(i=0; i<len; i++){
+						if (!provisionalTable[meals[i].item_list.length]) {
+							b += meals[i].item_list.length +'，';
+							provisionalTable[meals[i].item_list.length] = true;
+						}
 						if(meals[i].status=='VALID' && meals[i].item_list.length==parseInt(limit)){
 							list.addMeal(i);
 							list.lastedMealOffset = i;
 							meal_id = meals[i].meal_id;
 							list.mealPageId = Math.ceil((i+1)/list.mealPageNum);
+							isSelect = true ;
 							break;
 						}
 					}
 				}
+				if(!isSelect){
+					str += b+'!当前模板支持的宝贝个数为'+limit+'，请到设置模板里 <span style="color:#ffce55">(尺寸/宝贝数)</span>选择宝贝个数为'+b;
+					 new Overlay.Dialog({
+		     	            title:'温馨提示',
+		     	            width:300,
+		     	            height:100,
+		     	            mask:false,
+		     	            closeAction : 'destroy',
+		     	            buttons:[
+		     	                   {
+		     	                     text:'确定',
+		     	                     elCls : 'bui-button bui-button-primary',
+		     	                     handler : function(){
+		     	                       this.hide();
+		     	                     }
+		     	                   }
+		     	                 ],
+		     	            bodyContent:'<div class="point relative"><div class="point-w-2">'+str+'</div></div>'
+		     	          }).show();
+					
+				}else{
+					list.preview();
+				}
 				list.initPreSelectTag = true;
-				
 			},
 			
 			//搜索宝贝
@@ -587,7 +716,7 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 					        	    DOM.hide('#J_LeftLoading');
 									DOM.show('#J_MainLeftContent');
 					        	    //list.msg.hide(false);
-					    	        list.paginator.setPage(pageId).setPageCount(pageCount).printHtml('#J_TopPaging',3);
+					    	        //list.paginator.setPage(pageId).setPageCount(pageCount).printHtml('#J_TopPaging',3);
 									list.paginator.setPage(pageId).setPageCount(pageCount).printHtml('#J_BottomPaging',2);
 						    	};
 						    	 if(DOM.val(DOM.get("#J_SearchTitle")) != '关键字、商品链接、商品编码'){
@@ -597,7 +726,6 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 						       	    }
 						           	var ccid = DOM.val(DOM.get("#J_SelectItemCid")); //类目
 						   	    	var type = DOM.val(DOM.get("#J_SearchSelling")); //出售中 库中
-						   	    	var itemOrder = DOM.val(DOM.get("#J_SelectItemOrder"));//排序方式
 						   	    	var itemPage = DOM.val(DOM.get("#J_SelectItemPage"));//每页多少条
 						   	    	var pid = DOM.val(DOM.get("#J_PromoId"));
 						   	    	//价格区间
@@ -605,15 +733,14 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 						        	    var endPrice = DOM.val(DOM.get("#J_EndPrice"));
 						   	    	var data = "q="+title+"&cid="+ccid+"&type="+type;
 						           	    data += "&start_price="+startPrice+"&end_price="+endPrice;
-						           	    data +="&itemOrder="+itemOrder+"&pageSize="+itemPage+"&pid="+pid+"&page_id="+pageId;
+						           	    data +="&pageSize="+itemPage+"&pid="+pid+"&page_id="+pageId;
 					        	//list.msg.setMsg('正在获取宝贝，请稍候').show();
 						           	DOM.show('#J_LeftLoading');
 									DOM.hide('#J_MainLeftContent');   	
 					    	    new H.widget.asyncRequest().setURI(getItemsFromTbUrl).setMethod("GET").setHandle(submitHandle).setData(data).send();
 							}
-						list.paginator = new showPages('list.paginator').setRender(handlePagination).setPageCount(pageCount).printHtml('#J_TopPaging',3);
-						list.paginator.printHtml('#J_BottomPaging',2);
-						//list.paginator = new showPages('list.paginator').setRender(handlePagination).setPageCount(pageCount).printHtml('#J_BottomPaging',2);
+						//list.paginator = new showPages('list.paginator').setRender(handlePagination).setPageCount(pageCount).printHtml('#J_TopPaging',3);
+						list.paginator = new showPages('list.paginator').setRender(handlePagination).setPageCount(pageCount).printHtml('#J_BottomPaging',2);
 						//list.msg.hide(false);
 						DOM.hide('#J_LeftLoading');
 						DOM.show('#J_MainLeftContent');
@@ -634,7 +761,6 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 	       	    }
 	           	var ccid = DOM.val(DOM.get("#J_SelectItemCid")); //类目
 	   	    	var type = DOM.val(DOM.get("#J_SearchSelling")); //出售中 库中
-	   	    	var itemOrder = DOM.val(DOM.get("#J_SelectItemOrder"));//排序方式
 	   	    	var itemPage = DOM.val(DOM.get("#J_SelectItemPage"));//每页多少条
 	   	    	var pid = DOM.val(DOM.get("#J_PromoId"));
 	   	    	//价格区间
@@ -642,7 +768,7 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 	        	    var endPrice = DOM.val(DOM.get("#J_EndPrice"));
 	   	    	var data = "q="+title+"&cid="+ccid+"&type="+type;
 	           	    data += "&start_price="+startPrice+"&end_price="+endPrice;
-	           	    data +="&itemOrder="+itemOrder+"&pageSize="+itemPage+"&pid="+pid;
+	           	    data +="&pageSize="+itemPage+"&pid="+pid;
 	        	//list.msg.setMsg('正在获取宝贝，请稍候').show();
 	        	DOM.show('#J_LeftLoading');
 				DOM.hide('#J_MainLeftContent');
@@ -669,17 +795,16 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 							selected = 'selected'
 						}
 					}
-					els +='<li class="w-172 J_TbItem relative '+selected+'" id="J_TbItem_'+items[i].num_iid+'">'
-						+'<input type="hidden" id="" value="">'
-			            +'<div class="baobei-img baobei-img-h-160">'
+					els +='<li class="J_TbItem relative '+selected+'" id="J_TbItem_'+items[i].num_iid+'">'
+			            +'<div class="goods-img">'
 	                 	+'<a target="_blank" href="http://item.taobao.com/item.htm?id='+items[i].num_iid+'" class="w-160">' 
 	               		+'<img border="0"  src="'+items[i].pic_url+'_120x120.jpg" width="120" height="120">'
 	                	+'</a>'
 	             		+'</div>'
-	             		+'<div class="baobei-text">' 
-	             		+'<a target="_blank" style="text-decoration:none" class="" href="http://item.taobao.com/item.htm?id='+items[i].num_iid+'">'
-	                    +'<span class="inline-block baobei-info">'+items[i].title+'</span>'
-	              		+'</a><span class="fl inline-block w-150">￥<b class="color-red">'+items[i].price+'</b></span>'
+	             		+'<div class="goods-text">' 
+	             		+'<a target="_blank"  href="http://item.taobao.com/item.htm?id='+items[i].num_iid+'">'
+	                    +'<span class="goods-info">'+items[i].title+'</span>'
+	              		+'</a><span class="goods-price">￥<b class="color-red">'+items[i].price+'</b></span>'
 	             		+'</div>'
 	             		+'<div class="ol-base"></div><div class="ol-mouseover"><div class="border"><span class="ol-text-ext">点击选择</span></div></div><div class="ol-click"><div class="ol-img-checked"></div><span class="ol-text-ext">点击取消</span><br/><a href="http://item.taobao.com/item.htm?id='+items[i].num_iid+'"target="_blank"><span class="ol-img-view"></span></a></div><div class="ol-uncheck"><span class="ol-text-ext">已加入活动<br/></span><a href="http://item.taobao.com/item.htm?id='+items[i].num_iid+'"target="_blank"><span class="ol-img-view"></span></a></div>';
 				if(hasIn){
@@ -763,55 +888,54 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 							tempPicUrl = list.savedPics[items[i].id];
 							//alert('go:'+tempPicUrl);
 						}
-						picUrlManual = '<li class="clear w-280" style="padding:0px 0px 5px 0px;">'+
-			          						'<div class="active-add-edit-title w-80">宝贝主图：</div>'+
-											'<div class="active-add-edit-edit">'+
-		                 						'<input type="text" title="baobeiPic" id="J_PicUrl_'+items[i].id+'" value="'+tempPicUrl+'" name="picUrl" class="input-text w-180">&nbsp;<b style="color:#F00; vertical-align:middle">*</b>'+
+						picUrlManual = '<li class="clear w-280" >'+
+			          						'<div class="ui-side-list">主图：</div>'+
+											'<div class="ui-content-list">'+
+		                 						'<input type="text" title="baobeiPic" id="J_PicUrl_'+items[i].id+'" value="'+tempPicUrl+'" name="picUrl" class="input-text-3 w-170">&nbsp;<b style="color:#F00; vertical-align:middle">*</b>'+
 							 		'</div></li>'+
-							 		'<li class="clear w-280" style="padding:0px 0px 5px 0px;">'+
-	                              	'<div class="active-add-edit-title w-80">&nbsp;</div>'+
-	              						'<div class="active-add-edit-edit">'+
+							 		'<li class="clear w-280" >'+
+	                              	'<div class="ui-side-list">&nbsp;</div>'+
+	              						'<div class="ui-content-list">'+
 	                                         '<p style="color: #FB8534;">复制图片空间审核过的主图地址</p>'+
 	             							 '</div></li>';
 							 		
 					}
-					
-	      				els +=  '<li class="list-item border-e4e4e4-b-d"><div class="list-div"><ul class="wc-detail-area">'+
-								'<li style="width:8%;">'+
-	                                  	'<input type="text" class="input-text w-30" id="J_Order_'+items[i].id+'" name="order"  value="'+ order +'" >'+
+	      				els +=  '<li class="list-item"><div class="list-div"><ul class="wc-detail-area">'+
+								'<li style="width:5%;">'+
+	                                  	'<input type="text" class="input-text-1 w-30" id="J_Order_'+items[i].id+'" name="order"  value="'+ order +'" >'+
 	       						'</li>'+
-	       						'<li style="width:10%;">'+
-	               					'<a title="'+items.title+'" href="http://item.taobao.com/item.htm?id='+items[i].id+'" target="_blank">';
+	       						'<li style="width:15%;">'+
+	               					'<a title="'+items[i].title+'" href="http://item.taobao.com/item.htm?id='+items[i].id+'" target="_blank">';
 	      					//if(hand_img_url) 直接使用pic_url
 								if(hand_img_url=='1'){
-	 								els +=  '<img width="60" height="60" src="'+items[i].pic_url+'">';
+	 								els +=  '<img width="120" height="120" src="'+items[i].pic_url+'">';
 	 							}else{
-	 								els +=  '<img width="60" height="60" src="'+items[i].pic_url+'_60x60.jpg">';
+	 								els +=  '<img width="120" height="120" src="'+items[i].pic_url+'_120x120.jpg">';
 	 							}
 	                           els += 	'</a>'+
 	      						'</li>'+
-	      						'<li style="width:45%;">'+
+	      						'<li style="width:30%;">'+
 	      						'<div class="item-box">'+                                                                                  
-	                                  '<ul>'+
-	                                  	'<li class="clear w-280" style="padding:0px 0px 5px 0px;">'+
-	                                      	'<div class="active-add-edit-title w-80">标题：</div>'+
-	                      						'<div class="active-add-edit-edit">'+
-	      											'<input type="hidden" class="text text-long" id="J_Title_'+items[i].id+'" value="'+items[i].title+'">'+
-	                                                  '<input type="text" class="input-text w-170" title="Title" id="J_PromoTitle_'+items[i].id+'" value="'+items[i].promo_title+'" >'+
-	                     							 '</div></li><li class="clear w-280" style="padding:0px 0px 5px 0px;"><div class="active-add-edit-title w-80">原价：</div>'+
-	                      						'<div class="active-add-edit-edit">'+
-	                                                  '<input type="text" title="price" name="price" id="J_Price_'+items[i].id+'" value="'+items[i].price+'" class="input-text w-170">'+
+	                                  '<ul class="ui-about-list">'+
+	                                  	'<li class="clear w-280" >'+
+	                                      	'<div class="ui-side-list">标题：</div>'+
+	                      						'<div class="ui-content-list">'+
+	      											'<input type="hidden"  id="J_Title_'+items[i].id+'" value="'+items[i].title+'">'+
+	                                                  '<input type="text" class="input-text-3 w-170" title="Title" id="J_PromoTitle_'+items[i].id+'" value="'+items[i].promo_title+'" >'+
+	                     							 '</div></li><li class="clear w-280" ><div class="ui-side-list">原价：</div>'+
+	                      						'<div class="ui-content-list">'+
+	                                                  '<input type="text" title="price" name="price" id="J_Price_'+items[i].id+'" value="'+items[i].price+'" class="input-text-3 w-170">'+
 	                     							 '</div></li>'+
-	                                      '<li class="clear w-280" style="padding:0px 0px 5px 0px;">'+
-	                                      	'<div class="active-add-edit-title w-80">特价：</div>'+
-	                      						'<div class="active-add-edit-edit">'+
-	                                                 '<input type="text" title="specPrice" id="J_SpecPrice_'+items[i].id+'" value="'+specPrice+'" name="specPrice" class="input-text w-170">'+
+	                                      '<li class="clear w-280" >'+
+	                                      	'<div class="ui-side-list">特价：</div>'+
+	                      						'<div class="ui-content-list">'+
+	                                                 '<input type="text" title="specPrice" id="J_SpecPrice_'+items[i].id+'" value="'+specPrice+'" name="specPrice" class="input-text-3 w-170">'+
 	                     							 '</div></li>'+
 	                     							picUrlManual+
 	                       							'</ul></div></li>'+ 	
-	                     							  '<li style="width:37%;" id="J_ItemParams_'+items[i].id+'">'+
+	                     							  '<li style="width:50%;" id="J_ItemParams_'+items[i].id+'">'+
 	                           							'<div class="item-box">'+                                                                                   
-	                                                     '<ul>';
+	                                                     '<ul class="ui-about-list">';
 					oriPriceWriterHtml =''; //原价文案
 					curPriceWriterHtml = ''; //现价文案
 					tinyLabelsHtml = ''; //小标签
@@ -825,8 +949,8 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 					S.each(itemParams, function(item){
 						/*原价文案*/
 						if(item['field_code'] == 'ori_price_writer'){
-							oriPriceWriterHtml +='<li style="padding:0px 0px 5px 0px;" class="J_ItemParams w-330 clear"> <div class="active-add-edit-title w-90">原价文案：</div>'+
-								'<div class="active-add-edit-edit"><div class="fl"><input type="text" id ="J_oriPriceWriter'+items[i].id+'" name="ori_price_writer" value="'+item['value']+'" title="ori_price_writer" class="J_Param_Value input-text w-100">'+
+							oriPriceWriterHtml +='<li  class="J_ItemParams w-330 clear"> <div class="ui-side-list w-90">原价文案：</div>'+
+								'<div class="ui-content-list"><div class="fl"><input type="text" id ="J_oriPriceWriter'+items[i].id+'" name="ori_price_writer" value="'+item['value']+'" title="ori_price_writer" class="J_Param_Value input-text-3 w-100">'+
 								'<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/></div></td>'+
 								' <div style="padding-left:5px;" class="fl">'+               
 								    '<select id="J_OPrice_'+items[i].id+'" name="oripricewriter" onchange="KISSY.DOM.val(\'#J_oriPriceWriter'+items[i].id+'\',this.value)">';
@@ -839,8 +963,8 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 						}
 						/*现价文案*/
 						if(item['field_code'] == 'cur_price_writer'){
-							curPriceWriterHtml +='<li style="padding:0px 0px 5px 0px;" class="J_ItemParams w-330 clear"><div class="active-add-edit-title w-90 ">现价文案：</div>'+
-								'<div class="active-add-edit-edit"><div class=" fl"><input type="text" id ="J_curPriceWriter'+items[i].id+'" name="cur_price_writer" value="'+item['value']+'" title="cur_price_writer" class="J_Param_Value input-text w-100">'+
+							curPriceWriterHtml +='<li  class="J_ItemParams w-330 clear"><div class="ui-side-list w-90">现价文案：</div>'+
+								'<div class="ui-content-list"><div class=" fl"><input type="text" id ="J_curPriceWriter'+items[i].id+'" name="cur_price_writer" value="'+item['value']+'" title="cur_price_writer" class="J_Param_Value input-text-3 w-100">'+
 								'<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/></div></td>'+
 								' <div class="fl" style="padding-left:5px;">'+               
 								    '<select id="J_CPrice_'+items[i].id+'" name="curpricewriter" onchange="KISSY.DOM.val(\'#J_curPriceWriter'+items[i].id+'\',this.value)">';
@@ -854,8 +978,8 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 						/*小标签*/
 						if(item['field_code'] == 'tiny_labels'){
 							var defaultTiny = item['value'].split("#");
-							tinyLabelsHtml +='<li style="padding:0px 0px 5px 0px;" class="J_ItemParams "><div class="active-add-edit-title w-90">小标签：</div>'+
-								'<div class="active-add-edit-edit"><input type="hidden" class="J_Param_Value" id ="J_TinyLabels'+items[i].id+'"value="'+item['value']+'"/><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
+							tinyLabelsHtml +='<li  class="J_ItemParams "><div class="ui-side-list w-90">小标签：</div>'+
+								'<div class="ui-content-list"><input type="hidden" class="J_Param_Value" id ="J_TinyLabels'+items[i].id+'"value="'+item['value']+'"/><input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/>';
 								if(paramOptons['tiny_labels']){
 									S.each(paramOptons['tiny_labels'],function(ite){
 										tinyLabelsHtml+= '<a href="#2"';
@@ -871,38 +995,38 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 						}
 						/*宝贝参数1*/
 						if(item['field_code'] == 'item_param1'){
-							itemParam1Html +='<li style="padding:0px 0px 5px 0px;" class="J_ItemParams"><div class="active-add-edit-title w-90">'+list.defaultItemFieldNames[item.field_code]+'：</div>'+
-											 '<div class="active-add-edit-edit"><input type="text"  name="item_param1" value="'+item['value']+'" title="item_param1" class="J_Param_Value input-text w-170">'+
+							itemParam1Html +='<li  class="J_ItemParams"><div class="ui-side-list w-90">'+list.defaultItemFieldNames[item.field_code]+'：</div>'+
+											 '<div class="ui-content-list"><input type="text"  name="item_param1" value="'+item['value']+'" title="item_param1" class="J_Param_Value input-text-3 w-170">'+
 											 '<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/></div></li>';
 						}
 						/*宝贝参数2*/
 						if(item['field_code'] == 'item_param2'){
-							itemParam2Html +='<li style="padding:0px 0px 5px 0px;" class="J_ItemParams"><div class="active-add-edit-title w-90">'+list.defaultItemFieldNames[item.field_code]+'：</div>'+
-											 '<div class="active-add-edit-edit"><input type="text"  name="item_param2" value="'+item['value']+'" title="item_param2" class="J_Param_Value input-text w-170">'+
+							itemParam2Html +='<li  class="J_ItemParams"><div class="ui-side-list w-90">'+list.defaultItemFieldNames[item.field_code]+'：</div>'+
+											 '<div class="ui-content-list"><input type="text"  name="item_param2" value="'+item['value']+'" title="item_param2" class="J_Param_Value input-text-3 w-170">'+
 											 '<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/></div></li>';
 						}
 						/* 宝贝参数3*/
 						if(item['field_code'] == 'item_param3'){
-							itemParam3Html +='<li style="padding:0px 0px 5px 0px;" class="J_ItemParams"><div class="active-add-edit-title w-90">'+list.defaultItemFieldNames[item.field_code]+'：</div>'+
-											 '<div class="active-add-edit-edit"><input type="text"  name="item_param3" value="'+item['value']+'" title="item_param3" class="J_Param_Value input-text w-170">'+
+							itemParam3Html +='<li  class="J_ItemParams"><div class="ui-side-list w-90">'+list.defaultItemFieldNames[item.field_code]+'：</div>'+
+											 '<div class="ui-content-list"><input type="text"  name="item_param3" value="'+item['value']+'" title="item_param3" class="J_Param_Value input-text-3 w-170">'+
 											 '<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/></div></li>';
 						}
 						/*宝贝参数4*/
 						if(item['field_code'] == 'item_param4'){
-							itemParam4Html +='<li style="padding:0px 0px 5px 0px;" class="J_ItemParams"><div class="active-add-edit-title w-90">'+list.defaultItemFieldNames[item.field_code]+'：</div>'+
-											 '<div class="active-add-edit-edit"><input type="text"  name="item_param4" value="'+item['value']+'" title="item_param4" class="J_Param_Value input-text w-170">'+
+							itemParam4Html +='<li  class="J_ItemParams"><div class="ui-side-list w-90">'+list.defaultItemFieldNames[item.field_code]+'：</div>'+
+											 '<div class="ui-content-list"><input type="text"  name="item_param4" value="'+item['value']+'" title="item_param4" class="J_Param_Value input-text-3 w-170">'+
 											 '<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/></div></li>';
 						}
 						/*宝贝参数5*/
 						if(item['field_code'] == 'item_param5'){
-							itemParam5Html +='<li style="padding:0px 0px 5px 0px;" class="J_ItemParams"><div class="active-add-edit-title w-90">'+list.defaultItemFieldNames[item.field_code]+'：</div>'+
-											 '<div class="active-add-edit-edit"><input type="text"  name="item_param5" value="'+item['value']+'" title="item_param5" class="J_Param_Value input-text w-170">'+
+							itemParam5Html +='<li  class="J_ItemParams"><div class="ui-side-list w-90">'+list.defaultItemFieldNames[item.field_code]+'：</div>'+
+											 '<div class="ui-content-list"><input type="text"  name="item_param5" value="'+item['value']+'" title="item_param5" class="J_Param_Value input-text-3 w-170">'+
 											 '<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/></div></li>';
 						}
 						/* 宝贝参数6*/
 						if(item['field_code'] == 'item_param6'){
-							itemParam6Html +='<li style="padding:0px 0px 5px 0px;" class="J_ItemParams"><div class="active-add-edit-title w-90">'+list.defaultItemFieldNames[item.field_code]+'：</div>'+
-											 '<div class="active-add-edit-edit"><input type="text"  name="item_param6" value="'+item['value']+'" title="item_param6" class="J_Param_Value input-text w-170">'+
+							itemParam6Html +='<li  class="J_ItemParams"><div class="ui-side-list w-90">'+list.defaultItemFieldNames[item.field_code]+'：</div>'+
+											 '<div class="ui-content-list"><input type="text"  name="item_param6" value="'+item['value']+'" title="item_param6" class="J_Param_Value input-text-3 w-170">'+
 											 '<input type="hidden" class="J_Param_ParamId" value="'+item.param_id+'"/><input type="hidden" class="J_Param_FieldCode" value="'+item.field_code+'"/></div></li>';
 						}
 					})
@@ -919,7 +1043,7 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 								'<a href="#2" onclick="H.rateControl.showItemRates('+items[i].id+')">设置宝贝评价</a></div>';
 					}
 				
-					els += '<div  class="item-status"><div class="status-pendding"><a href="javascript:list.removeItem('+items[i].id+');"   title="从推荐列表删除中">取消推荐</a></div></div>';
+					els += '<div  class="item-status"><div class="status-pendding"><a href="javascript:list.removeItem('+items[i].id+');"   title="从推荐列表删除中">取消选择</a></div></div>';
 					els += '</li></ul></div></li>';
 				}
 				
@@ -939,17 +1063,17 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 				if(itemParams==undefined || itemParams.length==0){
 					DOM.hide('#J_SelectItemParamBox');
 				}
-				// input 边框变化  
-				var inputs = DOM.filter (DOM.query('input'),function(i){if(i.type =='text')return true;})
-				Event.on(inputs,'focus blur',function(ev){
-					if(ev.type == 'focus'){
-						DOM.removeClass(ev.target,'input-text text text-error');
-						DOM.addClass(ev.target,'input-text-on');
-					} else if(ev.type == 'blur'){
-						DOM.removeClass(ev.target,'input-text-on');
-						DOM.addClass(ev.target,'input-text');
-					}
-				})
+//				// input 边框变化  
+//				var inputs = DOM.filter (DOM.query('input'),function(i){if(i.type =='text')return true;})
+//				Event.on(inputs,'focus blur',function(ev){
+//					if(ev.type == 'focus'){
+//						DOM.removeClass(ev.target,'input-text-3 text text-error');
+//						DOM.addClass(ev.target,'input-text-on');
+//					} else if(ev.type == 'blur'){
+//						DOM.removeClass(ev.target,'input-text-on');
+//						DOM.addClass(ev.target,'input-text-3');
+//					}
+//				})
 				
 			},
 			//小标签选择
@@ -1143,10 +1267,6 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 				//return str.replace(/\"/g, '\\"').replace(/&/g, '%26');
 				return str.replace(/\\/g, '\\\\').replace(/\"/g, '\\"').replace(/[\t\n&]/g, '%26').replace(/%/g, '%25');
 			},
-
-			subListParam : function() {
-				list.preview();
-			},
 			
 			preview : function() {
 				if(iconTabs.activeIndex==2){
@@ -1157,7 +1277,7 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 				var len = items.length;
 				if(len<=0){
 					DOM.hide('#J_ContentDetail');
-					DOM.hide('#J_ToggleC');
+					//DOM.hide('#J_ToggleC');
 					DOM.replaceClass(DOM.get('#J_PreviewBtn'), 'btm-gray-yulan','btm-orange-yulan');
 					return false;
 				}else{
@@ -1188,7 +1308,7 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 				var listParamsJson = KISSY.JSON.stringify(postListParams);
 				var submitHandle = function(o) {
 					DOM.html(DOM.get('#J_ContentDetail'),o.payload);
-					DOM.show('#J_ToggleC');
+					//DOM.show('#J_ToggleC');
 					var listBox = S.one('#J_Preview_Box');
 					if (listBox.css("display")==="none") {
 						listBox.slideDown();
@@ -1267,18 +1387,6 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 				list.selectItem = items;
 			},
 			
-			checkAll : function(e) {
-				var checkBoxs = DOM.query('#J_ItemDataTable .J_CheckBox');
-				var len = checkBoxs.length;
-				for(i=0; i<len; i++){
-					var iid = checkBoxs[i].value;
-					if(checkBoxs[i].disabled || checkBoxs[i].selected) {
-						continue;
-					}else{
-						list.addPreItem('J_TbItem_'+iid);
-					}
-				}
-			},
 			
 			toggle : function(el) {
 				var listBox = S.one('#J_ListBox');
@@ -1496,5 +1604,5 @@ KISSY.add(function (S,showPages,O,TShop,ListParam,designControl) {
 
 		}
 }, {
-    requires: ['utils/showPages/index','overlay','./mods/tshop','./mods/listParam','./mods/designControl']
+    requires: ['utils/showPages/index','./mods/tshop','./mods/listParam','./mods/designControl','switchable','bui/select','bui/overlay','utils/beautifyForm/index']
 });

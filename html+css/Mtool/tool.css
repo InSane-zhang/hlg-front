@@ -12,10 +12,33 @@
  
 /*页面utils样式*/
 @import '../utils/ui-list.css';  /*列表*/
+@import '../utils/ui-step.css';  /*步骤条*/
+@import '../utils/ui-page.css'; /*分页*/
+@import '../utils/ui-tab.css';  /*tab*/
+@import '../utils/ui-calendar.css';  /*日历*/
+
 
 /*tool公共样式*/
 @import 'mods/public.css';
 
+/*instock仓库上下架样式*/
+@import 'mods/instock.css';
 
+/*relist自动上架样式*/
+@import 'mods/relist.css';
 
+/*adjust自动上下架旧版样式*/
+@import 'mods/adjust.css';
+
+/*showcase自动橱窗样式*/
+@import 'mods/showcase.css';
+
+/*reprice修改宝贝价格样式*/
+@import 'mods/reprice.css';
+
+/*attribute修改宝贝其他属性样式*/
+@import 'mods/attribute.css';
+
+/*check宝贝属性检测样式*/
+@import 'mods/check.css';
 

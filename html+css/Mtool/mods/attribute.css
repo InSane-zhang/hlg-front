@@ -1,0 +1,31 @@
+/**
+ 
+	tool修改宝贝其他属性文件attribute.css
+ 
+**/
+
+.hlg-app .main .Mtool .attribute .data-tip1{width:100%;clear:both;height: 45px;line-height: 30px;border-bottom: 1px solid #EAEDF2;}
+.hlg-app .main .Mtool .attribute .data-tip1 .data-tip-left{float:left;}
+.hlg-app .main .Mtool .attribute .data-tip1 .data-tip-right{float:right;}
+
+.hlg-app .main .Mtool .attribute .baobei {text-align: left;position: relative;}
+.hlg-app .main .Mtool .attribute .baobei span {display: block;position: absolute;left: 70px;top: 0px;width: 130px;height: 60px;overflow: hidden;line-height: 20px;}
+
+.hlg-app .main .Mtool .attribute .select-message {text-align: center;line-height: 30px;}
+
+
+.hlg-app .main .Mtool .rebaseprop .set-cell .set-th {background: #f4f4f4;border: 1px solid #e4e4e4;border-bottom: 0;overflow: auto;padding: 10px;text-align: center;}
+.hlg-app .main .Mtool .rebaseprop .set-cell .set-area {border: 1px solid #e4e4e4;padding: 20px;overflow:hidden;}
+
+.hlg-app .main .Mtool .rebaseprop .yuanjiao .yuanjiao-top {background: url(http://img.huanleguang.com/hlg/v2/yuanjiao-top-center.png) no-repeat;width: 16px;height: 11px;position: absolute;}
+.hlg-app .main .Mtool .rebaseprop .yuanjiao .yuanjiao-top-left {width: 12px;height: 12px;background: url(http://img.huanleguang.com/hlg/v2/yuanjiao-top-left.png) no-repeat;overflow: hidden;}
+.hlg-app .main .Mtool .rebaseprop .yuanjiao .yuanjiao-top-center {height: 12px;background: url(http://img.huanleguang.com/hlg/v2/yuanjiao-top-x.png) repeat-x;overflow: hidden;}
+.hlg-app .main .Mtool .rebaseprop .yuanjiao .yuanjiao-top-right {width: 12px;height: 12px;background: url(http://img.huanleguang.com/hlg/v2/yuanjiao-top-right.png) no-repeat;overflow: hidden;}
+.hlg-app .main .Mtool .rebaseprop .yuanjiao .yuanjiao-ul {border-left: 1px solid #ccc;padding: 0 12px 0 11px;background: #f1f6f9 url(http://img.huanleguang.com/hlg/v2/yuanjiao-right-y.png) right repeat-y;}
+.hlg-app .main .Mtool .rebaseprop .yuanjiao .yuanjiao-bottom-left {width: 12px;height: 12px;background: url(http://img.huanleguang.com/hlg/v2/yuanjiao-bottom-left.png) no-repeat;overflow: hidden;}
+.hlg-app .main .Mtool .rebaseprop .yuanjiao .yuanjiao-bottom-center {height: 12px;background: url(http://img.huanleguang.com/hlg/v2/yuanjiao-bottom-x.png) repeat-x;overflow: hidden;}
+.hlg-app .main .Mtool .rebaseprop .yuanjiao .yuanjiao-bottom-right {width: 12px;height: 12px;background: url(http://img.huanleguang.com/hlg/v2/yuanjiao-bottom-right.png) no-repeat;overflow: hidden;}
+
+
+
+

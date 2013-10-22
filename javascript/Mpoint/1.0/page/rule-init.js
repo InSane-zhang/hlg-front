@@ -2,7 +2,7 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,showPages) {
+KISSY.add(function (S,showPages,Calendar) {
     // your code here
 	var DOM = S.DOM, Event = S.Event;	
 	
@@ -13,6 +13,7 @@ KISSY.add(function (S,showPages) {
 	    	init : function() {
 				//var ruleId = DOM.val('#J_RuleId');
 				//PointRule.listDaojus();
+
 	        },
 	        
 	        open : function(ruleType){
@@ -175,28 +176,36 @@ KISSY.add(function (S,showPages) {
 				new H.widget.asyncRequest().setURI(setEnableAjaxUrl).setMethod("POST").setHandle(successHandle).setErrorHandle(errorHandle).setData(data).send();
 			},
 			addPointGroup : function(){
-				var pointGroupHtml = DOM.create('<li id="J_FestivalGroup'+pointIndex+'" class="min-height-30"><div class="w-550 layer-1 relative"><div class="window-btm"><span class="guanbi" onclick="PointRule.delPointGroup('+pointIndex+')" title="关闭"></span></div><div class="youhui-neirong"><input  type="text" class="input-text" value="节日名称" name="special[title][]" onblur="this.className=\'input-text\';if(this.value==\'\'){this.value = \'节日名称\'}" onfocus="this.className=\'input-text\';if(this.value==\'节日名称\'){this.value =\'\';}"  > ：<input type="text"class="input-text w-100 J_StartDate"value="2012-4-5"name="special[begin_date][]" readonly="readonly">&nbsp;&nbsp;至&nbsp;&nbsp;<input type="text"class="input-text  margin-right-20 w-100 J_EndDate"value="2012-4-5"name="special[end_date][]" readonly="readonly">&nbsp;<a href="#2" id="J_Date'+pointIndex+'">日期选择</a><span class="red festival-del"></span></div></div></li>');
+				var pointGroupHtml = DOM.create('<li id="J_FestivalGroup'+pointIndex+'" class="min-height-30"><div class="w-550 layer-1 relative"><div class="window-btm"><span class="guanbi" onclick="PointRule.delPointGroup('+pointIndex+')" title="关闭"></span></div><div class="youhui-neirong"><input  type="text" class="input-text-2" value="节日名称" name="special[title][]" onblur="this.className=\'input-text-2\';if(this.value==\'\'){this.value = \'节日名称\'}" onfocus="this.className=\'input-text-2\';if(this.value==\'节日名称\'){this.value =\'\';}"  > ：<input type="text"class="calendarImg  w-100 J_StartDate" value="2012-4-5" name="special[begin_date][]" readonly="readonly" style="width:130px;">&nbsp;&nbsp;至&nbsp;&nbsp;<input type="text"class="calendarImg   margin-right-20 w-100 J_EndDate" value="2012-4-5" name="special[end_date][]" readonly="readonly" style="width:130px;">&nbsp;<!--<a href="#2" id="J_Date'+pointIndex+'">日期选择</a>--><span class="red festival-del"></span></div></div></li>');
 				DOM.insertBefore(pointGroupHtml,DOM.parent('#J_AddPointGroup'));
 				
-				new KISSY.Calendar('#J_Date'+pointIndex, {
-		            pages:2,
-		            rangeSelect:true,
-		            popup:true
-		        }).on('rangeSelect', function(e) {
-					var a = ''+this.id;
-					var id = a.substring(6),self = this;
-					
-					 DOM.val(DOM.get('.J_StartDate','#J_FestivalGroup'+id),KISSY.Date.format(e.start,'yyyy-mm-dd'));
-					 DOM.val(DOM.get('.J_EndDate','#J_FestivalGroup'+id),KISSY.Date.format(e.end,'yyyy-mm-dd'))
-					 self.hide();
-		        });
+//				new KISSY.Calendar('#J_Date'+pointIndex, {
+//		            pages:2,
+//		            rangeSelect:true,
+//		            popup:true
+//		        }).on('rangeSelect', function(e) {
+//					var a = ''+this.id;
+//					var id = a.substring(6),self = this;
+//					
+//					 DOM.val(DOM.get('.J_StartDate','#J_FestivalGroup'+id),KISSY.Date.format(e.start,'yyyy-mm-dd'));
+//					 DOM.val(DOM.get('.J_EndDate','#J_FestivalGroup'+id),KISSY.Date.format(e.end,'yyyy-mm-dd'))
+//					 self.hide();
+//		        });
+		         var timing = new Calendar.DatePicker({
+			            trigger:'.J_StartDate',
+			            autoRender : true
+			         });
+		         var timing = new Calendar.DatePicker({
+			            trigger:'.J_EndDate',
+			            autoRender : true
+			         });		         
 				pointIndex++;
 			},
 			delPointGroup : function(index){
 				DOM.remove('#J_FestivalGroup'+index);
 			},
 			addReputationGroup : function(){
-				var reputationGroupHtml = DOM.create('<li id="J_ReputationGroup'+reputationIndex+'" class="min-height-30"><div class="w-550 layer-1 relative"><div class="window-btm"><span class="guanbi" onclick="PointRule.delReputationGroup('+reputationIndex+')" title="关闭"></span></div><div class="youhui-neirong">好评字数超过&nbsp;<input type="text"value=""class="input-text J_ReputationNum J_CheckNum"name="num[]">&nbsp;&nbsp;字，&nbsp;送&nbsp;<input type="text"value=""class="input-text J_CheckNum"name="amount[]">&nbsp;&nbsp;积分&nbsp;<span class="red festival-del margin-left-10"></span></div></div></li>')
+				var reputationGroupHtml = DOM.create('<li id="J_ReputationGroup'+reputationIndex+'" class="min-height-30"><div class="w-550 layer-1 relative"><div class="window-btm"><span class="guanbi" onclick="PointRule.delReputationGroup('+reputationIndex+')" title="关闭"></span></div><div class="youhui-neirong">好评字数超过&nbsp;<input type="text"value=""class="input-text-2 J_ReputationNum J_CheckNum"name="num[]">&nbsp;&nbsp;字，&nbsp;送&nbsp;<input type="text"value=""class="input-text-2 J_CheckNum"name="amount[]">&nbsp;&nbsp;积分&nbsp;<span class="red festival-del margin-left-10"></span></div></div></li>')
 				DOM.insertBefore(reputationGroupHtml,DOM.parent('#J_AddPointGroup'));
 				reputationIndex++;
 			},
@@ -352,5 +361,5 @@ KISSY.add(function (S,showPages) {
 			}
 	}
 }, {
-    requires: ['utils/showPages/index']
+    requires: ['utils/showPages/index','bui/calendar']
 });

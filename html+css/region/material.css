@@ -4,6 +4,16 @@
  
 **/
 
+ 
+/*页面utils样式*/
+@import '../utils/ui-edit.css';  /*编辑*/
+@import '../utils/ui-step.css';  /*步骤条*/
+@import '../utils/ui-goods-list.css';  /**/
+@import '../utils/ui-list.css';  /*列表*/
+@import '../utils/ui-tab.css';  /*tab*/
+@import '../utils/ui-page.css'; /*分页*/
+
+
 /*投放记录样式material.css*/
 @import '../Mlist/list.css';
 

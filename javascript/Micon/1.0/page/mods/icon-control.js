@@ -2,7 +2,7 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,showPages,O) {
+KISSY.add(function (S,showPages,Overlay) {
     // your code here
     return iconControl = {
 				mode: 0,
@@ -510,28 +510,23 @@ KISSY.add(function (S,showPages,O) {
 	    				iconControl.thisMovie('hlgFlash').initDesign(flashvars);
 	    			}
 	    			
-	    			if (! iconControl.designIconPanel) {	
-	    				 
-						iconControl.designIconPanel = new O.Dialog({
-								      width: 1080,
-								      headerContent: '编辑主图促销图标',
-								      bodyContent: '',
-								      mask: false,
-								      align: {
-								          points: ['cc', 'cc']
-								      },
-								      closable :true,
-								      draggable: true,
-								      aria:true
-						});
+	    			if (!iconControl.designIconPanel) {	
+						iconControl.designIconPanel = new Overlay.Dialog({
+		     	            title:'编辑促销图标',
+		     	            width:1120,
+		     	            height:600,
+		     	            elAttrs :{id : 'J_design_icon_panel'},   
+		     	            mask:false,
+		     	            footerStyle :{'display' : 'none'}
+		     	          });
 						iconControl.designIconPanel.set('bodyContent',KISSY.clone(DOM.get('#hlgFlash')));
+						iconControl.designIconPanel.render();
 						iconControl.designIconPanel.on('hide',function(){
 							DOM.get('#J_design_icon_panel').style.display = 'none';
 							DOM.get('#hlgFlash').style.visibility = 'hidden';
 						})
 	    			}
 	    			iconControl.designIconPanel.show();
-					iconControl.designIconPanel.get('el').attr('id','J_design_icon_panel');
 					DOM.get('#J_design_icon_panel').style.display = 'block';
 	    		},
 	    		
@@ -572,5 +567,5 @@ KISSY.add(function (S,showPages,O) {
 					
 		};
 }, {
-    requires: ['utils/showPages/index','overlay']
+    requires: ['utils/showPages/index','bui/overlay']
 });

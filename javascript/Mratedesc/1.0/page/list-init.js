@@ -2,7 +2,7 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,showPages,O) {
+KISSY.add(function (S,showPages,Overlay,Select) {
     // your code here
 	var DOM = S.DOM, Event = S.Event;	
 	
@@ -12,7 +12,33 @@ KISSY.add(function (S,showPages,O) {
 	    	msg :null,
 			panel : null,
 	    	init : function() {
-			
+				//选择分类
+				promoSelect = new Select.Select({  
+				    render:'#J_SelectItemCidBox',
+			      	valueField:'#J_SelectItemCid',
+			      	items:S.JSON.parse(sellerCats),
+			      	visibleMode : 'display'
+				});
+				promoSelect.render();
+				promoSelect.setSelectedValue('0');
+				DOM.css(DOM.get('.bui-list-picker'),{'left':'-999px','top':'-999px'});
+				// 状态
+				var Statusitems = [
+			      {text:'状态',value:'0'},
+			      {text:'等待处理',value:'1'},
+			      {text:'成功',value:'2'},
+			      {text:'失败',value:'3'}
+			    ],
+			    StatusSelect = new Select.Select({  
+				    render:'#J_StatusItem',
+			      	valueField:'#J_Status',
+			      	items:Statusitems
+				});
+				StatusSelect.render();
+				StatusSelect.setSelectedValue('0');
+				StatusSelect.on('change', function(ev){
+					rateControl.searchRateSetItems();
+				});
 				DOM.attr('#J_SelectItemCid','onchange','rateControl.searchRateTbItems();');	
 				rateControl.searchRateTbItems();
 				Event.on('#J_CheckAll','click',rateControl.checkAll);  //淘宝宝贝全选
@@ -67,10 +93,10 @@ KISSY.add(function (S,showPages,O) {
         	    		DOM.hide('#J_LeftLoading');
 						DOM.show('#J_MainLeftContent');
         	    		new H.widget.msgBox({
-									    title:"错误提示",
-									    content:o.desc,
-									    type:"error"
-									});
+						    title:"错误提示",
+						    content:o.desc,
+						    type:"error"
+						});
         	    };
         	    if(DOM.val(DOM.get("#J_SearchTitle")) != '关键字、商品链接、商品编码'){
         	    	var title = encodeURIComponent(DOM.val(DOM.get("#J_SearchTitle"))); //标题
@@ -78,7 +104,7 @@ KISSY.add(function (S,showPages,O) {
         	    	var title ='';
         	    }
                 var cid = DOM.val(DOM.get("#J_SelectItemCid")); //类目
-    	    	var type = '1'; //出售中 库中
+    	    	var type = '1'; //状态类型
     	    	var itemOrder = DOM.val(DOM.get("#J_SelectItemOrder"));//排序方式
     	    	var itemPage = 10;//每页多少条
     	    	//价格区间
@@ -109,7 +135,7 @@ KISSY.add(function (S,showPages,O) {
         	    	var title ='';
         	    }
 	                var cid = DOM.val(DOM.get("#J_SelectItemCid")); //类目
-	    	    	var type = 1; //出售中 库中
+	                var type = '1'; 
 	    	    	var itemOrder = DOM.val(DOM.get("#J_SelectItemOrder"));//排序方式
 	    	    	var itemPage = 10;//每页多少条
 	    	    	//价格区间
@@ -124,18 +150,15 @@ KISSY.add(function (S,showPages,O) {
 			openItemRateDialog :function (itemId, url){
 			
 				if(!rateControl.panel){
-					rateControl.panel  = new O.Dialog({
-					      width: 750,
-					      headerContent: '评价推荐管理',
-					      bodyContent: '',
-					      mask: false,
-					      align: {
-					          points: ['cc', 'cc']
-					      },
-					      closable :true,
-					      draggable: true,
-					      aria:true
-					  });
+					
+					rateControl.panel = new Overlay.Dialog({
+		     	            title:'评价推荐管理',
+		     	            width:780,
+		     	            height:610,
+		     	            mask:false,
+		     	            footerStyle :{'display' : 'none'},
+		     	            bodyContent:''
+		     	          });
 				}
 				var ifr = document.createElement('iframe');
 				DOM.css( ifr, 'height', '500px' );
@@ -151,7 +174,7 @@ KISSY.add(function (S,showPages,O) {
 				
 			},
 			
-		       //搜索淘宝宝贝
+		       //宝贝状态搜索
 	        searchRateSetItems : function() {
                 var submitHandle = function(o) {
 						DOM.hide('#J_LeftLoading');
@@ -176,10 +199,10 @@ KISSY.add(function (S,showPages,O) {
         	    		DOM.hide('#J_LeftLoading');
 						DOM.show('#J_MainLeftContent');
         	    		new H.widget.msgBox({
-									    title:"错误提示",
-									    content:o.desc,
-									    type:"error"
-									});
+						    title:"错误提示",
+						    content:o.desc,
+						    type:"error"
+						});
         	    };
         	    if(DOM.val(DOM.get("#J_SearchItemId")) != '宝贝ID'){
         	    	var itemId = DOM.val(DOM.get("#J_SearchItemId"));//宝贝ID
@@ -196,6 +219,7 @@ KISSY.add(function (S,showPages,O) {
 					DOM.hide('#J_MainLeftContent');
         	    new H.widget.asyncRequest().setURI(loadRateItemsUrl).setMethod("GET").setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).setDataType('json').send();
 			},
+			
 			rateSetHandlePagination : function(turnTo) {
 		    	pageId = turnTo;
 	    		var submitHandle = function(o) {
@@ -370,5 +394,5 @@ KISSY.add(function (S,showPages,O) {
 			
     };
 }, {
-    requires: ['utils/showPages/index','overlay']
+    requires: ['utils/showPages/index','bui/overlay','bui/select']
 });

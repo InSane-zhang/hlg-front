@@ -1,4 +1,4 @@
-KISSY.add(function(S,showPages,O){
+KISSY.add(function(S,showPages,O,Switchable,Overlay){
 	var S = KISSY,DOM = S.DOM, Event = S.Event;	
 	return optimView = {
 	    	paginator : null,
@@ -14,25 +14,33 @@ KISSY.add(function(S,showPages,O){
 				Event.on('#J_UpdateItem','click',function(ev){
 					optimView.updateItem();
 				})
-				optimView.tabs = new S.Tabs('#wrapper',{
+				
+				optimView.tabs = new Switchable.Tabs('#wrapper',{
 					navCls: 'ks-switchable-nav',
 					triggerType: 'click',
 					contentCls:'main-content',
 					activeTriggerCls: 'current'	
 				}).on('switch',function(ev){
 						var index = ev.currentIndex;
-						if(index == 0) {
-//							optimView.loadWords();
-						}else if(index == 1){
-//							optimView.loadHotWords();
-						}else if(index == 2){
-							optimView.loadCidHots();
-						}else if(index == 3){
-							optimView.loadUpWords();
-						}else if(index == 4){
-							optimView.loadTrains();
-						}else if(index == 5){
-							optimView.loadHotProducts();
+						switch(index) {
+							case 0:
+								optimView.loadWords();
+							break;
+							case 1:
+								optimView.loadHotWords();
+							break;
+							case 2:
+								optimView.loadCidHots();
+							break;
+							case 3:
+								optimView.loadUpWords();
+							break;
+							case 4:
+								optimView.loadTrains();
+							break;
+							case 5:
+								optimView.loadHotProducts();
+							break;
 						}
 				})
 	        },
@@ -60,14 +68,23 @@ KISSY.add(function(S,showPages,O){
 			itemInfo : function(){
 				var submitHandle = function(o) {
 					var str = o.payload.body;
-					optimView.dialog = new O.Dialog({
-					      width: 470,
+					optimView.dialog = new Overlay.Dialog({
+					      width: 490,
 					      headerContent: '评分详情',
 					      bodyContent: str,
 					      mask: false,
 					      align: {
 					          points: ['cc', 'cc']
 					      },
+					      buttons:[
+					     	{
+				     		 text:'关闭',
+				     	   	 elCls : 'bui-button',
+				     		 handler : function(){
+					     		this.hide();
+				     	 	 }
+				     	 	}
+				     	  ],
 					      closable :true,
 					      draggable: true,
 					      aria:true
@@ -335,5 +352,5 @@ KISSY.add(function(S,showPages,O){
 						
     	};
 },{
-	requires : ['utils/showPages/index','overlay']
+	requires : ['utils/showPages/index','overlay','switchable','bui/overlay']
 });

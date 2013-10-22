@@ -1,0 +1,17 @@
+/**
+ 
+	crm公共样式文件public.css
+ 
+**/
+
+.Mcrm .input_style{float:left;margin-right:10px;_display:inline;}
+.hlg-dialog-btn{width:200px;margin:auto;}
+.msgbox{width:384px;height:131px;border: 1px solid #E5E8ED;color: #7a818b;border-radius: 5px;padding:12px;}
+.backward{font-size: 20px;width: 100px;display: inline-block;text-align: center;}
+.hlg-area p{margin-bottom:10px;}
+.msg-part{width:400px;line-height:24px;float:left;}
+.msg-part em{color:#fb745a;font-weight:bold;}
+.msg-icon{display:inline-block;width:19px;height:11px;position: absolute;background:url(http://cdn.huanleguang.com/img/hlg-app/Mcrm/crm.jpg) no-repeat;background-position: 0 -52px;left:-9px;bottom:-1px;}
+.currentmsg{width:196px;color:#aab2bd;min-height:140px;background:#f6f7fb;border:1px solid #eceef2;float:left;border-radius:10px;margin:23px 0 0 35px;padding:8px;position:relative;}
+.ui-content-list .input-text-2{color:#333;}
+.J_FirstStep .ui-tab-1 a:hover{background:#fff;color:#4dc1e8;}

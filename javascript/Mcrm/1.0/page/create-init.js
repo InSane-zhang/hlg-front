@@ -2,7 +2,7 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S) {
+KISSY.add(function (S,Select,beautifyForm,Calendar) {
     // your code here
 	var DOM = S.DOM, Event = S.Event;	
 	
@@ -20,40 +20,70 @@ KISSY.add(function (S) {
 			//			}
 						if(isVersionPer('crm')){
 							return ;
-						}			
+						}	
 						createGroup.save();
+						return false;
 					})
-				// input 边框变化  
-				var inputs = DOM.filter (DOM.query('input'),function(i){if(i.type =='text')return true;})
-				Event.on(inputs,'focus blur',function(ev){
-					if(ev.type == 'focus'){
-						if(DOM.hasClass(ev.target,'input-none')){
-							DOM.removeClass(DOM.parent(ev.target),'input-text text text-error');
-							DOM.addClass(DOM.parent(ev.target),'input-text-on');
+					var timing = new Calendar.DatePicker({
+			            trigger:'.timing',
+			            autoRender : true
+			        });
+					Event.on('.term','click',function(ev){
+						var data = DOM.attr(ev.currentTarget,'data');
+						if(ev.currentTarget.checked == true){
+							DOM.show('.group_'+data);
 						}else{
-							DOM.removeClass(ev.target,'input-text text text-error');
-							DOM.addClass(ev.target,'input-text-on');
+							DOM.hide('.group_'+data);
 						}
-					} else if(ev.type == 'blur'){
-						if(DOM.hasClass(ev.target,'input-none')){
-							DOM.removeClass(DOM.parent(ev.target),'input-text-on');
-							DOM.addClass(DOM.parent(ev.target),'input-text');
-						}else{
-							DOM.removeClass(ev.target,'input-text-on');
-							DOM.addClass(ev.target,'input-text');
-						}
-					}
-				})
-				Event.delegate(document,'click','.J_ConditionType',function(ev){
-					var type = DOM.val(ev.currentTarget); 
-					if(type == '2'){
-						DOM.hide('#J_ParamsErrorBox');
-						DOM.hide('#J_Handel');
-					}else{
-						DOM.show('#J_Handel');
-					}
-				});
-				createGroup.leftRule = parseInt(DOM.html('#J_LeftRule'));
+					})
+					Event.on('#J_Stat','click',function(ev){
+						ParamsErrorBox = KISSY.one('#J_ParamsErrorBox');
+						var sucessHandle = function(o) {
+							DOM.show('.J_StatContent');
+							DOM.html('.J_StatNum',o.desc)
+				 		};
+				 		var errorHandle = function(o){
+				 			DOM.html('#J_ParamsErrorMsg',o.desc);
+							if (ParamsErrorBox.css("display")==="none") {
+								ParamsErrorBox.slideDown();
+							}
+				 		};
+				 		var data = '';
+				  	    new H.widget.asyncRequest().setURI(getMemberCountUrl).setMethod("POST").setForm('#promotion_edit_form').setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
+					})					
+					
+					
+					createGroup.Form = new beautifyForm();
+					
+					
+					var items = [
+					  {text:'不限级别',value:'0'},
+					  {text:'普通会员',value:'1'},
+					  {text:'高级会员',value:'2'},
+					  {text:'VIP会员',value:'3'},
+					  {text:'至尊VIP会员',value:'4'}						  
+					],
+					select = new Select.Select({  
+					  render:'#J_Member',   
+					  valueField:'#J_Grade',
+					  items:items
+					});
+					select.render();
+					select.setSelectedValue('0');
+					
+					var items = [
+					  {text:'客户来源',value:'0'},
+					  {text:'交易成功',value:'1'},
+					  {text:'未成交',value:'2'}				  
+					],
+					select = new Select.Select({  
+					  render:'#J_MemberSource',   
+					  valueField:'#J_Source',
+					  items:items
+					});
+					select.render();
+					select.setSelectedValue('0'); 					
+
 //				Event.delegate(document,'click','.J_Rule_Del',function(ev){
 //					var ruleId = DOM.attr(ev.currentTarget,"data");
 //					var rule = DOM.parent(DOM.parent(ev.currentTarget));
@@ -84,23 +114,6 @@ KISSY.add(function (S) {
 //						promotionControl.msg.hide();
 //					})
 //			  });
-				//上次交易时间
-				new S.Calendar('#J_StartDate',{
-					popup:true,
-					triggerType:['click'],
-					closable:true,
-					showTime:true
-				}).on('select timeSelect',function(e){
-					S.one('#J_StartDate').val(S.Date.format(e.date,'yyyy-mm-dd HH:MM:ss'));
-				});
-					new S.Calendar('#J_EndDate',{
-						popup:true,
-					triggerType:['click'],
-					closable:true,
-					showTime:true
-				}).on('select timeSelect',function(e){
-					S.one('#J_EndDate').val(S.Date.format(e.date,'yyyy-mm-dd HH:MM:ss'));
-				});				
 					
 				},
 
@@ -108,15 +121,12 @@ KISSY.add(function (S) {
 				save : function() {
 						ParamsErrorBox = KISSY.one('#J_ParamsErrorBox');
 						var groupName = document.getElementsByName('group_name');
-						var result = H.util.isNull(groupName[0].value);
-						var error = result[0];
-						if(error){
-							DOM.html('#J_ParamsErrorMsg',result[1]);
+						if(groupName[0].value == ''){
+							result = '分组名称不能为空';
+							DOM.html('#J_ParamsErrorMsg',result);
 							if (ParamsErrorBox.css("display")==="none") {
 								ParamsErrorBox.slideDown();
 							}
-							groupName[0].value = '';
-							DOM.addClass(DOM.parent(groupName[0]), 'text-error');
 							return ;
 						}
 						//参数验证
@@ -124,13 +134,24 @@ KISSY.add(function (S) {
 						var maxCount = DOM.val('#J_MaxCount');
 						if(minCount || maxCount ){
 							if ((isNaN(Number(minCount)) == true || minCount<0 ) || (isNaN(Number(maxCount)) == true || minCount<0)) {
-								DOM.html('#J_ParamsErrorMsg','交易次数大于0');
+								DOM.html('#J_ParamsErrorMsg','交易次数要大于0');
 								if (ParamsErrorBox.css("display")==="none") {
 									ParamsErrorBox.slideDown();
 								}
 								return  error=true;
 							}
 						};
+						var minItems = DOM.val('#J_MinItems');
+						var maxItems = DOM.val('#J_MaxItems');
+						if(minItems || maxItems ){
+							if ((isNaN(Number(minItems)) == true || minItems<0 ) || (isNaN(Number(maxItems)) == true || maxItems<0)) {
+								DOM.html('#J_ParamsErrorMsg','商品件数要大于0');
+								if (ParamsErrorBox.css("display")==="none") {
+									ParamsErrorBox.slideDown();
+								}
+								return  error=true;
+							}
+						};						
 						var minAmount = DOM.val('#J_MinAmount');
 						var maxAmount = DOM.val('#J_MaxAmount');
 						if(minAmount || maxAmount ){
@@ -163,19 +184,18 @@ KISSY.add(function (S) {
 								return ;
 							}
 						};
+						var minClose = DOM.val('#J_MinCloseNum');
+						var maxClose= DOM.val('#J_MaxCloseNum');						
 						if(minClose || maxClose ){
-							var minClose = DOM.val('#J_MinCloseNum');
-							var maxClose= DOM.val('#J_MaxCloseNum');
+
 							if ((isNaN(Number(minClose)) == true || minClose<0 ) || (isNaN(Number(maxClose)) == true || maxClose<0)) {
-								DOM.html('#J_ParamsErrorMsg','宝贝件数要大于0');
+								DOM.html('#J_ParamsErrorMsg','交易关闭数要大于0');
 								if (ParamsErrorBox.css("display")==="none") {
-									ParamsErrorBox.slideDown();
+									ParamsErrorBox.slideDown();   
 								}
 								return ;
 							}
 						};
-
-						if(DOM.get('#J_A').checked == true){
 							var Grade = DOM.val('#J_Grade');
 							var MinCount = DOM.val('#J_MinCount')
 							var MaxCount = DOM.val('#J_MaxCount');
@@ -187,7 +207,10 @@ KISSY.add(function (S) {
 							var MaxCloseNum = DOM.val('#J_MaxCloseNum');
 							var StartDate = DOM.val('#J_StartDate');
 							var EndDate = DOM.val('#J_EndDate');
-							var flag = Grade+MinCount+MaxCount+MinAmount+MaxAmount+MinAvgPrice+MaxAvgPrice+MinCloseNum+MaxCloseNum+StartDate+EndDate;
+							var minItems = DOM.val('#J_MinItems');
+							var maxItems = DOM.val('#J_MaxItems');
+							var Source = DOM.val('#J_Source');
+							var flag = Grade+MinCount+MaxCount+MinAmount+MaxAmount+MinAvgPrice+MaxAvgPrice+MinCloseNum+MaxCloseNum+StartDate+EndDate+minItems+maxItems+Source;
 							if(flag == "" || flag == 0){
 					 			DOM.html('#J_ParamsErrorMsg','请至少填写一个条件！');
 								if (ParamsErrorBox.css("display")==="none") {
@@ -195,31 +218,29 @@ KISSY.add(function (S) {
 								}
 								return
 							}			
-						};
-
 						var sucessHandle = function(o) {
-				 			ParamsErrorBox.hide();
+							ParamsErrorBox.hide();
 				 			ParamsSucessBox = KISSY.one('#J_ParamsSucessBox')
 				 			DOM.html('#J_ParamsSucessMsg',o.desc);
 							if (ParamsSucessBox.css("display")==="none") {
 								ParamsSucessBox.slideDown();
 							}
-							DOM.scrollIntoView('#J_ParamsSucessMsg',window);
+							//DOM.scrollIntoView('#J_ParamsSucessMsg',window);
 				 			window.location.href=successUrl;
 				 		};
 				 		var errorHandle = function(o){
-							DOM.html('#J_ParamsErrorMsg',o.desc);
+				 			DOM.html('#J_ParamsErrorMsg',o.desc);
 							if (ParamsErrorBox.css("display")==="none") {
 								ParamsErrorBox.slideDown();
 							}
-							 DOM.scrollIntoView('#J_ParamsErrorMsg',window);
+							 //DOM.scrollIntoView('#J_ParamsErrorMsg',window);
 				 		};
 				 		var data = '';
 				  	    new H.widget.asyncRequest().setURI(editorSaveUrl).setMethod("POST").setForm('#promotion_edit_form').setHandle(sucessHandle).setErrorHandle(errorHandle).setData(data).send();
-						return true;
+						//return true;
 			    	}				
 
 	}
 }, {
-    requires: []
+    requires: ['bui/select','utils/beautifyForm/index','bui/calendar']
 });

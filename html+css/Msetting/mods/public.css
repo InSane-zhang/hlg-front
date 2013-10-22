@@ -1,0 +1,38 @@
+/**
+ 
+	setting公共样式文件public.css
+ 
+**/
+.hlg-app .main .Msetting .ui-tab-1 {float: left;font-family: '宋体';}
+.hlg-app .main .Msetting .data-tip{ height:45px;line-height:30px;border-bottom: 1px solid #EAEDF2;}
+.hlg-app .main .Msetting .data-tip-left{float:left;}
+.hlg-app .main .Msetting .data-tip-left .beautify_check{margin-right:20px;font-family: \5fae\8f6f\96c5\9ed1}
+.hlg-app .main .Msetting .data-tip-right{float:right;}
+.hlg-app .main .Msetting .data-tip-right .down-more{top:0;}
+.hlg-app .main .Msetting .data-tip-right .ui-page{padding: 0;}
+.hlg-app .main .Msetting .bottom-opertion {position: relative;line-height: 40px;padding: 15px 0px 15px 10px;height: 40px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

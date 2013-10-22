@@ -2,50 +2,139 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,showPages,O) {
+KISSY.add(function (S,showPages,Overlay) {
 	
 	var S= KISSY,DOM = S.DOM, Event = S.Event;
 	return  groupManage = {
 			paginator : null,
 			panel: null,
 			init : function() {
-				groupManage.searchItems();
 //				Event.on('#J_SearchGroup','click',groupManage.searchItems);
+				Event.on('.group','click',function(ev){
+					DOM.removeClass('.group','current');
+					DOM.addClass(ev.currentTarget,'current');
+					var type_id = DOM.attr(ev.currentTarget,'data');
+					if(type_id =='2'){
+						DOM.hide('.J_AddGroupe');
+						DOM.show('.J_Add');
+					}else{
+						DOM.show('.J_AddGroupe');
+						DOM.hide('.J_Add');
+					}
+					groupManage.searchItems();
+				})
+				//手动添加
+				Event.on('.J_Add','click',function(ev){
+		 	          var dialog = new Overlay.Dialog({
+			 	             title:'新建分组',
+			 	             width:350,
+			 	             height:150,
+			 	             mask:false,
+		     	             buttons:[
+			     	                   {
+			     	                     text:'确定',
+			     	                     elCls : 'bui-button bui-button-primary',
+			     	                     handler : function(){
+			     	                       this.hide();
+			     	                     }
+			     	                   },{
+			     	                     text:'取消',
+			     	                     elCls : 'bui-button',
+			     	                     handler : function(){
+			     	                       this.hide();
+			     	                     }
+			     	                   }
+			     	                 ],
+			 	             bodyContent:'<div style="width: 240px;margin: auto;">分组名称：<input id="J_GroupName" type="text" class="input-text-2" name="group_name" value=""></div>'
+			 	           });
+			 	           dialog.show();
+			 	           Event.on('.bui-button-primary','click',function(){
+								var submitHandle = function(o) {
+			 	            		var cont = '<div class="ui-msg" style="margin-bottom: 10px;"><div class="success-msg"><div class="img-success"></div><div class="text-16">'+o.desc+'</div></div></div>'
+			 	            		DOM.html('#messages',cont);
+			 	            		groupManage.searchItems();
+				        	    };
+				        	    var errorHandle = function(o){
+									new H.widget.msgBox({
+									    title:"错误提示",
+									    content:o.desc,
+									    type:"error"
+									});
+				        	    };
+				        	    var group_name = DOM.val('#J_GroupName');
+				        	    var data = "group_name="+group_name+"&group_type=2";
+								new H.widget.asyncRequest().setURI(editorSaveUrl).setMethod("POST").setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).send();
+			 	           })
+				})
+				Event.delegate(document,'mouseover mouseleave','.J_Market',function(ev){
+					//var group_id = DOM.attr(ev.currentTarget,'pid');
+					//window.location.href=planAddUrl+'&group_id='+group_id+'&is_group=1'; 
+					if(ev.type == 'mouseover'){
+						DOM.removeClass('.J_Market','active');
+						DOM.addClass(ev.currentTarget,'active');
+					}else{
+						DOM.removeClass('.J_Market','active');
+					}
+				})				
+				Event.on('.J_AddGroupe','click',function(ev){
+					var type_id = DOM.attr('#J_Tab .current','data');
+					window.location.href=createRuleUrl+'&group_type='+type_id;
+				})				
+				groupManage.searchItems();
 				Event.delegate(document,'click','.J_LoadRule', function(ev) {
 					var group_type = DOM.attr(ev.currentTarget,'tid');
 					var tb_group_id = DOM.attr(ev.currentTarget,'data');
 					var group_id = DOM.attr(ev.currentTarget,'pid');
 					var submitHandle = function(o) {
-			        	    groupManage.panel = new O.Dialog({
-							      width: 350,
-							      headerContent: '条件',
-							      bodyContent: o.payload.body,
-							      mask: false,
-							      align: {
-							          points: ['cc', 'cc']
-							      },
-							      closable :true,
-							      draggable: true,
-							      aria:true
-							});	  
-			        	    groupManage.panel.show();							
+			 	          var dialog = new Overlay.Dialog({
+			 	             title:'条件',
+			 	             width:350,
+			 	             height:270,
+			 	             mask:false,
+		     	             buttons:[
+			     	                   {
+			     	                     text:'确定',
+			     	                     elCls : 'bui-button bui-button-primary',
+			     	                     handler : function(){
+			     	                       this.hide();
+			     	                     }
+			     	                   },{
+			     	                     text:'取消',
+			     	                     elCls : 'bui-button',
+			     	                     handler : function(){
+			     	                       this.hide();
+			     	                     }
+			     	                   }
+			     	                 ],
+			 	             bodyContent:o.payload.body
+			 	           });
+			 	           dialog.show();
 	        	    };
 
 	        	    var errorHandle = function(o){
-//	        	    	groupManage.msg.setMsg('<div class="point relative"><div class="point-w-1">'+o.desc+'</div></div>').showDialog();
-		        	    groupManage.panel = new O.Dialog({
-						      width: 350,
-						      headerContent: '错误提示',
-						      bodyContent: o.desc,
-						      mask: false,
-						      align: {
-						          points: ['cc', 'cc']
-						      },
-						      closable :true,
-						      draggable: true,
-						      aria:true
-						});	  
-		        	    groupManage.panel.show();	
+			 	          var dialog = new Overlay.Dialog({
+				 	             title:'错误提示',
+				 	             width:350,
+				 	             height:270,
+				 	             mask:false,
+			     	             buttons:[
+				     	                   {
+				     	                     text:'确定',
+				     	                     elCls : 'bui-button bui-button-primary',
+				     	                     handler : function(){
+				     	                       this.hide();
+				     	                     }
+				     	                   },{
+				     	                     text:'取消',
+				     	                     elCls : 'bui-button',
+				     	                     handler : function(){
+				     	                       this.hide();
+				     	                     }
+				     	                   }
+				     	                 ],
+				 	             bodyContent:o.desc
+				 	           });
+				 	           dialog.show();		        	    
 						return;
 	        	    };
 	        	    var data = "group_id="+group_id+"&form_key="+FORM_KEY+"&tb_group_id="+tb_group_id+"&group_type="+group_type;
@@ -58,7 +147,7 @@ KISSY.add(function (S,showPages,O) {
 					var group_id = DOM.attr(ev.currentTarget,'pid');
 					new H.widget.msgBox({
 					    title: "删除分组",
-					    content: '删除分组会导致在该分组内优惠的活动失效，确定要删除？',
+					    content: '确定要删除？',
 					    type: "confirm",
 					    buttons: [{ value: "确定删除" }, { value: "取消" }],
 					    success: function (result) {
@@ -128,7 +217,8 @@ KISSY.add(function (S,showPages,O) {
         	    };
 
     	    	var itemPage = 10;//每页多少条
-				var data ="pageSize="+itemPage;
+    	    	var type_id = DOM.attr('#J_Tab .current','data');
+				var data = "pageSize="+itemPage+'&type_id='+type_id;
  				DOM.show('#J_LeftLoading');
  				DOM.hide('#J_MainLeftContent');
         	    new H.widget.asyncRequest().setURI(getGroupUrl).setMethod("GET").setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).setDataType('json').send();
@@ -155,7 +245,8 @@ KISSY.add(function (S,showPages,O) {
 		    	};
 
     	    	var itemPage = 10;
-    	    	var data = "page_id="+pageId+"&pageSize="+itemPage;
+    	    	var type_id = DOM.attr('#J_Tab .current','data');
+    	    	var data = "page_id="+pageId+"&pageSize="+itemPage+'&type_id='+type_id;
  				DOM.show('#J_LeftLoading');
  				DOM.hide('#J_MainLeftContent');
         	    new H.widget.asyncRequest().setURI(getGroupUrl).setMethod("GET").setHandle(submitHandle).setData(data).send();
@@ -233,5 +324,5 @@ KISSY.add(function (S,showPages,O) {
 	}
    
 }, {
-    requires: ['utils/showPages/index','overlay']
+    requires: ['utils/showPages/index','bui/overlay']
 });

@@ -4,3 +4,17 @@
  
 **/
 
+.hlg-app .main .Mpromoprops .ui-tab-1 {float: left;font-family: '宋体';}
+.hlg-app .main .Mpromoprops .inner-1{padding: 20px}
+.text-error {border:1px solid #ff0000; color:#ff0000;}
+.hlg-app .main .Mpromoprops .jiantou {
+background: url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/material-icon.png) no-repeat;
+vertical-align: top;
+}
+.hlg-app .main .Mpromoprops .jiantou {
+display: inline-block;
+width: 8px;
+height: 16px;
+vertical-align: middle;
+background-position: -64px -92px;
+}

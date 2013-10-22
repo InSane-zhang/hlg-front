@@ -1,0 +1,7 @@
+/*收入*/
+.account-index .main-seach .current{background: none repeat scroll 0 0 #8BD167;border-radius: 3px 3px 3px 3px;color: #FFFFFF;font-size:12px;padding: 3px 4px;}
+.account-index .main-seach .current a{color:#ffffff;}
+.account-index .main-seach span a{color:#656D78;}
+.account-index .main-seach span a:hover{background: none repeat scroll 0 0 #8BD167;border-radius: 3px 3px 3px 3px;color: #FFFFFF;font-size:12px;padding: 3px 4px;}
+.account-index .mores{background: url("http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png") no-repeat scroll right -30px transparent;color: #656D78;display: inline-block;height: 16px;width: 16px;}
+

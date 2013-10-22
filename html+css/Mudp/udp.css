@@ -13,6 +13,18 @@
 /*页面utils样式*/
 @import '../utils/ui-list.css';  /*列表*/
 
+/*页面utils样式*/
+@import '../utils/ui-tab.css';
+
+/*页面utils样式*/
+@import '../utils/ui-tip.css';
+
+/*页面utils样式*/
+@import '../utils/ui-calendar.css';
+
+/*页面utils样式*/
+@import '../utils/ui-page.css';
+
 /*list公共样式*/
 @import 'mods/public.css';
 

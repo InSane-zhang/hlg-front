@@ -1,0 +1,45 @@
+/**
+ 
+	material样式文件share.css
+ 
+**/
+
+
+/*头部*/
+.hlg-app .main .Mmaterial .ui-tab-1{ float:left; font-family:'宋体';}
+.hlg-app .main .Mmaterial .ui-tab-1 a{ color:#656d78;}
+.hlg-app .main .Mmaterial .ui-tab-1 a.current{ color:#fff;}
+/*头部 -右侧按钮 */
+.hlg-app .main .Mmaterial .button{padding:0 15px; font-size:18px; font-weight:400;}
+.ie7 .hlg-app .main .Mmaterial .button{padding:0px;}
+
+/*搜索*/
+.hlg-app .main .Mmaterial .main-seach-2 .search-promo{ float:right;}
+
+
+.hlg-app .main .Mmaterial .w-300{width:300px;}
+.hlg-app .main .Mmaterial .bm_wrap .orange{color:#aab2bd;}
+
+
+.hlg-app .main .Mmaterial .yuanjiao-ul {position:relative;z-index:90;border: 1px solid #E5E8ED;border-radius:5px; -webkit-border-radius: 5px;-moz-border-radius: 5px;-khtml-border-radius:5px;  background:#FFF;padding: 0px; -moz-box-shadow:0px 2px 3px 2px #e5e8ed; -webkit-box-shadow:0px 2px 3px 2px #e5e8ed;box-shadow:0px 2px 3px 2px #e5e8ed; filter: progid:DXImageTransform.Microsoft.Shadow(color='#e5e8ed', Direction=135, Strength=5);}
+.ie7 .hlg-app .main .Mmaterial .yuanjiao-ul {width:310px;padding-bottom:8px;z-index:90;position:relative;}
+.hlg-app .main .Mmaterial .yuanjiao .yuanjiao-ul li {float:left;margin:6px;padding:0 4px;overflow:hidden; line-height:20px;display: inline; word-wrap: break-word; word-break:break-all;} 
+
+.hlg-app .main .Mmaterial .yuanjiao .yuanjiao-ul .current{background:#8BD167;color:white;}
+.hlg-app .main .Mmaterial .yuanjiao .yuanjiao-ul .current a, .hlg-app .main .Mmaterial .yuanjiao .yuanjiao-ul .current a:link {color:white;}
+.hlg-app .main .Mmaterial .yuanjiao .yuanjiao-ul li a,.hlg-app .main .Mmaterial  .yuanjiao .yuanjiao-ul li a:link {color:#666;}
+.hlg-app .main .Mmaterial .yuanjiao .yuanjiao-ul li a:hover {background:#8BD167;color:#FFF;}
+
+/*我的海报 */
+.hlg-app .main .Mmaterial .Mpost .uboxselect{height:30px; margin-right:10px;}
+.hlg-app .main .Mmaterial .Mpost .uboxselect .bui-select,.hlg-app .main .Mmaterial .Mpost .bui-select {width: 110px;}
+.hlg-app .main .Mmaterial .Mpost .bui-select .bui-select-input{width: 80px;}
+.hlg-app .main .Mmaterial .Mpost .uboxselect .bui-select-input{width: 75px;margin-top:0px;border-radius:3px 0px 0px 3px; -webkit-border-radius: 3px 0 0 3px;-moz-border-radius: 3px 0 0 3px;-khtml-border-radius: 3px 0 0 3px; margin-left:0px;}
+.hlg-app .main .Mmaterial .Mpost .uboxselect .x-icon {width: 16px;}
+
+
+.hlg-app .main .Mmaterial .bianji .shanchu{width: 16px;background: url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/material-icon.png) 0px -92px no-repeat;}
+.hlg-app .main .Mmaterial .bianji .huoqu{width: 16px;background: url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/material-icon.png) -64px -92px no-repeat;}
+.hlg-app .main .Mmaterial .bianji .toufang{width: 16px;background: url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/material-icon.png) -49px -92px no-repeat;}
+
+

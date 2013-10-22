@@ -1,0 +1,34 @@
+/**
+ 
+	material样式文件option.css
+ 
+**/
+
+.hlg-app .main .Mmaterial .MoptionEdit .spacing{padding:20px 30px;}
+.hlg-app .main .Mmaterial .MoptionEdit .msgbox,.hlg-app .main .Mmaterial .MoptionAdd .msgbox,.hlg-app .main .Mmaterial .MoptionRepalce .msgbox{width:380px;height:90px;border: 1px solid #E5E8ED;color: #7a818b;border-radius: 5px;padding: 4px;}
+
+.hlg-app .main .Mmaterial .MoptionAdd .w-500,.hlg-app .main .Mmaterial .MoptionRepalce .w-500{width:500px;}
+.hlg-app .main .Mmaterial .MoptionAdd .w-120,.hlg-app .main .Mmaterial .MoptionRepalce .w-120{width:120px;}
+.hlg-app .main .Mmaterial .MoptionAdd .w-200,.hlg-app .main .Mmaterial .MoptionRepalce .w-200{width:200px;}
+.hlg-app .main .Mmaterial .MoptionAdd .w-360,.hlg-app .main .Mmaterial .MoptionRepalce .w-360{width:360px;color:#656d78;}
+.hlg-app .main .Mmaterial .MoptionAdd .min-height-50,.hlg-app .main .Mmaterial .MoptionRepalce .min-height-50{min-height:50px;_height:50px;}
+.hlg-app .main .Mmaterial .MoptionAdd .active-add-edit-title,.hlg-app .main .Mmaterial .MoptionRepalce .active-add-edit-title{text-align: right;float: left;line-height: 25px;}
+.hlg-app .main .Mmaterial .MoptionAdd .active-add-edit-edit,.hlg-app .main .Mmaterial .MoptionRepalce .active-add-edit-edit{text-align: left;float: left;line-height: 25px;}
+.hlg-app .main .Mmaterial .MoptionAdd .btu_submit,.hlg-app .main .Mmaterial .MoptionRepalce .btu_submit{background:none;display: inline-block;height:28px; font-weight:700; font-size:12px; text-align: center; line-height:27px;border:none; width:160px; color:#FFFFFF;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

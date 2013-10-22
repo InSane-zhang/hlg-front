@@ -3,4 +3,11 @@
 	point公共样式文件public.css
  
 **/
-
+.main-content-preview{ border:1px solid #f1eff0; border-bottom:0; height:30px; line-height:26px;}
+.main-point-seach{ height:24px; padding:5px 10px;background:#ececec; clear:both;}
+.main-point-seach ul li{ float:left; margin-right:5px; _display:inline;}
+.main-select {height:24px;overflow: hidden; padding:4px 10px; border:1px #ededed solid; border-top:0;}
+.main-select li{ float:left;}
+.main-select .select-input{ width:25px; padding-top:3px;}
+.main-select .select-message{ text-align: center; line-height: 30px;}
+.main-select .select-btm{ margin:0px 0px 0px 5px;}

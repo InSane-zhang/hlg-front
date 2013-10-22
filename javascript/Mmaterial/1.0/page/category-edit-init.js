@@ -3,11 +3,11 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,O) {
+KISSY.add(function (S,O,Switchable,XTemplate,beautifyForm) {
     // your code here
 	var DOM = S.DOM, Event = S.Event;	
 	
-	return category = {
+	return editControl = {
          		panel : null,
                 msg : null,
          		paginator : null,
@@ -18,7 +18,8 @@ KISSY.add(function (S,O) {
 				selectItem : eval('('+ itemsJson +')'),   
 				listParams : eval('('+ listParamsJson +')'),
                 init : function(){
-					iconTabs = new S.Tabs('#J_main',{
+					editControl.Form = new beautifyForm();
+					iconTabs = new Switchable.Tabs('#J_main',{
 						 navCls:'ks-switchable-nav',
 						 contentCls:'main-content',
 						 activeTriggerCls:'current',
@@ -29,62 +30,73 @@ KISSY.add(function (S,O) {
 							case 0:
 								DOM.show('#J_Preview_Box');
 								Event.remove('#J_SaveBtn');
-								DOM.replaceClass(DOM.get('#J_SaveBtn'),'btm-gray-xiayibu btm-orange-baocun','btm-orange-xiayibu');
-								Event.on('#J_SaveBtn','click',function(){category.preview();iconTabs.switchTo(1);});
+								DOM.html('#J_SaveBtn','下一步');
+								Event.on('#J_SaveBtn','click',function(){editControl.preview();iconTabs.switchTo(1);});
 							break;
 							case 1:
 								Event.remove('#J_SaveBtn');
-								DOM.replaceClass(DOM.get('#J_SaveBtn'),'btm-gray-xiayibu btm-orange-xiayibu','btm-orange-baocun');
-								Event.on('#J_SaveBtn','click',function(){category.save();});
+								DOM.html('#J_SaveBtn','保存');
+								Event.on('#J_SaveBtn','click',function(){editControl.save();});
 							break;
 						}
 					})
-					category.initListParam();
-					Event.delegate(document,'click','.J_RangeType',function(ev){
-					   var rangeType = ev.target.value;
-					   var data = DOM.attr(ev.currentTarget,'data');
-					   if(data == 'border'){
-					   	 DOM.val('#J_Is_Border',rangeType)
-					   }else{
-					   	 DOM.val('#J_Is_Color',rangeType)
-					   }
-					   
-					});
-					Event.on(DOM.query('.J_list_width'),'click',category.changeListOption);
-					Event.on('#J_ListBoxToggle','click',category.toggle);
+					editControl.initListParam();
 					
-					DOM.replaceClass(DOM.parent('#J_SaveBtn'),'btm-gray-xiayibu','btm-orange-xiayibu');
-					Event.on('#J_SaveBtn','click',function(){category.preview();iconTabs.switchTo(1);});
-					Event.on('#J_PreviewBtn','click',function(){category.preview();});
-			
-					if (category.selectItem.length > 0) {
-						category.renderSelectItems();
-						category.editFlag = edit;
-						category.preview();
+			   		
+					Event.on(DOM.query('.J_list_width'),'click',editControl.changeListOption);
+					Event.on('#J_ListBoxToggle','click',editControl.toggle);
+					
+					DOM.replaceClass('#J_SaveBtn', 'button-disabled','button-green');
+					Event.remove('#J_RangeBorder_1');
+					Event.on('#J_RangeBorder_1','click',function(ev){
+						DOM.val('#J_Is_Border','1')
+						
+					});
+					Event.remove('#J_RangeBorder_0');
+					Event.on('#J_RangeBorder_0','click',function(ev){
+						DOM.val('#J_Is_Border','0')
+						
+					});
+					Event.remove('#J_RangeColor_1');
+					Event.on('#J_RangeColor_1','click',function(ev){
+						DOM.val('#J_Is_Color','1')
+						
+					});
+					Event.remove('#J_RangeColor_0');
+					Event.on('#J_RangeColor_0','click',function(ev){
+						DOM.val('#J_Is_Color','0')
+						
+					});
+					
+					
+					Event.on('#J_SaveBtn','click',function(){editControl.preview();iconTabs.switchTo(1);});
+					Event.on('#J_PreviewBtn','click',function(){editControl.preview();});
+					
+					if (editControl.selectItem.length > 0) {
+						editControl.renderSelectItems();
+						editControl.editFlag = edit;
+						editControl.preview();
 					}
 					
 					//打开分类
 					Event.delegate(document,'click','.J_OpenList',function(ev){
-					   //DOM.hasClass(ev.currentTarget,'current') ? DOM.removeClass(ev.currentTarget,'current') : DDClass(ev.currentTarget,'current')
-					  // console.time('a');
 					   var flag = DOM.attr(ev.currentTarget,'data');
 					   DOM.toggleClass('#J_List'+flag,'current');
-					   //console.timeEnd('a');
 					});
 					DOM.hide(DOM.query('#J_List0 .J_TopMoveDele'));
 					//增加大分类
 					Event.on('#J_AddGroup','click',function(){
-						category.addItem();
+						editControl.addItem();
 						DOM.hide(DOM.query('#J_List0 .J_TopMoveDele'));
 					});
 					//删除大分类
 					Event.delegate(document,'click','.J_TopMoveDele',function(ev){
 					   var flag = DOM.attr(ev.currentTarget,'data');
-						category.tempSave();
-						category.selectItem.splice(flag,1);
-						category.renderSelectItems();
-						category.preview();
-						if(category.selectItem.length<=0){
+						editControl.tempSave();
+						editControl.selectItem.splice(flag,1);
+						editControl.renderSelectItems();
+						editControl.preview();
+						if(editControl.selectItem.length<=0){
 							DOM.hide('#J_Preview_Box');
 						}
 						DOM.hide(DOM.query('#J_List0 .J_TopMoveDele'));
@@ -99,13 +111,13 @@ KISSY.add(function (S,O) {
 						if(typeId == 9){
 							var child= {"name":"","url":"http://","isHight":"0"}
 						}else{
-							var child= {"name":"旺旺名称","url":"旺旺ID","isHight":"0"}
+							var child= {"name":"旺旺名称","url":"旺旺昵称","isHight":"0"}
 						}
-						category.tempSave();
-						category.selectItem[flag].children.push(child);
-						category.renderSelectItems();
-						category.preview();
-						DOM.query('#J_ChildUl'+flag+' .childName')[category.selectItem[flag].children.length-1].focus(); 
+						editControl.tempSave();
+						editControl.selectItem[flag].children.push(child);
+						editControl.renderSelectItems();
+						editControl.preview();
+						DOM.query('#J_ChildUl'+flag+' .childName')[editControl.selectItem[flag].children.length-1].focus(); 
 						DOM.hide(DOM.query('#J_List0 .J_TopMoveDele'));
 						
 					})
@@ -113,11 +125,11 @@ KISSY.add(function (S,O) {
 					Event.delegate(document,'click','.J_BotMoveDele',function(ev){
 					   var flag = DOM.attr(ev.currentTarget,'data');
 					   var p = DOM.attr(ev.currentTarget,'pid');
-						category.tempSave();
-						category.selectItem[flag].children.splice(p,1);
-						category.renderSelectItems();
-						category.preview();
-						if(category.selectItem.length<=0){
+						editControl.tempSave();
+						editControl.selectItem[flag].children.splice(p,1);
+						editControl.renderSelectItems();
+						editControl.preview();
+						if(editControl.selectItem.length<=0){
 							DOM.hide('#J_Preview_Box');
 						}
 						DOM.hide(DOM.query('#J_List0 .J_TopMoveDele'));
@@ -128,14 +140,14 @@ KISSY.add(function (S,O) {
 					   if(flag-1 < 0){
 							return ;   	
 					   }
-					   category.tempSave();
-					   var tem = category.selectItem[flag];
-					    category.selectItem[flag] = category.selectItem[flag-1]
-						category.selectItem[flag-1] = tem;
+					   editControl.tempSave();
+					   var tem = editControl.selectItem[flag];
+					    editControl.selectItem[flag] = editControl.selectItem[flag-1]
+						editControl.selectItem[flag-1] = tem;
 						
-						category.renderSelectItems();
-						category.preview();
-						if(category.selectItem.length<=0){
+						editControl.renderSelectItems();
+						editControl.preview();
+						if(editControl.selectItem.length<=0){
 							DOM.hide('#J_Preview_Box');
 						}
 						DOM.hide(DOM.query('#J_List0 .J_TopMoveDele'));
@@ -143,18 +155,18 @@ KISSY.add(function (S,O) {
 					 //大分类向下移动
 					Event.delegate(document,'click','.J_TopMoveDown',function(ev){
 					   var flag = Number(DOM.attr(ev.currentTarget,'data'));
-					   var len = category.selectItem.length;
+					   var len = editControl.selectItem.length;
 					   if(flag+1 >= len){
 							return ;   	
 					   }
-					   category.tempSave();
-					   var tem = category.selectItem[flag];
-					    category.selectItem[flag] = category.selectItem[flag+1]
-						category.selectItem[flag+1] = tem;
+					   editControl.tempSave();
+					   var tem = editControl.selectItem[flag];
+					    editControl.selectItem[flag] = editControl.selectItem[flag+1]
+						editControl.selectItem[flag+1] = tem;
 						
-						category.renderSelectItems();
-						category.preview();
-						if(category.selectItem.length<=0){
+						editControl.renderSelectItems();
+						editControl.preview();
+						if(editControl.selectItem.length<=0){
 							DOM.hide('#J_Preview_Box');
 						}
 						DOM.hide(DOM.query('#J_List0 .J_TopMoveDele'));
@@ -166,14 +178,14 @@ KISSY.add(function (S,O) {
 					   if(p-1 < 0){
 							return ;   	
 					   }
-					   category.tempSave();
-					   var tem = category.selectItem[flag].children[p];
-					    category.selectItem[flag].children[p] = category.selectItem[flag].children[p-1]
-						category.selectItem[flag].children[p-1] = tem;
+					   editControl.tempSave();
+					   var tem = editControl.selectItem[flag].children[p];
+					    editControl.selectItem[flag].children[p] = editControl.selectItem[flag].children[p-1]
+						editControl.selectItem[flag].children[p-1] = tem;
 						
-						category.renderSelectItems();
-						category.preview();
-						if(category.selectItem.length<=0){
+						editControl.renderSelectItems();
+						editControl.preview();
+						if(editControl.selectItem.length<=0){
 							DOM.hide('#J_Preview_Box');
 						}
 						DOM.hide(DOM.query('#J_List0 .J_TopMoveDele'));
@@ -182,25 +194,25 @@ KISSY.add(function (S,O) {
 					Event.delegate(document,'click','.J_BotMoveDown',function(ev){
 					    var flag = Number(DOM.attr(ev.currentTarget,'data'));
 					    var p = Number(DOM.attr(ev.currentTarget,'pid'));
-					   var len = category.selectItem[flag].children.length;
+					   var len = editControl.selectItem[flag].children.length;
 					   if(p+1 >= len){
 							return ;   	
 					   }
-					   category.tempSave();
-					   var tem = category.selectItem[flag].children[p];
-					    category.selectItem[flag].children[p] = category.selectItem[flag].children[p+1]
-						category.selectItem[flag].children[p+1] = tem;
+					   editControl.tempSave();
+					   var tem = editControl.selectItem[flag].children[p];
+					    editControl.selectItem[flag].children[p] = editControl.selectItem[flag].children[p+1]
+						editControl.selectItem[flag].children[p+1] = tem;
 						
-						category.renderSelectItems();
-						category.preview();
-						if(category.selectItem.length<=0){
+						editControl.renderSelectItems();
+						editControl.preview();
+						if(editControl.selectItem.length<=0){
 							DOM.hide('#J_Preview_Box');
 						}
 						DOM.hide(DOM.query('#J_List0 .J_TopMoveDele'));
 					});
-					
                 },
-				initListParam: function(){
+                
+                initListParam: function(){
 					var str = '',
 						frameHtml = '',
 						colorHtml = '',
@@ -219,9 +231,9 @@ KISSY.add(function (S,O) {
 						listParamsHtm7 = '',
 						listParamsHtm8 = '';
 					
-					S.each(category.listParams, function(item){
+					S.each(editControl.listParams, function(item){
 						if (item['field_code'] == 'color') {
-							colorHtml += '<li class="min-height-40 J_ListParams" >' +
+							colorHtml += '<li class="J_ListParams">' +
 							'<input type="hidden" id ="J_color"  value="' +
 							item['value'] +
 							'"  class="J_Param_Value">' +
@@ -230,8 +242,8 @@ KISSY.add(function (S,O) {
 							'"/><input type="hidden" class="J_Param_FieldCode" value="' +
 							item.field_code +
 							'"/>' +
-							'<div class="active-add-edit-title" style="width:16%;">列表颜色选择：</div>' +
-							'<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px">';
+							'<div class="ui-side-list">列表颜色选择：</div>' +
+							'<div class="ui-content-list ui-content-color">';
 							if (paramOptons['color']) {
 								S.each(paramOptons['color'], function(col, index){
 									clos = col.split("_");
@@ -240,24 +252,21 @@ KISSY.add(function (S,O) {
 										colorHtml += 'a-current';
 									}
 									colorHtml += '" data="' + col + '" >';
-									colorHtml += '<b style="background: #' + clos[0] + '"></b>';
-									//									S.each(clos,function(i){
-									//										colorHtml +='<b style="background: #'+i+'"></b>';
-									//									})
+									colorHtml += '<b style="background-color: #' + clos[0] + '"></b>';
 									colorHtml += '</span>';
 								})
 							}
 							colorHtml += '</div></li>';
 						}
 						if (item['field_code'] == 'items_per_line') {
-							frameHtml += '<li class="min-height-40 J_ListParams">';
-							frameHtml += '<div class="active-add-edit-title" style="width:16%;" >';
+							frameHtml += '<li class="J_ListParams">';
+							frameHtml += '<div class="ui-side-list">';
 							frameHtml += '模板宽度';
 							var items_per_line_default = item['value']
 							
 							//alert(limit);
 							frameHtml += '：</div>' +
-							'<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" id ="J_items_per_line_default"  value="' +
+							'<div class="ui-content-list menu-item" style="width:auto;"><input type="hidden" id ="J_items_per_line_default"  value="' +
 							items_per_line_default +
 							'">' +
 							'<input type="hidden" id ="J_items_per_line"  value="' +
@@ -286,172 +295,171 @@ KISSY.add(function (S,O) {
 								frameHtml += '</div></li>';
 						}
 						if (item['field_code'] == 'more_link') {
-							moreLinkHtml += '<li class="title-params min-height-40 J_ListParams" >' +
-							'<div class="active-add-edit-title" style="width:16%;">更多：</div>' +
-							'<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px">' +
+							moreLinkHtml += '<li class="title-params J_ListParams" >' +
+							'<div class="ui-side-list">更多：</div>' +
+							'<div class="ui-content-list">' +
 							'<input type="hidden" class="J_Param_ParamId" value="' +
 							item.param_id +
 							'"/><input type="hidden" class="J_Param_FieldCode" value="' +
 							item.field_code +
 							'"/>';
-							moreLinkHtml += '<input type="text" id="J_moreLink"  class="input-text w-360 J_Param_Value" value="' + item['value'] + '">';
+							moreLinkHtml += '<input type="text" id="J_moreLink"  class="input-text-3 J_Param_Value" value="' + item['value'] + '">';
 							moreLinkHtml += '</div></li>';
 						}
 						if (item['field_code'] == 'keywords') {
-							keywordsHtml += '<li class="title-params min-height-40 J_ListParams" >' +
-							'<div class="active-add-edit-title" style="width:16%;">关键词：</div>' +
-							'<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="' +
+							keywordsHtml += '<li class="title-params J_ListParams" >' +
+							'<div class="ui-side-list">关键词：</div>' +
+							'<div class="ui-content-list"><input type="hidden" class="J_Param_ParamId" value="' +
 							item.param_id +
 							'"/><input type="hidden" class="J_Param_FieldCode" value="' +
 							item.field_code +
 							'"/>';
-							keywordsHtml += '<input type="text" id="J_keywords"  class="input-text w-360 J_Param_Value" value="' + item['value'] + '">';
+							keywordsHtml += '<input type="text" id="J_keywords"  class="input-text-3 J_Param_Value" value="' + item['value'] + '">';
 							keywordsHtml += '</div></li>';
 						}
 						if (item['field_code'] == 'list_param1') {
 							var show_title = '';
-							listParamsHtm1 += '<li class="title-params min-height-40 J_ListParams" >' +
-							'<div class="active-add-edit-title" style="width:16%;">' +
+							listParamsHtm1 += '<li class="title-params J_ListParams" >' +
+							'<div class="ui-side-list">' +
 							item['field_name'] +
 							'：</div>' +
-							'<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="' +
+							'<div class="ui-content-list"><input type="hidden" class="J_Param_ParamId" value="' +
 							item.param_id +
 							'"/><input type="hidden" class="J_Param_FieldCode" value="' +
 							item.field_code +
 							'"/>';
-							listParamsHtm1 += '<input type="text" id="J_list_param1" ' + show_title + ' class="input-text w-360 J_Param_Value" value="' + item['value'] + '">';
+							listParamsHtm1 += '<input type="text" id="J_list_param1" ' + show_title + ' class="input-text-3 J_Param_Value" value="' + item['value'] + '">';
 							listParamsHtm1 += '</div></li>';
 						}
 						if (item['field_code'] == 'list_param2') {
 							var show_title = '';
-							listParamsHtm2 += '<li class="title-params min-height-40 J_ListParams" >' +
-							'<div class="active-add-edit-title" style="width:16%;">' +
+							listParamsHtm2 += '<li class="title-params J_ListParams" >' +
+							'<div class="ui-side-list">' +
 							item['field_name'] +
 							'：</div>' +
-							'<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="' +
+							'<div class="ui-content-list"><input type="hidden" class="J_Param_ParamId" value="' +
 							item.param_id +
 							'"/><input type="hidden" class="J_Param_FieldCode" value="' +
 							item.field_code +
 							'"/>';
-							listParamsHtm2 += '<input type="text" id="J_list_param2" ' + show_title + ' class="input-text w-360 J_Param_Value" value="' + item['value'] + '">';
+							listParamsHtm2 += '<input type="text" id="J_list_param2" ' + show_title + ' class="input-text-3 J_Param_Value" value="' + item['value'] + '">';
 							listParamsHtm2 += '</div></li>';
 						}
 						if (item['field_code'] == 'list_param3') {
 							var show_title = '';
-							listParamsHtm3 += '<li class="title-params min-height-40 J_ListParams" >' +
-							'<div class="active-add-edit-title" style="width:16%;">' +
+							listParamsHtm3 += '<li class="title-params J_ListParams" >' +
+							'<div class="ui-side-list">' +
 							item['field_name'] +
 							'：</div>' +
-							'<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="' +
+							'<div class="ui-content-list"><input type="hidden" class="J_Param_ParamId" value="' +
 							item.param_id +
 							'"/><input type="hidden" class="J_Param_FieldCode" value="' +
 							item.field_code +
 							'"/>';
-							listParamsHtm3 += '<input type="text" id="J_list_param3"  ' + show_title + ' class="input-text w-360 J_Param_Value" value="' + item['value'] + '">';
+							listParamsHtm3 += '<input type="text" id="J_list_param3"  ' + show_title + ' class="input-text-3 J_Param_Value" value="' + item['value'] + '">';
 							listParamsHtm3 += '</div></li>';
 						}
 						if (item['field_code'] == 'list_param4') {
 							var show_title = 'title="' + item['field_name'] + '"';
-							listParamsHtm4 += '<li class="title-params min-height-40 J_ListParams" >' +
-							'<div class="active-add-edit-title" style="width:16%;">' +
+							listParamsHtm4 += '<li class="title-params J_ListParams" >' +
+							'<div class="ui-side-list">' +
 							item['field_name'] +
 							'：</div>' +
-							'<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="' +
+							'<div class="ui-content-list"><input type="hidden" class="J_Param_ParamId" value="' +
 							item.param_id +
 							'"/><input type="hidden" class="J_Param_FieldCode" value="' +
 							item.field_code +
 							'"/>';
-							listParamsHtm4 += '<input type="text" id="J_list_param4"  ' + show_title + ' class="input-text w-360 J_Param_Value" value="' + item['value'] + '">';
+							listParamsHtm4 += '<input type="text" id="J_list_param4"  ' + show_title + ' class="input-text-3 J_Param_Value" value="' + item['value'] + '">';
 							listParamsHtm4 += '</div></li>';
 						}
 						if (item['field_code'] == 'list_param5') {
 							var show_title = 'title="' + item['field_name'] + '"';
-							listParamsHtm5 += '<li class="title-params min-height-40 J_ListParams" >' +
-							'<div class="active-add-edit-title" style="width:16%;">' +
+							listParamsHtm5 += '<li class="title-params J_ListParams" >' +
+							'<div class="ui-side-list">' +
 							item['field_name'] +
 							'：</div>' +
-							'<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="' +
+							'<div class="ui-content-list"><input type="hidden" class="J_Param_ParamId" value="' +
 							item.param_id +
 							'"/><input type="hidden" class="J_Param_FieldCode" value="' +
 							item.field_code +
 							'"/>';
-							listParamsHtm5 += '<input type="text" id="J_list_param5"  ' + show_title + ' class="input-text w-360 J_Param_Value" value="' + item['value'] + '">';
+							listParamsHtm5 += '<input type="text" id="J_list_param5"  ' + show_title + ' class="input-text-3 J_Param_Value" value="' + item['value'] + '">';
 							listParamsHtm5 += '</div></li>';
 						}
 						if (item['field_code'] == 'list_param6') {
 							var show_title = 'title="' + item['field_name'] + '"';
-							listParamsHtm6 += '<li class="title-params min-height-40 J_ListParams" >' +
-							'<div class="active-add-edit-title" style="width:16%;">' +
+							listParamsHtm6 += '<li class="title-params J_ListParams" >' +
+							'<div class="ui-side-list">' +
 							item['field_name'] +
 							'：</div>' +
-							'<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="' +
+							'<div class="ui-content-list"><input type="hidden" class="J_Param_ParamId" value="' +
 							item.param_id +
 							'"/><input type="hidden" class="J_Param_FieldCode" value="' +
 							item.field_code +
 							'"/>';
-							listParamsHtm6 += '<input type="text" id="J_list_param6"  ' + show_title + ' class="input-text w-360 J_Param_Value" value="' + item['value'] + '">';
+							listParamsHtm6 += '<input type="text" id="J_list_param6"  ' + show_title + ' class="input-text-3 J_Param_Value" value="' + item['value'] + '">';
 							listParamsHtm6 += '</div></li>';
 						}
 						if (item['field_code'] == 'list_param7') {
 							var show_title = 'title="' + item['field_name'] + '"';
-							listParamsHtm7 += '<li class="title-params min-height-40 J_ListParams" >' +
-							'<div class="active-add-edit-title" style="width:16%;">' +
+							listParamsHtm7 += '<li class="title-params J_ListParams" >' +
+							'<div class="ui-side-list">' +
 							item['field_name'] +
 							'：</div>' +
-							'<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="' +
+							'<div class="ui-content-list"><input type="hidden" class="J_Param_ParamId" value="' +
 							item.param_id +
 							'"/><input type="hidden" class="J_Param_FieldCode" value="' +
 							item.field_code +
 							'"/>';
-							listParamsHtm7 += '<input type="text" id="J_list_param7"  ' + show_title + ' class="input-text w-360 J_Param_Value" value="' + item['value'] + '">';
+							listParamsHtm7 += '<input type="text" id="J_list_param7"  ' + show_title + ' class="input-text-3 J_Param_Value" value="' + item['value'] + '">';
 							listParamsHtm7 += '</div></li>';
 						}
 						if (item['field_code'] == 'list_param8') {
 							var show_title = 'title="' + item['field_name'] + '"';
-							listParamsHtm8 += '<li class="title-params min-height-40 J_ListParams" >' +
-							'<div class="active-add-edit-title" style="width:16%;">' +
+							listParamsHtm8 += '<li class="title-params J_ListParams" >' +
+							'<div class="ui-side-list">' +
 							item['field_name'] +
 							'：</div>' +
-							'<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px"><input type="hidden" class="J_Param_ParamId" value="' +
+							'<div class="ui-content-list"><input type="hidden" class="J_Param_ParamId" value="' +
 							item.param_id +
 							'"/><input type="hidden" class="J_Param_FieldCode" value="' +
 							item.field_code +
 							'"/>';
-							listParamsHtm8 += '<input type="text" id="J_list_param8"  ' + show_title + ' class="input-text w-360 J_Param_Value" value="' + item['value'] + '">';
+							listParamsHtm8 += '<input type="text" id="J_list_param8"  ' + show_title + ' class="input-text-3 J_Param_Value" value="' + item['value'] + '">';
 							listParamsHtm8 += '</div></li>';
 						}
 						if (item['field_code'] == 'has_border') {
-							isBorderHtml += '<li class="title-params min-height-40 J_ListParams" >' +
-							'<div class="active-add-edit-title" style="width:16%;">是否使用边框线：</div>' +
-							'<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px">' +
+							isBorderHtml += '<li class="title-params J_ListParams">' +
+							'<div class="ui-side-list">是否使用边框线：</div>' +
+							'<div class="ui-content-list">' +
 							'<input type="hidden" class="J_Param_ParamId" value="' +
 							item.param_id +
 							'"/><input type="hidden" class="J_Param_FieldCode" value="' +
 							item.field_code +
 							'"/>';
 							isBorderHtml +='<input type="hidden" class="J_Param_Value" id="J_Is_Border" value="1">';
-							isBorderHtml +='<input type="radio" name="is_border" id="J_Is_Border_1" checked="checked" class="w-30 J_RangeType" data="border" value="1"><label for="J_Is_Border_1">是</label><input type="radio" name="is_border" id="J_Is_Border_0" data="border"  class="w-30 J_RangeType" value="0"><label for="J_Is_Border_0">否</label>';
+							isBorderHtml +='<div id="J_ListBorder"><label id="J_RangeBorder_1" for="J_Is_Border_1" class="beautify_radio"><input type="radio" name="is_border" id="J_Is_Border_1" checked="checked" class="w-30" data="border" value="1">是</label><label id="J_RangeBorder_0" for="J_Is_Border_0" class="beautify_radio"><input type="radio" name="is_border" id="J_Is_Border_0" data="border" class="w-30" value="0">否</label></div>';
 							isBorderHtml += '</div></li>';
-						}
+						} 
 						if (item['field_code'] == 'discolor') {
-							discolorHtml += '<li class="title-params min-height-40 J_ListParams" >' +
-							'<div class="active-add-edit-title" style="width:16%;">是否隔行换色：</div>' +
-							'<div class="active-add-edit-edit" style="width:84%;margin-bottom:10px">' +
+							discolorHtml += '<li class="title-params J_ListParams" >' +
+							'<div class="ui-side-list">是否隔行换色：</div>' +
+							'<div class="ui-content-list">' +
 							'<input type="hidden" class="J_Param_ParamId" value="' +
 							item.param_id +
 							'"/><input type="hidden" class="J_Param_FieldCode" value="' +
 							item.field_code +
 							'"/>';
 							discolorHtml +='<input type="hidden" class="J_Param_Value" id="J_Is_Color" value="1">';
-							discolorHtml +='<input type="radio" name="is_color" id="J_Is_Color_1" checked="checked" class="w-30 J_RangeType" data="color" value="1"><label for="J_Is_Color_1">是</label><input type="radio" name="is_color" id="J_Is_Color_0"  data="color" class="w-30 J_RangeType" value="0"><label for="J_Is_Color_0">否</label>';
+							discolorHtml +='<div id="J_ListColor"><label id="J_RangeColor_1" for="J_Is_Color_1" class="beautify_radio"><input type="radio" name="is_color" id="J_Is_Color_1" checked="checked" class="w-30" data="color" value="1">是</label><label id="J_RangeColor_0" for="J_Is_Color_0" class="beautify_radio"><input type="radio" name="is_color" id="J_Is_Color_0"  data="color" class="w-30 J_RangeType" value="0">否</label>';
 							discolorHtml += '</div></li>';
 						}
 					})
 					listParamsConfirmHtm = '';
-					
-						
 					ListStr = colorHtml + frameHtml + isBorderHtml+discolorHtml+moreLinkHtml + qualityPicsHtml + keywordsHtml + tishiMessHtml + listParamsHtm1 + listParamsHtm2 + listParamsHtm3 + listParamsHtm4 + listParamsHtm5 +listParamsHtm6 + listParamsHtm7+ listParamsHtm8 +listParamsConfirmHtm;
 					DOM.html('#J_listParams', ListStr);
+					
 					
 					//颜色选择
 					if(DOM.query('.J_SelectColor').length>0){
@@ -460,7 +468,7 @@ KISSY.add(function (S,O) {
 								DOM.removeClass(DOM.query('.list-template-color'),'a-current');
 								DOM.toggleClass(this,'a-current');
 								DOM.val('#J_color',color);
-								category.preview();
+								editControl.preview();
 						})
 					}
 					
@@ -476,10 +484,9 @@ KISSY.add(function (S,O) {
 							DOM.val('#J_items_per_line',item);
 						}
 					})
-					category.preview();
+					editControl.preview();
 				},
-				
-				toggle : function(el) {
+                toggle : function(el) {
 					var listBox = S.one('#J_ListBox');
 					if (listBox.css("display")==="none") {
 						listBox.slideDown(0.8,function(){
@@ -493,21 +500,38 @@ KISSY.add(function (S,O) {
 					}
 				},
 				preview : function() {
-					category.itemProcess();
-					var items = category.postItems;
+					Event.on('.preview-hover','mouseenter mouseleave',function(ev){
+						var flag = DOM.attr(ev.currentTarget,'data');
+						var index = DOM.attr(ev.currentTarget,'pid');
+						if(ev.type == 'mouseenter'){
+				   			DOM.show('.edit-preview-desc-'+flag+'-'+index);
+				   			Event.on('.J_radio-'+flag+'-'+index,'click',function(ev){
+				   				var id = DOM.attr(ev.currentTarget,'data');
+				   				var nick = DOM.val('#radio-'+flag+'-'+index+'-'+id); 
+				   				var nick_id = DOM.attr(ev.currentTarget,'data-id');
+				   				DOM.val('#childName-'+flag+'-'+index,nick);
+				   				DOM.val('#childUrl-'+flag+'-'+index,nick_id);
+							})
+				   		}else{
+				   			DOM.hide('.edit-preview-desc-'+flag+'-'+index);
+				   		}
+			   		})  
+					
+					editControl.itemProcess();
+					var items = editControl.postItems;
 					items.reverse();
 					var len = items.length;
 					if(len<=0){
 						DOM.hide('#J_ContentDetail');
 						DOM.hide('#J_ToggleC');
-						DOM.replaceClass(DOM.parent('#J_PreviewBtn'), 'btm-gray-yulan','btm-orange-yulan');
+						DOM.replaceClass('#J_PreviewBtn', 'button-gray','button-disabled');
 						return false;
 					}else{
 						DOM.show('#J_ContentDetail');
 					}
-					//var postItems = category.generatePostItems(items);
+					
 					var itemsJson = KISSY.JSON.stringify(items);
-		//			alert(itemsJson);
+					
 					var postListParams = new Array();
 					S.each(DOM.query('.J_ListParams'),function(item, i){
 						var listPar = {};
@@ -539,59 +563,25 @@ KISSY.add(function (S,O) {
 		        	itemsJson = itemsJson.replace(/%25/g, '%!').replace(/&/g, '%26');
 		        	listParamsJson = listParamsJson.replace(/%25/g, '%!');
 		     	    var data = "items="+itemsJson+"&listParams="+listParamsJson+"&proto_id="+protoId+"&form_key="+FORM_KEY;
-					//alert(data);
-					//console.log(data);
-		    	    new H.widget.asyncRequest().setURI(previewUrl).setMethod("POST").setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).send();
+		     	    new H.widget.asyncRequest().setURI(previewUrl).setMethod("POST").setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).send();
 				},
-				generatePostItems : function(items){
-					var postItems = new Array();
-					var itemsLen = items.length;
-					for(var i=0; i<itemsLen; i++) {
-		//				alert(items[i].promo_title);
-						var item = {
-							'id': items[i].id,
-							'title': H.list.strProcess(items[i].title),
-							'promo_title': H.list.strProcess(items[i].promo_title),
-							'price': items[i].price,
-							'spec_price': items[i].spec_price,
-							'volume': items[i].volume,
-							'pic_url': items[i].pic_url,
-							'order' : items[i].order,
-							'rate_ids' : items[i].rate_ids
-						};
-						var saveParams = new Array();
-						var item_params = items[i].item_params;
-						for(var j=0; j<item_params.length; j++) {
-							var param = {
-								'param_id': item_params[j].param_id,
-								'field_code': item_params[j].field_code,
-								'value': H.list.strProcess(item_params[j].value),
-								'field_name': item_params[j].field_name
-							};
-							saveParams.push(param);
-						}
-						item.item_params = saveParams;
-						postItems.push(item);	
-					}
-					return postItems;
-				},
-				
+			
 				addItem : function() {
-					category.tempSave();
+					editControl.tempSave();
 					if(typeId == 9){
 						var item = {"parent":"","parentUrl":"http://","children":[{"name":"长袖","url":"http://","isHight":"0"}]};
 					}else{
 						var item = {"parent":"客服分组名称","parentUrl":"http://","children":[{"name":"","url":"","isHight":"0"}]};
 					}
-					category.selectItem.push(item);
-					category.renderSelectItems();
-					category.preview();
-					var len = category.selectItem.length-1;
+					editControl.selectItem.push(item);
+					editControl.renderSelectItems();
+					editControl.preview();
+					var len = editControl.selectItem.length-1;
 					DOM.get('#J_List'+len+' .parentName').focus(); 
 				},
 				save : function() {
-					category.itemProcess();
-					var items = category.postItems;
+					editControl.itemProcess();
+					var items = editControl.postItems;
 					var len = items.length;
 					if (len==0) {
 							new H.widget.msgBox({
@@ -602,12 +592,11 @@ KISSY.add(function (S,O) {
 						return;
 					}
 					
-					category.msg = new H.widget.msgBox({
+					editControl.msg = new H.widget.msgBox({
 									    title:"",
 										dialogType : 'loading',
 									    content:'系统保存中，请稍候'	
 									});
-					//var postItems = H.list.generatePostItems(items);
 					var itemsJson = KISSY.JSON.stringify(items);
 					var postListParams = new Array();
 					S.each(S.all('.J_ListParams'),function(item, i){
@@ -623,7 +612,7 @@ KISSY.add(function (S,O) {
 					var listParamsJson = KISSY.JSON.stringify(postListParams);		
 					var submitHandle = function(o) {
 							DOM.html(DOM.get('#J_ContentDetail'),o.payload.body);
-							category.msg.hide();
+							editControl.msg.hide();
 							listId = o.payload.list_id;
 							var url = createUrl+"&listId="+listId;
 							
@@ -642,7 +631,7 @@ KISSY.add(function (S,O) {
 									    }
 									});
 							}else {
-								if (category.editFlag == true) {
+								if (editControl.editFlag == true) {
 									var str = '重新投放';
 								}else {
 									var str = '去投放 ';
@@ -665,7 +654,7 @@ KISSY.add(function (S,O) {
 							}	  
 		    	    };
 		    	    var errorHandle = function(o) {
-		    	    	category.msg.hide();
+		    	    	editControl.msg.hide();
 						new H.widget.msgBox({
 								    title:"错误提示",
 								    content:o.desc,
@@ -677,52 +666,25 @@ KISSY.add(function (S,O) {
 		         	itemsJson = itemsJson.replace(/%25/g, '%!').replace(/&/g, '%26');
 		        	listParamsJson = listParamsJson.replace(/%25/g, '%!'); 
 		     	    data += "items="+itemsJson+"&listParams="+listParamsJson+"&list_id="+listId+"&proto_id="+protoId+"&form_key="+FORM_KEY;
-		        	//alert(data);
 		    	    new H.widget.asyncRequest().setURI(saveUrl).setMethod("POST").setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).send();
 				},
+				//列表渲染
 				renderSelectItems : function(){
-					var items = category.selectItem;
-					var len = items.length;
-					var els = '';
-					//console.time('b');
-					category.flag = 0;
-					var templet= KISSY.Template(DOM.html(DOM.get('#J_Templet')));
-					for (var i = 0; i < len; i++) {
-						if( typeof(items[i].isCurrent) == "undefined" || items[i].isCurrent == 0){
-							items[i].curClass = "";
-						}else{
-							items[i].curClass = "current";
-						}
-						items[i].flag = i;
-						items[i].max = len-1; 
+						var items = editControl.selectItem;
+						var len = items.length;
+						var templet = DOM.html(DOM.get('#J_Templet'));
+						var data = {
+				            data: items
+				        };
+				        var els = new XTemplate(templet).render(data);
+						DOM.html(DOM.get('#J_SelectItemBox'), els ); 
+						editControl.Form.renderAll('#J_SelectItemBox');
+						editControl.Form.renderAllRadio('#J_ListBorder');
+						editControl.Form.renderAllRadio('#J_ListColor');
 						
-						
-						els+=templet.render(items[i]);
-					}
-					DOM.html(DOM.get('#J_SelectItemBox'), els );
-					if(len>0){
-						DOM.hide('#J_RightEmpty');
-						DOM.css(DOM.query('.J_selectItemHoder'),'display','');
-					}else{
-						DOM.show('#J_RightEmpty');
-						DOM.css(DOM.query('.J_selectItemHoder'),'display','none');
-					}
-					//console.timeEnd('b');
-					// input 边框变化  
-					var inputs = DOM.filter (DOM.query('input'),function(i){if(i.type =='text')return true;})
-					Event.on(inputs,'focus blur',function(ev){
-						if(ev.type == 'focus'){
-							DOM.removeClass(ev.target,'input-text text text-error');
-							DOM.addClass(ev.target,'input-text-on');
-						} else if(ev.type == 'blur'){
-							DOM.removeClass(ev.target,'input-text-on');
-							DOM.addClass(ev.target,'input-text');
-						}
-					})
 				},
 				tempSave: function(){
-					//console.time('a');
-					category.selectItem = [];
+					editControl.selectItem = [];
 					var len = DOM.children('#J_SelectItemBox').length;
 				    for(var i = 0;i<len;i++){
 						 var item ={};
@@ -745,15 +707,12 @@ KISSY.add(function (S,O) {
 							 listPar.isHight = DOM.prop(childIsHight[m],"checked") ? 1 : 0;
 							 item.children.push(listPar);
 						 }
-						 category.selectItem.push(item);
+						 editControl.selectItem.push(item);
 						 
 					}
-					//console.timeEnd('a');
-				
 				},
-				
 				itemProcess : function(){
-					category.postItems = [];
+					editControl.postItems = [];
 					var len = DOM.children('#J_SelectItemBox').length;
 				    for(var i = 0;i<len;i++){
 						 var item ={};
@@ -767,7 +726,7 @@ KISSY.add(function (S,O) {
 						 item.children =[]; 
 						 for(var m = 0;m< mlen ; m++){
 						 	  var listPar ={};
-							 listPar.name = H.util.strProcess(DOM.val(childName[m]));
+				 			 listPar.name = H.util.strProcess(DOM.val(childName[m]));
 							 if(typeId ==9){
 							 	listPar.url = H.util.strProcess(DOM.val(childUrl[m]));
 							 }else{
@@ -776,12 +735,12 @@ KISSY.add(function (S,O) {
 							 listPar.isHight = DOM.prop(childIsHight[m],"checked") ? 1 : 0;
 							 item.children.push(listPar);
 						 }
-						 category.postItems.push(item);
+						 editControl.postItems.push(item);
 					}
-					
+				   
 				}
-
+                
 	}
 }, {
-    requires: ['overlay']
+    requires: ['overlay','switchable','xtemplate','utils/beautifyForm/index']
 });

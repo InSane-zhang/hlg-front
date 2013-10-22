@@ -1,0 +1,11 @@
+/**
+	core首页样式文件dashboard.css
+**/
+
+
+/*用户信息*/
+.hlg-app .main .Mcore .user-account .inner{padding: 20px 20px 0 20px}
+.hlg-app .main .Mcore .user-account .inner-1{padding: 20px}
+.hlg-app .main .Mcore .user-account .main-seach li{float: left;margin-right: 10px}
+.hlg-app .main .Mcore .user-account .main-seach .bui-select-input{width:61px}
+.hlg-app .main .Mcore .user-account .main-seach .bui-select{width:100px}

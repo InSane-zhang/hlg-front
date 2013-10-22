@@ -1,24 +1,83 @@
 /**
- 
 	tab样式文件ui-tab.css
- 
- 	<section class="ui-tab">
-		<menu class="ui-tab-list ks-switchable-nav" id="icon_list" role="tablist">
-			<li class="current"><a>订购记录</a></li>
-			<li><a>赠送记录</a></li>
-		</menu>
-		<div class="action-btn">
-			<input type="button" value="创建新角色" class="btm-caozuo-orange">  //tab中有按钮
-		</div>
-	</section>
+ <div class="ui-tab-1">
+	<a data="0" href="#2" class=" current">所有活动</a>
+    <em>·</em>
+    <a data="2" href="#2" class="">限时折扣</a>
+    <em>·</em>
+    <a data="3" href="#2" class="">满就送</a>
+    <em>·</em>
+    <a data="4" href="#2" class="">团购</a>
+    <em>·</em>
+    <a data="5" href="#2" class="">阶梯价</a>
+</div>
+	<ul class="ui-tab-2">	
+		<li><a class="active first current" href="#">出售中</a></li>	
+	    <li><a href="#">仓库</a></li>
+		<li><a class=" last" href="#"><label>失败宝贝</label><span class="pn-notify">4</span></a></li>	
+	</ul>
+<div class="ui-tab-3">
+	<ul >
+        <li class="current"><a href="#">利润排行</a></li>
+        <li><a href="#">销量排行</a></li>
+	</ul>
+</div>
 **/
 
-.ui-tab{ height:60px; border-bottom:1px #ebebeb solid; background:#fafafa; position:relative;}
-.ui-tab .ui-tab-list{ position:absolute; top:1px;}
-.ui-tab li{ line-height:60px; float:left; border-right:1px #ebebeb solid; font-weight:bold; cursor:pointer; font-size:14px;}
-.ui-tab li a{ min-width:60px; text-align:center; color:#000; padding:0 20px; display:inline-block;}
-.ui-tab li.current{ background:#fff; color:#f46851;}
-.ui-tab li.current a{ color:#f46851;}
-.ui-tab .action-btn{ position:absolute; right:10px; top:18px;}
+.ui-tab-1 a{display:inline-block;*display: inline;*zoom:1;padding:6px 8px;*padding:8px 8px 4px;font-size:15px;font-weight:100;}
+.ie8 .ui-tab-1 a{line-height:28px;}
+.ui-tab-1 a.current{color:#FFF;background:#8BD167;border-radius: 5px; -webkit-border-radius: 5px;-moz-border-radius: 5px;-khtml-border-radius: 5px;}
+.ui-tab-1 em{ display:inline-block;*zoom:1; *display:inline; height:30px; line-height:24px; *line-height:36px; overflow:hidden; font-size:32px;font-weight:100; color:#CCD0D9;font-style:normal; vertical-align:middle; *vertical-align: baseline; font-family:"微软雅黑";}
+.ie7 .ui-tab-1 em{line-height:32px;}
+.ui-tab-1 a:hover{color: #FFF;background: #8BD167;border-radius: 5px;}
 
+.ui-tab-2{height:30px; line-height:28px; overflow:hidden;}
+.ui-tab-2 li{ float:left;}
+.ui-tab-2 li a {
+background:#F6F7FB;
+border-left: 1px solid #E5E8ED;
+border-top: 1px solid #E5E8ED;
+border-bottom: 1px solid #E5E8ED;
+color:#AAB2BD;
+float: left;
+height: 28px;
+line-height:28px;
+*line-height:32px;
+_line-height:27px;
+padding-left: 10px;
+padding-right: 10px;
+}
+.ie8 .ui-tab-2 li a,.ie8 .ui-tab-2 li a label{line-height:32px;}
+.ui-tab-2 li a.first{border-radius: 4px 0px 0px 4px; 
+-webkit-border-radius:4px 0px 0px 4px;
+-moz-border-radius:4px 0px 0px 4px;
+-khtml-border-radius:4px 0px 0px 4px;}
+.ui-tab-2 li a label{float:left; height:28px; overflow:hidden; line-height:28px; *line-height:32px;_line-height:28px; padding:0; margin:0;}
 
+.ui-tab-2 li a.last{
+border-right:1px solid #E5E8ED;
+border-radius: 0px 4px 4px 0px; 
+-webkit-border-radius: 0px 4px 4px 0px;
+-moz-border-radius: 0px 4px 4px 0px;
+-khtml-border-radius: 0px 4px 4px 0px;}
+.ui-tab-2 li a.current{ background:#FFF; font-weight:700; color:#4DC1E8; font-size:13px;}
+.pn-notify {
+padding:0px 5px;
+height: 16px;
+line-height: 16px;
+display: inline-block;
+*zoom:1;
+*display:inline;
+float:left;
+margin: 6px 0 0 3px;
+background:#FB6E52;
+color: #fff;
+text-align: center;
+border-radius: 8px;
+font-size: 11px;
+}
+.ui-tab-3 {height: 60px;background: #ffffff;position: relative;border-bottom: 1px solid #eaedf2;font-family:\5fae\8f6f\96c5\9ed1 }
+.ui-tab-3 li {float: left;margin-left: 30px}
+.ui-tab-3 li a{color:#AAB2BD; text-decoration:none;display: inline-block;*display:inline;;*zoom:1;text-align: center;height: 40px;line-height: 40px;font-size: 18px;font-weight: 700;}
+.ui-tab-3 li.current a{padding-bottom: 18px;color:#434A54;border-bottom:2px solid #8BD167;}
+.ui-tab-3 li a:hover{padding-bottom: 18px;color:#434A54;border-bottom:2px solid #8BD167;}

@@ -1,8 +1,12 @@
-KISSY.add(function(S,showPages){
+KISSY.add(function(S,showPages,beautifyForm){
 	var S = KISSY,DOM = S.DOM,Event = S.Event;
 	return instockAdd = {
 			msg : null,
+			Form : new beautifyForm,
 			init : function(){
+				//console.log(2)
+				//instockAdd.Form.renderAllCheckbox('#J_beautify');
+				instockAdd.Form.renderAll('#J_RadioDiv');
 				Event.on('#J_BtnPublish','click',function(){
 					instockAdd.savePlan();
 				})
@@ -51,5 +55,5 @@ KISSY.add(function(S,showPages){
 			}
 	};
 },{
-	requires:['utils/showPages/index']
+	requires:['utils/showPages/index','utils/beautifyForm/index']
 });

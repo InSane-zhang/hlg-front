@@ -2,7 +2,7 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,showPages) {
+KISSY.add(function (S,showPages,Select) {
     // your code here
 	var DOM = S.DOM, Event = S.Event;	
 	
@@ -10,7 +10,52 @@ KISSY.add(function (S,showPages) {
 	    	Paginator : null,
 	    	msg :null,
 	    	init : function() {
-			
+
+				var items = [
+				  {text:'上架时间：早',value:'0'},
+				  {text:'上架时间：晚',value:'1'}
+		   	    ],
+		   	    select = new Select.Select({  
+		   		    render:'#J_SelectPage',
+		   	      	valueField:'#J_PageHide',
+		   	      	items:items
+		   		});
+		   		select.render();
+	   			select.setSelectedValue('0');
+		   		var items1 = [
+   		   	      {text:'10条',value:'10'},
+   		   	      {text:'20条',value:'20'},
+   		   	      {text:'30条',value:'30'},
+   		   	      {text:'40条',value:'40'},
+   		   	      {text:'50条',value:'50'},
+   		   	      {text:'100条',value:'100'}
+   		   	    ],
+   		   	    select1 = new Select.Select({  
+   		   		    render:'#J_SelectOrder',
+   		   	      	valueField:'#J_OrderHide',
+   		   	      	items:items1
+   		   		});
+   		   		select1.render();
+	   			select1.setSelectedValue('10');
+	              select2 = new Select.Select({  
+		            	  render:'#J_SelectCid',
+		            	  valueField:'#J_CidHide',
+		            	  items:cidItem
+	              });
+	   			select2.render();
+	   			select2.setSelectedValue('0');
+	   			var items3 = [
+	   			              {text:'全部',value:'0'},
+	   			              {text:'出售中',value:'1'},
+	   			              {text:'库中',value:'2'}
+	   			              ],
+	              select3 = new Select.Select({  
+		            	  render:'#J_SelectSell',
+		            	  valueField:'#J_SellHide',
+		            	  items:items3
+	              });
+	   			select3.render();
+	   			select3.setSelectedValue('0');
 				list.searchTbItems();
 				Event.on('#J_Sort .sort','click',function(ev){
 					DOM.removeClass(DOM.query('#J_Sort .sort'),'current');
@@ -77,12 +122,12 @@ KISSY.add(function (S,showPages) {
 	    	    }else{
 	    	    	var title ='';
 	    	    }
-				var itemPage = DOM.val(DOM.get("#J_SelectItemPage"));//每页多少条
-					var cid = DOM.val(DOM.get("#J_SelectItemCid")); //类目
-	    	    	var type = DOM.val(DOM.get("#J_SearchSelling")); //出售中 库中
+				var itemPage = DOM.val(DOM.get("#J_OrderHide"));//每页多少条
+					var cid = DOM.val(DOM.get("#J_CidHide")); //类目
+	    	    	var type = DOM.val(DOM.get("#J_SellHide")); //出售中 库中
 	    	    	var sortvalue = DOM.val('#J_SortValue');
 	    	    	if(sortvalue == 0 || sortvalue == 1){
-						var itemOrder = DOM.val(DOM.get("#J_SelectItemOrder"));//排序方式
+						var itemOrder = DOM.val(DOM.get("#J_PageHide"));//排序方式
 					}else{
 						var itemOrder = sortvalue;//排序方式
 					}
@@ -111,15 +156,15 @@ KISSY.add(function (S,showPages) {
 	        	
 	        	//添加样式
 	        	var data;	        	
-	        	S.each(S.all('#J_Sort th'), function(v,k) {
+	        	S.each(S.all('#J_Sort .sort'), function(v,k) {
 	        		if(DOM.hasClass(v, 'current')) {
 	        			data = DOM.attr(v, 'data');
 	        		}
 	        		return data;
 	        	})
-	        	S.each(S.all('#J_TbItemList td'), function(v, k) {
+	        	S.each(S.all('#J_TbItemList li'), function(v, k) {
 	    			if(DOM.attr(v, 'data') == data) {
-	    				DOM.addClass(v, 'current');
+	    				DOM.addClass(v, 'current-row');
 	    			}
 	    		})
 			},
@@ -151,5 +196,5 @@ KISSY.add(function (S,showPages) {
 	
 	}
 }, {
-    requires: ['utils/showPages/index']
+    requires: ['utils/showPages/index','bui/select']
 });

@@ -1,0 +1,23 @@
+/**
+ 
+	订单index样式index.css
+ 
+**/ 
+
+.hlg-app .main .Morders .orders-index .page-head .print-sets {padding:10px 6px 10px 28px;background-color: #ffffff;border: none;font-size: 15px;position: relative;display: inline-block;*zoom:1;*display:inline;color:#656d78;}
+.hlg-app .main .Morders .orders-index .page-head .print-sets .tongbu-icon{background: url(http://cdn.huanleguang.com/img/hlg-app/Morders/orders_icon.png);background-position: -21px 0px;background-repeat: no-repeat;width:18px;height:18px;display: block;float: left;position: absolute;top: 12px;left:6px;}
+.hlg-app .main .Morders .orders-index .page-head button:hover {background-color: #4DC1E8;border-radius: 5px 5px 5px 5px;cursor: pointer;color: #ffffff;}
+.hlg-app .main .Morders .orders-index .page-head button:hover .tongbu-icon{background-position: 0px 0px;}
+.ie7 .hlg-app .main .Morders .orders-index .page-head .print-sets {padding-right:0px;padding-left:24px;padding-bottom:6px;width:90px;overflow:hidden;}
+
+.hlg-app .main .Morders .orders-index .data-tip {height: 45px;line-height: 30px;}
+.hlg-app .main .Morders .orders-index .data-tip .data-tip-left{float:left;}
+.hlg-app .main .Morders .orders-index .data-tip .data-tip-right{float:right;}
+.hlg-app .main .Morders .orders-index .data-tip .data-tip-right .down-more {top: 0;}
+.hlg-app .main .Morders .orders-index .data-tip .ui-page {padding: 0;}
+
+#J_ExpressName li {float: left;margin-bottom: 10px;height: 18px;_display: inline;}
+#J_ExpressName input {margin-right: 5px;}
+#J_ExpressName span {width: 66px;display: inline-block;}
+
+

@@ -13,10 +13,19 @@
 /*页面utils样式*/
 @import '../utils/ui-edit.css';  /*编辑*/
 @import '../utils/ui-step.css';  /*步骤条*/
+@import '../utils/ui-goods-list.css';  /**/
 
 /*material公共样式*/
 @import 'mods/public.css';
 
+/*页面所有海报样式*/
+@import 'mods/share.css';
 
+/*客服模板&分类模板样式*/
+@import 'mods/category.css';
 
+/*关联列表制作*/
+@import 'mods/guanlian.css';
 
+/*关联列表配置 */
+@import 'mods/option.css';

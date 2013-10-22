@@ -1,0 +1,78 @@
+/**
+	core首页样式文件dashboard.css
+**/
+
+
+/*卡券列表*/
+
+.hlg-app .main .Mpromoprops .kaquan-index .page-head-left-1{line-height: 40px；margin-left: 30px;}
+.hlg-app .main .Mpromoprops .kaquan-index .inner-1{padding: 20px}
+.hlg-app .main .Mpromoprops .kaquan-index .main-seach li{float: left;margin-right: 10px}
+.hlg-app .main .Mpromoprops .kaquan-index .main-seach .bui-select-input{width:61px}
+.hlg-app .main .Mpromoprops .kaquan-index .main-seach .bui-select{width:100px}
+.hlg-app .main .Mpromoprops .kaquan-index .select-type .bui-select {width: 100px;}
+.hlg-app .main .Mpromoprops .kaquan-index .select-type .bui-select-input {width: 61px;}
+
+/*赠送页面*/
+.hlg-app .main .Mpromoprops .buyer-list .main-head-title {margin-left: 30px}
+.hlg-app .main .Mpromoprops .buyer-list .J_Abled span {display:none;}
+.hlg-app .main .Mpromoprops .buyer-list .J_DisAbled a {display:none;}
+.hlg-app .main .Mpromoprops .buyer-list .J_DisAbled span {display:inline-block;}
+.hlg-app .main .content .iconDeletelink {display: block;font-size: 0px;height: 20px;width: 20px;line-height: 20px;background: url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat -171px -190px;position:absolute; right:10px; top:4px;*zoom:1; }
+.hlg-app .main .content  .iconDeletelink:hover {display: block;font-size: 0px;height: 20px;width: 20px;line-height: 20px;background:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat -171px -168px;}
+.hlg-app .main .Mpromoprops .buyer-list .send-content{border:1px solid #D8D8D8;padding:15px 15px 15px 40px;position: relative;margin-top: 15px}
+.mt15{margin-bottom: 15px}
+.hlg-app .main .Mpromoprops .buyer-list .auto-send .bui-select {width: 100px;}
+.hlg-app .main .Mpromoprops .buyer-list .auto-send .bui-select-input {width: 61px;}
+
+/*创建页面*/
+.hlg-app .main .Mpromoprops .create .ui-about-list {margin: 40px 70px;}
+.hlg-app .main .Mpromoprops .create .calendarImg {width: 150px;height: 27px;border: 1px solid #DDD;vertical-align: middle;background: url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat;background-position: 100% -988px;padding: 0 5px;}
+.hlg-app .main .Mpromoprops .create .bui-select {width: 100px;height: 36px;line-height: 33px;}
+.hlg-app .main .Mpromoprops .create .bui-select-input {width: 61px;}
+.hlg-app .main .Mpromoprops .create .bui-select .x-icon{height: 36px;}
+.hlg-app .main .Mpromoprops .create .ui-side-list{width: 120px}
+ 
+.diqu{width: 460px;padding: 20px;margin-bottom: 10px;border: 1px #E5E8ED solid;border-radius: 5px;background: #F6F7FB;position: relative;}
+.diqu li{ float:left; width:60px; margin:4px 6px; _display:inline;clear: none;}
+.diqu li input{margin-right:8px; *margin-right:4px}
+.diqushezhi{ margin:6px; border-bottom:1px dotted #e4e4e4;}
+.diqushezhi .diqushezhi-btm span{ display:inline-block; text-align:center; padding:3px 8px; margin:6px; cursor:pointer}
+.diqushezhi .diqushezhi-btm-none{ border:1px solid #999; color:#999;}
+.diqushezhi .diqushezhi-btm-on{ border:1px solid #F00; color: #F00;}
+.diqushezhi-diqu{ margin:6px; color:#F00}
+.hlg-app .main .Mpromoprops .create .preview-box{border: 1px #DEDEDE solid;padding: 10px}
+.hlg-app .main .Mpromoprops .create .preview-box span{line-height: 20px}
+.w-70{width: 70px}.w-260{width: 260px}.pt10{padding-top: 10px}.mt10{margin-top: 10px}
+.choose-style li {width: 78px;height: 48px;float: left;margin: 2px;border: 2px solid #FFF;_display: inline;clear: none}
+.choose-style li img {width: 78px;height: 48px;display: block;}
+
+/*宝贝页面*/
+.hlg-app .main .Mpromoprops .page-head .main-header {padding: 0 30px;}
+.hlg-app .main .content .main-seach-2 {height: 30px;line-height: 30px;padding: 20px 30px;background: #F6F7FB;border-top: 1px solid #EAEDF2;border-bottom: 1px solid #EAEDF2;border-left: 0;border-right: 0;clear: both;}
+.hlg-app .main .Mpromoprops .uboxstyle-1,.hlg-app .main .Mpromoprops .uboxstyle-2{margin-right:10px;}
+.hlg-app .main .Mpromoprops .uboxstyle-1 .bui-select{width:116px;}
+.hlg-app .main .Mpromoprops .uboxstyle-1 .bui-select .bui-select-input{width:86px;}
+.hlg-app .main .Mpromoprops .uboxstyle-1 .bui-select .x-icon{width:18px;}
+.hlg-app .main .Mpromoprops .uboxstyle-2 .bui-select{width:96px;}
+.hlg-app .main .Mpromoprops .uboxstyle-2 .bui-select .bui-select-input{width:66px;}
+.hlg-app .main .Mpromoprops .uboxstyle-2 .bui-select .x-icon{width:18px;}
+.hlg-app .main .Mpromoprops .uboxstyle-2 .input-text-1{width: 70px}
+
+.hlg-app .main .Mpromoprops .data-tip{ height:45px;line-height:30px;border-bottom: 1px solid #EAEDF2;}
+.hlg-app .main .Mpromoprops .data-tip-left{float:left;}
+.hlg-app .main .Mpromoprops .data-tip-left .beautify_check{margin-right:20px;font-family: \5fae\8f6f\96c5\9ed1}
+.hlg-app .main .Mpromoprops .data-tip-right{float:right;}
+.hlg-app .main .Mpromoprops .data-tip-right .down-more{top:0;}
+.hlg-app .main .Mpromoprops .data-tip-right .ui-page{padding: 0;}
+.hlg-app .main .Mpromoprops .list-item .ui-list .list-bd .list-item ul {padding-left: 0px}
+.hlg-app .main .Mpromoprops .list-item .ui-list .list-bd .list-item{line-height: 60px;height: 60px;}
+.hlg-app .main .Mpromoprops .list-item .ui-list .list-bd .list-item .summary {width:160px}
+.hlg-app .main .Mpromoprops .list-item .ui-list .list-bd .list-item .price em{color: #656d7a;font-weight: bolder;font-size: 20px;}
+.hlg-app .main .Mpromoprops .list-item .bottom-opertion{position: relative;line-height: 40px;padding: 15px 0px;height: 40px;}
+.hlg-app .main .Mpromoprops .list-item .bottom-opertion .ui-page{height:40px; padding-bottom:15px;position: absolute;top: 0px;right: 0px;}
+/*最底部操作*/
+.hlg-app .main .Mpromoprops  .bottom-step{height: 82px;background-color: #f5f7f8;line-height: 82px;text-align: center;}
+.hlg-app .main .Mpromoprops  .bottom-step .data-text {float: left;line-height: 82px;margin-left: 30px}
+.hlg-app .main .Mpromoprops  .bottom-step .data-text span {color: #FB6E52;}
+.hlg-app .main .Mpromoprops  .bottom-step .m-380 {margin-left: 380px}

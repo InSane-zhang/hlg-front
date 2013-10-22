@@ -4,16 +4,42 @@
  
 **/
 
-.hlg-app .main .menu .menu-list{ padding:10px;}
+.hlg-app .main .menu{ width:140px; float:left; font-family:"宋体"; color:#434a54;}
+.hlg-app .main .menu .menu-item .menu-item-hd i,
+.hlg-app .main .menu .menu-item .menu-item-bd li:hover i,
+.hlg-app .main .menu .menu-item .menu-item-bd li.active i,
+.hlg-app .main .menu .menu-fillet .show-more i,
+.hlg-app .main .menu .guide-pic{ background:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat;}
+/*工作台*/
+.hlg-app .main .menu .menu-fillet .fillet-lt{ background-position:-6px -40px;}
+.hlg-app .main .menu .menu-fillet .fillet-rt{ background-position:-6px -45px;}
+.hlg-app .main .menu .menu-fillet .fillet-br{ background-position:-6px -50px;}
+.hlg-app .main .menu .menu-fillet .fillet-bl{ background-position:-6px -56px;}
+.hlg-app .main .menu .menu-fillet .workbench{ height:40px; line-height:40px; padding-left:19px; color:#fff; font-size:14px; font-weight:bold; background:#8bd167; cursor:pointer;}
+/*点击展开更多*/
+.hlg-app .main .menu .menu-fillet .show-more{ height:29px; background:#f6f7fb; cursor:pointer;}
+.hlg-app .main .menu .menu-fillet .show-more i{ width:13px; height:3px; margin:13px 65px; display:inline-block; background-position:0 -69px; overflow:hidden;}
+.hlg-app .main .menu .menu-fillet .show-more i.unfold{ width:10px; height:6px; background-position:0 -73px;}
+.hlg-app .main .menu .guide-pic{ width:111px; height:47px; margin:5px auto 15px auto; background-position:-15px -40px; overflow:hidden;}
 /*一级菜单样式*/
-.hlg-app .main .menu .menu-item .menu-item-hd{ height:40px; line-height:40px; padding-left:12px; cursor:pointer; font-size:14px; color:#333;}
-.hlg-app .main .menu .menu-hover .menu-item-hd{ background:#fff;}
-.hlg-app .main .menu .menu-item .menu-item-hd i{ margin-right:12px; color:#ccc;}
-.hlg-app .main .menu .menu-item.current .menu-item-hd{ font-weight:bold;}
-
+.hlg-app .main .menu .menu-item{ border-bottom:1px #eaedf2 solid;}
+.hlg-app .main .menu .menu-item .menu-item-hd{ height:40px; line-height:40px; padding-left:19px; cursor:pointer; font-size:14px; position:relative;}
+.hlg-app .main .menu .menu-item .menu-item-hd i{ width:7px; height:5px; display:block; position:absolute; right:10px; top:17px; background-position:0 -63px; overflow:hidden;}
+.hlg-app .main .menu .menu-hover .menu-item-hd{ background:#f6f7fb;}
 /*二级菜单样式*/
-.hlg-app .main .menu .menu-item .menu-item-bd{ padding-bottom:22px;}
-.hlg-app .main .menu .menu-item .menu-item-bd li{ height:30px; line-height:30px; padding-left:21px; color:#666; cursor:pointer;}
-.hlg-app .main .menu .menu-item .menu-item-bd li i{ padding-right:17px; font-size:6px; color:#ccc; display:-webkit-inline-box; -webkit-transform:scale(0.5);}
-.hlg-app .main .menu .menu-item .menu-item-bd li.active{ color:#fff; font-weight:bold; background:#f05e4f;}
-.hlg-app .main .menu .menu-item .menu-item-bd li.active i{ color:#ffad97;}
+.hlg-app .main .menu .menu-item .menu-item-bd{ padding:0 0 10px 19px;}
+.hlg-app .main .menu .menu-item .menu-item-bd li{ height:30px; line-height:30px; padding-left:11px; color:#656d78; cursor:pointer; position:relative;}
+.hlg-app .main .menu .menu-item .menu-item-bd li i{ display:block; width:4px; height:6px; background:none; overflow:hidden; position:absolute; left:0; top:12px; }
+.hlg-app .main .menu .menu-item .menu-item-bd li:hover{ color:#73bf4d; font-weight:400;}
+.hlg-app .main .menu .menu-item .menu-item-bd li.active{ color:#73bf4d; font-weight:bold;}
+.hlg-app .main .menu .menu-item .menu-item-bd li:hover i,.hlg-app .main .menu .menu-item .menu-item-bd li.active i{ background-position:0 -80px;}
+
+/*客服中心*/
+.hlg-app .main .menu .service-core{ padding:20px 10px 0px 10px; overflow:hidden;}
+.hlg-app .main .menu .service-core p{ padding-bottom:20px; font-size:14px;}
+.hlg-app .main .menu .service-core .kefu-preview{ display:none;}
+.hlg-app .main .menu .service-core .kefu-preview li{ width:60px; padding-bottom:20px; float:left; overflow:hidden;}
+.hlg-app .main .menu .service-core .kefu-preview li .ww-static{ width:22px;height:20px;float:left; overflow:hidden;margin-bottom:4px;text-indent:-999em;}
+.hlg-app .main .menu .service-core .kefu-preview li em{ float:left;height:20px;line-height:20px;}
+.hlg-app .main .menu .service-core .ww-light a{display:inline-block; height:28px; color:#AAB2BD;float:left;width:22px !important;}
+.hlg-app .main .menu .service-core .ww-static .ww-online{background-position:-80px 0 !important;}

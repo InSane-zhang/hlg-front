@@ -167,7 +167,13 @@ KISSY.add(function(S,showPages,O,checkUtil){
 		    	    };
 	        	    var errorHandle = function(o){
 	        	    	globalAdd.msg.hide();
-	        	    	globalAdd.msg.setMsg('<div class="point relative"><div class="point-w-1">'+o.desc+'</div></div>').showDialog();
+	        	    	new H.widget.msgBox({
+						    title:"错误提示",
+						    content:o.desc,
+						    type:"error"
+						});
+						return;
+	        	    	//globalAdd.msg.setMsg('<div class="point relative"><div class="point-w-1">'+o.desc+'</div></div>').showDialog();
 						return;
 	        	    };
 					var data = "super_title="+super_title+"&fun_id="+fun_id+"&exclude_roles="+exclude_roles+"&msg="+msg+"&start_date="+start_date+"&end_date="+end_date;

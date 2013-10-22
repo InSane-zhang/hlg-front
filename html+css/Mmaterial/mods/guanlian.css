@@ -1,0 +1,73 @@
+/**
+	material样式文件关联列表制作.css
+**/
+.hlg-app .main .Mmaterial .list-design{ min-height:500px;height:auto !important;height:500px;}
+
+.hlg-app .main .Mmaterial .list-design .bottom-opertion {position: relative;line-height: 40px;padding: 15px 0px;height: 40px;}
+.hlg-app .main .Mmaterial .list-design .data-tip-left {float: left;}
+.hlg-app .main .Mmaterial .list-design .bottom-opertion .ui-page {height: 40px;padding-bottom: 15px;position: absolute;top: 0px;right: 0px;}
+
+.hlg-app .main .Mmaterial .list-design .main-content-4 .ui-list .list-bd .list-item ul {padding:0px}
+.hlg-app .main .Mmaterial .list-design .main-content-4 .w-280{width:280px}
+.hlg-app .main .Mmaterial .list-design .main-content-4 .w-170{width:170px}
+.hlg-app .main .Mmaterial .list-design .main-content-4 .ui-side-list {width: 60px;margin-right: 5px}
+.hlg-app .main .Mmaterial .list-design .main-content-4 .ui-content-list {width: 200px}
+.hlg-app .main .Mmaterial .list-design .main-content-4 .ui-about-list li {margin-bottom: 5px}
+.hlg-app .main .Mmaterial .list-design .main-content-4 .w-90{width:90px}
+.hlg-app .main .Mmaterial .list-design .main-content-4 .selectTips-box .w-100{width:100px}
+
+.hlg-app .main .Mmaterial .list-design .selectTips-box .ui-content-list {width: 320px}
+.hlg-app .main .Mmaterial .list-design .J_ItemParams .ui-content-list {width: 310px}
+
+.hlg-app .main .Mmaterial .list-design .main-content-4 .wc-detail-area {width: 90%;}
+.hlg-app .main .Mmaterial .list-design .main-content-4 .wc-operate-area{width: 10%;}
+/*模板 小标签选中样式*/
+.t-current{border:2px #ccc solid;}
+.hlg-app .main .Mmaterial .list-design .main-content-4 .J_TinyLabels{margin-top: -4px;vertical-align: middle;}
+
+.hlg-app .main .Mmaterial .list-design .first-step-box{padding: 20px;text-align: center;margin: 100px auto;clear: both;}
+.hlg-app .main .Mmaterial .list-design .inner{text-align: center;margin: 0px auto;}
+.hlg-app .main .Mmaterial .list-design .inner .title-1{font-size: 16px;font-weight: bolder;height: 40px;line-height: 40px;}
+.hlg-app .main .Mmaterial .list-design .inner .title-2{height: 30px;line-height: 30px;margin-bottom: 20px;}
+
+
+
+
+.hlg-app .main .Mmaterial .list-design .dapeitaocan-box {margin-top: 10px;}
+.hlg-app .main .Mmaterial .list-design .mt-7 .menu-item{border: none}
+.hlg-app .main .Mmaterial .list-design .mt-7 .menu-item a{border: 1px solid #E7E7E7;margin-left: -1px;}
+
+/**搭配套餐**/
+.dapeitaocan{width:930px; margin-bottom:15px; }
+.dapeitaocan .mt15{margin: 15px 0px}
+.dapeitaocan .choose .btm-style-2,.dapeitaocan .choose .btm-style-3,.dapeitaocan .chosen .btm-style-1,.dapeitaocan .chosen .btm-style-3,.dapeitaocan .choose .btm-style-2,.dapeitaocan .choose .btm-style-3,.dapeitaocan .choose-fail .btm-style-1,.dapeitaocan .choose-fail .btm-style-2{ display:none}
+.dapeitaocan .choose .taocan-choose,.dapeitaocan .chosen .taocan-choose,.dapeitaocan .choose-fail .taocan-choose{background:#fff; width:184px;color:#666666; border:1px solid #e6e6e6; _display:inline;height:240px;}
+
+.dapeitaocan .inner{padding: 5px}
+.dapeitaocan .chosen .inner{padding: 0px}
+.dapeitaocan .choose .taocan-choose .taocan-btm font{color:#fff; padding-left:12px;}
+.dapeitaocan .chosen .taocan-choose .taocan-btm font{color:#666; padding-left:12px;}
+.dapeitaocan .choose-fail .taocan-choose .taocan-btm font{color:#a5a5a5; padding-left:12px;}
+.dapeitaocan .taocan-content{width:150px; color:#999;line-height:25px; height:186px; margin:auto;}
+.dapeitaocan .taocan-content span{padding-top:10px; color:#666; display:block}
+.dapeitaocan .taocan-btm{width:184px; background: #FFF; padding-top:8px; border-top:1px dashed #ccc;text-align: center;}
+.dapeitaocan .taocan-list{ height:242px; overflow:hidden; margin-left:18px;}
+.dapeitaocan .chosen {border: 5px solid #8BD167;}
+.dapeitaocan .chosen .opacity,.dapeitaocan .choose-fail .opacity{position:absolute;top:0;left:0;width:100%;height:242px;background-color:#ff7200;filter:alpha(opacity=10); /* IE */  -moz-opacity:0.1; opacity: 0.1;  支持CSS3的浏览器（FF 1.5也支持） -khtml-opacity: 0.1;}
+.dapeitaocan .chosen .opacity{background-color:#666;}
+.dapeitaocan .chosen .success-img{background:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat; background-position:0 -168px; width:69px; height:71px; z-index:10000000; display:block; position:absolute; right:0px; top:0px;}
+.dapeitaocan .choose .success-img,.dapeitaocan .choose-fail .success-img{ display:none}
+.dapeitaocan .choose-fail .opacity{background-color:#fff;}
+.dapeitaocan .taocan-list ul{border:1px solid #e6e6e6; height:240px}
+.dapeitaocan .taocan-list li{ height:240px; float:left;border-left:1px solid #e6e6e6;_display:inline; width:153px; overflow:hidden; margin-left:-1px;}
+.background-f2f0f0{ background-color:#f2f0f0}
+.dapeitaocan .baobei-img-h-140 a{display:table-cell;width:153px;height:153px;vertical-align:middle;*display:block;*font-family:Arial!important;
+*font-size:122px;}
+.dapeitaocan .text{ height: 32px;line-height: 20px;overflow: hidden;padding:10px 0;background-color:#f2f0f0;}
+.dapeitaocan .text span{ width:140px; display:block; margin:auto}
+.dapeitaocan .price{color:#666666;background-color:#f2f0f0; display:block; padding:0 0 17px 5px}
+.dapeitaocan-box {float:left;}
+.dapeitaocan-box li {float:left;}
+
+.ie7 .dapeitaocan-mt8{margin-top:8px;}
+

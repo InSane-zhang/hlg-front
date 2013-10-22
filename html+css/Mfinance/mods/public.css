@@ -1,0 +1,199 @@
+/**
+	全局样式
+**/
+.Mfinance .mr-top-3{margin-top:3px;}
+.Mfinance .mr-bottom-25{margin-bottom:25px;}
+.Mfinance .w-280{width:280px;}
+.Mfinance .fl{ float:left;}
+.Mfinance .fr{ float:right;}
+.Mfinance .mr15{ margin-right:15px;}
+.Mfinance .ml6{margin-left:6px;}
+.Mfinance .mrl50{margin-left:50px;}
+.Mfinance .mr5{ margin-right:5px;}
+.Mfinance .mrl18{ margin-left:18px;}
+.Mfinance .mrl26{ margin-left:26px;}
+.Mfinance .mrb5{margin-bottom:5px;}
+.Mfinance .pdt10{padding-top:10px;}
+.Mfinance .mrl5{margin-left:5px;}
+.Mfinance .col-red{color:#F05E4F;}
+.Mfinance .list-gray{color:#989898;}
+.Mfinance .font-red{color: #FB6E52;}
+.Mfinance .col-blue{color:#73BF4D;}
+.Mfinance .pd5{padding:5px;}
+.Mfinance .pdl15{padding-left:15px;}
+.Mfinance .bd-r{ border-right:1px solid #EAEDF2;}
+.Mfinance .lice{ color: #ABB3BE; font-size: 12px; font-weight:normal;}
+.Mfinance .cw-bg-gre{ background:#8BD167; font-size:12px; padding:3px 4px; color:#FFFFFF; border-radius: 3px 3px 3px 3px;}
+.Mfinance .cw-bg-gray{background:#CCD0D9; font-size:12px; padding:2px 4px; color:#FFFFFF;border-radius: 3px 3px 3px 3px;}
+.Mfinance .cw-income{ color: #434A54;font-size: 15px; font-weight: bold; height: 25px; line-height: 25px;}
+.Mfinance .cw-black-title{ font-size:20px; color:#74787E; font-weight:600;}
+.Mfinance .cw-font-yellow{ color:#EAAB2B;}
+.Mfinance .earn-money-large{font-size:18px; font-family:Georgia; color:#434A54; font-weight:bold;}
+.Mfinance .fnt-size-12{font-size:12px;}
+.Mfinance .w-10{width:10px;}.w-12{width:12px;}.w-20{width:20px;}.w-22{width:22px;}.w-25{width:25px;}.w-30{width:30px;}.w-35{width:35px;}.w-40{width:40px;}.w-50{width:50px;}.w-55{width:55px;}.w-60{width:60px;}.w-65{width:65px;}
+.Mfinance .addressStyle{width:120px;height:30px;line-height:30px;margin-right:5px;border: 1px solid #E5E8ED;border-radius: 5px 5px 5px 5px;}
+/*时间流提示框样式*/
+.Mfinance .time_pop{width:180px; height:90px;text-align:center;margin: 10px auto; line-height:20px;}
+.Mfinance .time_pop li{width:100%;padding:5px 0px;color:#555555;}
+.Mfinance .time_pop li .fon-clor{color:#9A9A9A;}
+/*头部ui-tap*/
+.hlg-app .main .Mfinance .ui-tab-1{ float:left; font-family:'宋体';}
+.hlg-app .main .Mfinance .ui-tab-1 a{ color:#656d78;}
+.hlg-app .main .Mfinance .ui-tab-1 a.current{ color:#fff;}
+
+/**
+	全局头部样式
+**/
+.Mfinance .cw-head{ padding:10px 0px;}
+.Mfinance .info{ font-family:Georgia; font-size:12px; font-weight:bold; color:#656D78; height:70px;padding:10px 20px;margin-bottom: 15px;}
+.Mfinance .info p{ float:left;}
+.Mfinance .info p a{background:url(http://cdn.huanleguang.com/img/hlg-app/Mfinance/finance.png);  background-position:-231px 0px; background-repeat:no-repeat; width:16px; height:16px; visibility: hidden;display:block;}
+.Mfinance .info li{ float:left; border-right:1px solid #EAEDF2; text-align:left; height:70px;padding:0px 20px;}
+.Mfinance .info .last { border-right:none;}
+.Mfinance .info li .income{ font-size:25px; color:#73BF4D;}
+.Mfinance .info li .out{font-size:25px; color:#FB6E52;}
+.Mfinance .info li .profits{font-size:25px; color:#4DC1E8;}
+.Mfinance .info li .drawback{font-size:25px; color:#AAB2BD;}
+.Mfinance .cw-content .rim{box-shadow: 0 2px 1px -1px #E2E3E9; border-radius: 5px 5px 5px 5px; float:left;background-color:#FFFFFF; border-bottom: 2px solid #E2E3E9;}
+.Mfinance .logic-info{ font-family:Georgia; font-size:12px; font-weight:bold; color:#656D78; height:70px;padding:10px 20px;margin-bottom: 15px;}
+.Mfinance .logic-info p a{background:url(http://cdn.huanleguang.com/img/hlg-app/Mfinance/finance.png);  background-position:-231px 0px; background-repeat:no-repeat; width:16px; height:16px; visibility: hidden;display:block;}
+.Mfinance .logic-info li{ float:left; border-right:1px solid #EAEDF2; text-align:center; height:70px;padding:0px 20px;}
+.Mfinance .logic-info li .income{ font-size:25px; color:#73BF4D;}
+.Mfinance .logic-info li .notice-finance-msg{position:relative;}
+.Mfinance .logic-info li .notice-finance-msg .img-notice{background:url(http://cdn.huanleguang.com/img/hlg-app/Mfinance/finance.png);  background-position:-214px 0px; background-repeat:no-repeat; width:16px; height:16px;float:left;position:absolute;top:27px;}
+.Mfinance .logic-info li .notice-finance-msg .text-16{padding-left:23px;color:#AAB2BD;}
+.Mfinance .logic-info li .drawback{font-size:25px; color:#AAB2BD;}
+
+/*下拉框*/
+.hlg-app .main .content .configure-con .pn-address {background: none repeat scroll 0 0 #F6F7FB;border-color: #EAEDF2 -moz-use-text-color;border-style: solid none;border-width: 1px 0;clear: both;height: 30px;line-height: 30px;padding: 20px 30px;}
+
+
+/*提示框样式*/
+.ui-finance-msg .notice-finance-msg {color:#EAAB2B;overflow: auto; padding: 10px 10px;background: #FFFDEC;}
+.ui-finance-msg .notice-finance-msg .img-notice{ width:16px; height:16px; display:block; background:url(http://cdn.huanleguang.com/img/hlg-app/Mfinance/finance.png); background-position:-214px 0px; background-repeat:no-repeat; float:left; margin-right:5px;}
+.ui-finance-msg .text-16 {line-height: 18px;float: left; position:relative;}
+
+/*列表分页样式2*/
+.hlg-app .main .Mfinance .page-head{position:relative;}
+.hlg-app .main .Mfinance .data-tip-left{float:left;}
+.hlg-app .main .Mfinance .data-tip-right{float:right;}
+.hlg-app .main .Mfinance .data-tip-right .down-more{top:0;}
+.ui-select .down-more{border: 1px solid #E5E8ED;border-radius: 3px 3px 3px 3px;display: none;left: 0;padding-top: 30px; position: absolute;top: 5px;width: 88px;z-index: 100;}
+.hlg-app .main .Mfinance .data-tip{height:45px;line-height: 30px;}
+.hlg-app .main .Mfinance .data-tip-right .ui-page{clear: both;padding:0px;}
+
+ /*下拉框*/
+#weight .bui-select{width:120px;height:30px;}
+#weight .bui-select .bui-select-input{width:90px;}
+.Mfinance .bui-select{width:130px;}
+.Mfinance .bui-select .bui-select-input{padding-left: 0;width: 101px;}
+
+
+
+
+/*进度条样式*/
+
+@-webkit-keyframes animate-stripes {
+  from {
+    background-position: 0 0;
+  }
+  
+  to {
+   background-position: 44px 0;
+  }
+}
+
+.ui-progress-bar {
+  position: relative;
+  height: 14px;
+  padding-right: 2px;
+  background-color: #abb2bc;
+  border-radius: 35px;
+  -moz-border-radius: 35px;
+  -webkit-border-radius: 35px;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #b6bcc6), color-stop(1, #9da5b0));
+  background: -moz-linear-gradient(#9da5b0 0%, #b6bcc6 100%);
+  -webkit-box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 0.5), 0px 1px 0px 0px #FFF;
+  -moz-box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 0.5), 0px 1px 0px 0px #FFF;
+  box-shadow: inset 0px 1px 2px 0px rgba(0, 0, 0, 0.5), 0px 1px 0px 0px #FFF;
+}
+.ui-progress {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  height: 14px;
+  -moz-border-radius: 35px;
+  -webkit-border-radius: 35px;
+  border-radius: 35px;
+  -webkit-background-size: 44px 44px; /* Webkit */
+  background-color: #74d04c;
+  background: -webkit-gradient(linear, 0 0, 44 44,
+    color-stop(0.00, rgba(255,255,255,0.17)),
+    color-stop(0.25, rgba(255,255,255,0.17)),
+    color-stop(0.26, rgba(255,255,255,0)),
+    color-stop(0.50, rgba(255,255,255,0)),
+    color-stop(0.51, rgba(255,255,255,0.17)),
+    color-stop(0.75, rgba(255,255,255,0.17)),
+    color-stop(0.76, rgba(255,255,255,0)),
+    color-stop(1.00, rgba(255,255,255,0))
+  ), -webkit-gradient(linear, left bottom, left top, color-stop(0, #74d04c), color-stop(1, #9bdd62));
+  background: -moz-repeating-linear-gradient(top left -30deg, 
+    rgba(255,255,255,0.17), 
+    rgba(255,255,255,0.17) 15px, 
+    rgba(255,255,255,0) 15px, 
+    rgba(255,255,255,0) 30px
+  ), -moz-linear-gradient(#9bdd62 0%, #74d04c 100%);
+  
+  -webkit-box-shadow: inset 0px 1px 0px 0px #dbf383, inset 0px -1px 1px #58c43a;
+  -moz-box-shadow: inset 0px 1px 0px 0px #dbf383, inset 0px -1px 1px #58c43a;
+  box-shadow: inset 0px 1px 0px 0px #dbf383, inset 0px -1px 1px #58c43a;
+  border: 1px solid #4c8932;
+  -webkit-animation: animate-stripes 2s linear infinite;
+}
+
+.ui-progress span.ui-label {
+  font-size: 1.2em;
+  position: absolute;
+  right: 0;
+  line-height: 14px;
+  padding-right: 12px;
+  color: rgba(0,0,0,0.6);
+  text-shadow: rgba(255,255,255, 0.45) 0 1px 0px;
+  white-space: nowrap;
+}
+
+
+#container {
+  margin: 0 auto;
+  width: 130px;  
+  background: #DCDDDF; 
+  -webkit-box-shadow: rgba(0, 0, 0, 0.0976562) 1px 0px 1px,
+                      rgba(0, 0, 0, 0.046875) 1px -1px 0px,
+                      rgba(0, 0, 0, 0.0976562) 0px 1px 0px,
+                      rgba(0, 0, 0, 0.0976562) -1px 0px 1px,
+                      rgba(0, 0, 0, 0.046875) -1px -1px 0px,
+                      rgba(0, 0, 0, 0.148438) 0px 3px 3px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.0976562) 1px 0px 1px,
+                   rgba(0, 0, 0, 0.046875) 1px -1px 0px,
+                   rgba(0, 0, 0, 0.0976562) 0px 1px 0px,
+                   rgba(0, 0, 0, 0.0976562) -1px 0px 1px,
+                   rgba(0, 0, 0, 0.046875) -1px -1px 0px,
+                   rgba(0, 0, 0, 0.148438) 0px 3px 3px;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.65, rgba(255,255,255,0.558)), color-stop(1, rgba(255,255,255,1)));
+  background: -moz-linear-gradient(rgba(255,255,255,0.558) 65%, rgba(255,255,255,1) 100%);
+}
+::selection {
+  background: #9bdd62;
+  color: rgba(255, 255, 255, 0.847656);
+}
+
+::-moz-selection {
+  color: #fff;
+  color: rgba(255, 255, 255, 0.847656);
+  background: #9bdd62;
+}
+
+
+
+
+

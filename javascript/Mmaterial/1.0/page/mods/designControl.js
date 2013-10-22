@@ -1,6 +1,6 @@
 
 
-KISSY.add(function (S,O,TShop) {
+KISSY.add(function (S,Overlay,TShop) {
 	var S = KISSY,DOM = S.DOM, Event = S.Event;	
 	
 	return designControl = {
@@ -76,26 +76,23 @@ KISSY.add(function (S,O,TShop) {
 	    			}
 	    			
 	    			if (!designControl.designPicPanel) {	
-						designControl.designPicPanel = new O.Dialog({
-								      width: 1080,
-								      headerContent: '编辑主图促销图标',
-								      bodyContent: '',
-								      mask: false,
-								      align: {
-								          points: ['cc', 'cc']
-								      },
-								      closable :true,
-								      draggable: true,
-								      aria:true
-						});
+						designControl.designPicPanel = new Overlay.Dialog({
+			     	            title:'编辑海报',
+			     	            width:1120,
+			     	            height:600,
+			     	            elAttrs :{id : 'J_design_icon_panel'},   
+			     	            mask:false,
+			     	            footerStyle :{'display' : 'none'}
+			     	          });
+						
 						designControl.designPicPanel.set('bodyContent',KISSY.clone(DOM.get('#hlgFlash')));
+						designControl.designPicPanel.render();
 						designControl.designPicPanel.on('hide',function(){
 							DOM.get('#J_design_icon_panel').style.display = 'none';
 							DOM.get('#hlgFlash').style.visibility = 'hidden';
 						})
 	    			}
 	    			designControl.designPicPanel.show();
-					designControl.designPicPanel.get('el').attr('id','J_design_icon_panel');
 					DOM.get('#J_design_icon_panel').style.display = 'block';
 	    		},
 	
@@ -121,5 +118,5 @@ KISSY.add(function (S,O,TShop) {
 	}
 	
 }, {
-    requires: ['overlay','./tshop']
+    requires: ['bui/overlay','./tshop']
 })

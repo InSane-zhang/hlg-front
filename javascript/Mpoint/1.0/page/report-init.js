@@ -2,7 +2,7 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,showPages) {
+KISSY.add(function (S,showPages,Select,Calendar) {
 	
 	var S= KISSY,DOM = S.DOM, Event = S.Event;
 	return Report = {
@@ -11,26 +11,43 @@ KISSY.add(function (S,showPages) {
 			chart : null,
 	    	
 	    	init : function() {
+			   var items = [
+							  {text:'不限制',value:'0'},
+							  {text:'赠送积分',value:'1'},
+							  {text:'消费积分',value:'2'}
+						    ],
+				select = new Select.Select({  
+					render:'#J_Mtype',
+					valueField:'#J_PointType',
+					items:items
+				});
+			    select.render();
+			    select.setSelectedValue('0');
+			    
+		        var timing = new Calendar.DatePicker({
+			            trigger:'.timing',
+			            autoRender : true
+			         });
 				Report.showReportView('1');
 				Report.listPointStat();
 				Report.listPointRecord();
-				new S.Calendar('#J_start_date1',{
-					popup:true,
-					triggerType:['click'],
-					closable:true,
-					showTime:true
-				}).on('select timeSelect',function(e){
-					S.one('#J_start_date1').val(S.Date.format(e.date,'yyyy-mm-dd HH:MM:ss'));
-				});
-
-				new S.Calendar('#J_start_date2',{
-					popup:true,
-					triggerType:['click'],
-					closable:true,
-					showTime:true
-				}).on('select timeSelect',function(e){
-					S.one('#J_start_date2').val(S.Date.format(e.date,'yyyy-mm-dd HH:MM:ss'));
-				});
+//				new S.Calendar('#J_start_date1',{
+//					popup:true,
+//					triggerType:['click'],
+//					closable:true,
+//					showTime:true
+//				}).on('select timeSelect',function(e){
+//					S.one('#J_start_date1').val(S.Date.format(e.date,'yyyy-mm-dd HH:MM:ss'));
+//				});
+//
+//				new S.Calendar('#J_start_date2',{
+//					popup:true,
+//					triggerType:['click'],
+//					closable:true,
+//					showTime:true
+//				}).on('select timeSelect',function(e){
+//					S.one('#J_start_date2').val(S.Date.format(e.date,'yyyy-mm-dd HH:MM:ss'));
+//				});
 				//Report.searchRecords();
 	        },
 	        
@@ -49,6 +66,9 @@ KISSY.add(function (S,showPages) {
 							title: {
 								text: '积分发放以及消费统计 '
 							},
+                            colors: [
+                                  	'#8bd167','#4dc1e8','#fb6e52','#ffce55','#656d78','#ac92ed','#ec87c1','#4b89dc','#db4453','#d8ad88','#00d39f','#a2b1c7','#5937ae','#bc3783'
+                                 ],							
 							credits :{
 								enabled :false
 							},
@@ -228,5 +248,5 @@ KISSY.add(function (S,showPages) {
 	}
    
 }, {
-    requires: ['utils/showPages/index']
+    requires: ['utils/showPages/index','bui/select','bui/calendar']
 });

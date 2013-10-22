@@ -4,3 +4,78 @@
  
 **/
 
+.hlg-app .main .Mmaterial .spacing{padding:10px;}
+.hlg-app .main .Mmaterial .bm_list_wrap{margin:0 auto;}
+.hlg-app .main .Mmaterial .bm_wrap {margin:0 auto;padding:10px 0;border-bottom:dashed 1px #E4E4E4;text-align:center;}
+.hlg-app .main .Mmaterial .bm_wrap:hover {background-color:#F5F6F7;}
+.hlg-app .main .Mmaterial .bm_wrap a, .hlg-app .main .Mmaterial .bm_wrap a:link {color:#4dc1e8;}
+.hlg-app .main .Mmaterial .body_p {text-align:center;padding:10px 0;}
+.hlg-app .main .Mmaterial .btm-68-gray a {color:#555;}
+
+.hlg-app .main .Mmaterial .bm_wrap .operation{padding:10px 0px; height:30px; overflow:hidden; display:inline-block;zoom:1; }
+.ie7 .hlg-app .main .Mmaterial .bm_wrap .operation .li{margin-left:360px;} 
+.hlg-app .main .Mmaterial .bm_wrap .operation li {margin-right: 10px;display: inline-block;zoom:1;}
+.hlg-app .main .Mmaterial .menu-item{background: #FDFDFD;border: 1px solid #E7E7E7;border-radius: 3px;border-right: none;font-size: 14px;font-weight: bold;line-height: 30px;cursor: pointer;color: #656C78;border-top: 1px solid #efefef;position: relative;}
+.hlg-app .main .Mmaterial .menu-item a {z-index: 1;padding: 0 5px;height: 30px;line-height:30px;display: block;float: left;border-right: 1px solid #E7E7E7;color:#656C78;font-weight:700;font-size: 14px; font-family:宋体;}
+.hlg-app .main .Mmaterial .menu-item a.current {background: #CECECE;color: #FFF;}
+
+.hlg-app .main .Mmaterial .btm-kaishi-zhizuo{background:url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/material-icon.png) 0px -30px no-repeat; vertical-align:top; width:107px;height:31px;}
+.hlg-app .main .Mmaterial .btm-edit{background:url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/material-icon.png) -107px -30px no-repeat; vertical-align:top; width:107px;height:31px;}
+
+.hlg-app .main .Mmaterial .opera a{display: inline-block;text-decoration: none;color: #4dc1e8;vertical-align: middle;}
+.hlg-app .main .Mmaterial .opera_2,.hlg-app .main .Mmaterial .opera_6,.hlg-app .main .Mmaterial .opera_4{display: inline-block;zoom:1;color: #4dc1e8;height:30px; line-height:30px;}
+.hlg-app .main .Mmaterial .opera_2 span,.hlg-app .main .Mmaterial .opera_6 span.zan,.hlg-app .main .Mmaterial .opera_4 span{background-image: url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/material-icon.png);background-repeat: no-repeat;width:16px;height:16px; overflow:hidden;}
+.hlg-app .main .Mmaterial .opera_2 span{background-position: -31px -93px;padding-left: 15px;}
+.hlg-app .main .Mmaterial .opera_6 span.zan{padding-left: 13px;background-position: -15px -93px;}
+.hlg-app .main .Mmaterial .opera_4 span{background-position: -137px -62px;padding-left: 17px;padding-top:10px;width:20px;height:18px;}
+
+.hlg-app .main .Mmaterial .bianji {display: inline-block;margin-right: 15px;}
+.hlg-app .main .Mmaterial .bianji span {display: inline-block;width: 18px;height: 16px;margin-right: 3px;vertical-align: middle;}
+.hlg-app .main .Mmaterial .shezhi {background: url(http://cdn.huanleguang.com/img/hlg/v3/save-btm-1.png) no-repeat; background-position: -111px -383px;}
+.hlg-app .main .Mmaterial .gongxiang {background: url(http://cdn.huanleguang.com/img/hlg/v3/save-btm-1.png) no-repeat; background-position: -93px -382px;}
+
+.hlg-app .main .Mmaterial .list_flash_div {padding: 4px 0 15px 0;text-align: center;overflow-x: auto;}
+.hlg-app .main .Mmaterial .list_flash_div div{margin:0 auto;}
+.hlg-app .main .Mmaterial .pt15{padding-top:15px;}
+.hlg-app .main .Mmaterial .ptb10{padding:10px 0px;}
+.hlg-app .main .Mmaterial .btm-margin-15auto{margin:15px auto;}
+.hlg-app .main .Mmaterial .tuangou-templet,.hlg-app .main .Mmaterial .dapei-templet,.hlg-app .main .Mmaterial .liebiao-templet,.hlg-app .main .Mmaterial .haibao-templet,.hlg-app .main .Mmaterial .kefu-templet,.hlg-app .main .Mmaterial .fenlei-templet {margin: 15px auto;background: white;}
+
+/*设置模板*/
+.hlg-app .main .Mmaterial .page-preview .liebiao-yulan {display: block;background-color: #FFFFFF;text-align: center;border-bottom: 1px #eaedf2 solid;overflow: hidden;zoom: 1;}
+.hlg-app .main .Mmaterial .page-preview .preview-icon {width:81px;height:84px;position: absolute;top: 0;left: 0;background:url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/preview-icon.png) 0px 0px no-repeat;}
+.hlg-app .main .Mmaterial .page-preview .content-box{overflow-x:auto;}
+
+.hlg-app .main .Mmaterial .page-preview .btm-yulan{display:inline-block; *display:inline;}
+.hlg-app .main .Mmaterial .page-preview .btm-xiayibu{display:inline-block;margin-left:10px; *display:inline;}
+.hlg-app .main .Mmaterial .page-preview .btm-yulan button,.hlg-app .main .Mmaterial .edit .page-preview .btm-xiayibu button{width:140px;}
+.hlg-app .main .Mmaterial .page-preview .layer-block {width: 160px;height: 25px;margin: auto;border: 1px solid #eaedf2;background: #FFFFFF;border-radius: 0 0 5px 5px;border-top: 0;color: #656d78;cursor: pointer;font-size: 12px;line-height: 25px;text-align: center;margin-top: -1px;}
+.hlg-app .main .Mmaterial .main-content{padding:20px;clear:both;}
+.hlg-app .main .Mmaterial .main-content .wc-detail-area{width:80%;float:left;}
+.hlg-app .main .Mmaterial .main-content .ui-list .list-hd .wc-detail-area li{text-align:left;}
+.hlg-app .main .Mmaterial .main-content .wc-operate-area{width:20%;float:left; color:#aab2bd; text-align:center;}
+
+.hlg-app .main .Mmaterial .main-content .ui-side-list{width:20%;}
+.hlg-app .main .Mmaterial .main-content .ui-content-list{width:75%;}
+.hlg-app .main .Mmaterial .main-content .ui-content-color{margin-top:10px;}
+.hlg-app .main .Mmaterial .main-content .ui-content-list .list-template-color {display: inline-block;margin: 0 5px 5px 0;border: 2px solid #CCC;cursor: pointer;line-height: 10px}
+.hlg-app .main .Mmaterial .main-content .ui-content-list .list-template-color b {width:20px;height:20px;display: inline-block;}
+.hlg-app .main .Mmaterial .main-content .ui-content-list .a-current{border: 2px solid #283409;}
+.hlg-app .main .Mmaterial .main-content .ui-content-list .a-current b{background:url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/material-icon.png) -176px -66px no-repeat; width:20px;height:20px;}
+.hlg-app .main .Mmaterial .main-content .ui-content-list a.on-center{background:#CECECE;color:#FFFFFF;}
+
+
+
+.hlg-app .main .Mmaterial .J_MoveUp{width:20px;height:30px;background:url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/preview-icon.png) -82px 10px no-repeat;}
+.hlg-app .main .Mmaterial .J_MoveDown{width:20px;height:34px;background:url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/preview-icon.png) -103px 10px no-repeat;}
+
+/*模板 海报 设置*/
+bar{display:block;width:100%;height:100%;position:relative;z-index:119;top:0;left:0;}
+bar barbd{position:absolute;left:0;top:0;z-index:1;width:100%;height:100%;border:0 dashed #f60;background-color:rgba(255,255,255,0);background-color:#fff\9;filter:alpha(opacity=0);}
+.fix-ie-hover bar barbd{filter:alpha(opacity=0)!important;}
+bar baracts{position:absolute;z-index:100;top:0;right:0;width:98%;visibility:hidden;text-align:right;}
+bar baracts a{display:inline-block;padding:2px 8px;margin:.3em;background-color:#000;color:#fff;border-radius:3px;-moz-border-radius:3px;-webkit-border-radius:3px;}
+bar baracts a span{line-height:17px;}
+bar:hover barbd,bar.hover barbd{border:2px dashed #f60;background-color:rgba(60,160,200,.5);background-color:#3CA0C8\9;filter:alpha(opacity=70);}
+bar:hover baracts,bar.hover baracts{visibility:visible;}
+.J_DesignDiv:after{content:'\20';display:block;height:0;clear:both;}

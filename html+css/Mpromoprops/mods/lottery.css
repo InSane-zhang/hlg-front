@@ -1,0 +1,12 @@
+/**
+	core首页样式文件dashboard.css
+**/
+
+
+/*用户信息*/
+
+.hlg-app .main .Mpromoprops .lottery-index .page-head-left-1{line-height: 40px;margin-left: 30px;}
+
+.hlg-app .main .Mpromoprops .lottery-index .main-seach li{float: left;margin-right: 10px}
+.hlg-app .main .Mpromoprops .lottery-index .main-seach .bui-select-input{width:61px}
+.hlg-app .main .Mpromoprops .lottery-index .main-seach .bui-select{width:100px}

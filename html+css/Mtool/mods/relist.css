@@ -1,0 +1,26 @@
+/**
+ 
+	tool自动上架样式文件relist.css
+ 
+**/
+.hlg-app .main .Mtool .RelistCreate #J_Step3Form .ui-list-title{height: 20px;line-height: 20px;padding: 3px 10px;background: #F4F4F4;}
+.hlg-app .main .Mtool .RelistCreate #J_Step3Form .ui-list .list-item{border-bottom:1px #EAEDF2 dotted; width:100%;}
+.hlg-app .main .Mtool .RelistCreate #J_Step3Form .ui-list .list-item:hover{border-bottom:1px dotted red;}
+.hlg-app .main .Mtool .RelistCreate #J_Step3Form .ui-list .list-item .list-div li {height:36px;line-height:36px;padding:0;}
+
+.hlg-app .main .Mtool .quanbi {background: url("http://cdn.huanleguang.com/img/hlg/v3/input-dayman.gif") no-repeat scroll 0 0 #FFFFFF;border: 0 none;vertical-align: middle;}
+.hlg-app .main .Mtool .RelistCreate .edit-activity-hover .quanbi {display: block;float: left;height: 12px; margin-left: 5px; width: 12px;background-position:0 -71px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

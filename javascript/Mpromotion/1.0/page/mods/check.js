@@ -102,8 +102,63 @@ KISSY.add(function (S) {
 				result.push(error);
 				result.push(msg);
 				return result;
+			},
+	         /**
+	         * JSON ajax 传参转换
+	         * @param {Object} str
+	         * @return {Object}
+	         */
+	        strProcess : function(str){
+	                return str.replace(/\\/g, '\\\\').replace(/\"/g, '\\"').replace(/[\t\n&]/g, '%26').replace(/%/g, '%25');
+	        },
+            /**
+             * 格式化数字
+             * @example formatNumber(100.888,2); //结果为100.88
+             * @param {Object} str
+             * @return {date}
+             */
+	        FormatNumber: function(srcStr,nAfterDot){
+                    var srcStr,nAfterDot;
+                    var resultStr,nTen;
+                    srcStr = ""+srcStr+"";
+                    strLen = srcStr.length;
+                    dotPos = srcStr.indexOf(".",0);
+                    if (dotPos == -1){
+                        resultStr = srcStr+".";
+                        for (i=0;i<nAfterDot;i++){
+                            resultStr = resultStr+"0";
+                        }
+                        return resultStr;
+                    }else{if ((strLen - dotPos - 1) >= nAfterDot){
+                            nAfter = dotPos + nAfterDot + 1;
+                            nTen =1;
+                            for(j=0;j<nAfterDot;j++){
+                            nTen = nTen*10;
+                            }
+                            resultStr = Math.floor(parseFloat(srcStr)*nTen)/nTen;
+                            return resultStr;
+                        }else{
+                            resultStr = srcStr;
+                                for (i=0;i<(nAfterDot - strLen + dotPos + 1);i++){
+                                resultStr = resultStr+"0";
+                                }
+                            return resultStr;
+                        }
+                    }
+            },
+			/*是否为空*/
+			isNull : function(str){
+				var result = [];
+				var error = false;
+				var msg = null;
+				if(str == null ||str == ""){
+					error = true;
+					msg = '请填写，此项不能为空！';
+				}
+				result.push(error);
+				result.push(msg);
+				return result;
+				
 			}
-		
-		
 	}
 });

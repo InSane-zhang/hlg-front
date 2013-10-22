@@ -232,12 +232,13 @@ KISSY.add(function (S) {
 						var promoType = Number(DOM.get('#J_PromoType_'+id).value);
 						
 						if (promoType == '0') {
-							promoValue = Number((origPrice - specPrice).toFixed(2));
+							promoValue = Number(DOM.val(DOM.get('#J_Promo2Value_'+id)));
 						} else {
 							promoValue = Number(DOM.val(DOM.get('#J_PromoValue_'+id)));						
 						}
 					}
 				}
+				
 				if (specPrice >= origPrice || itemHandle.checkPrice(promoValue) === false || itemHandle.checkPrice(specPrice) == false) {
 					new H.widget.msgBox({
 					    title:"错误提示",
@@ -245,112 +246,139 @@ KISSY.add(function (S) {
 					    type:"error"
 					});
     				error = true;
-    			}
-				
-				if (promoType == '0') {
-					
-					//判断优惠内容 “元”
-					if (type == 'tbspec'||type == 'onetbspec' || type == 'tbspec_buyerLimit' || type == "tg" || type == "jtj " || type == "onetbspec") {
-
-						if(joinType == 'all'){
-							var minimum = minPromoValue;
-						}else{
-							var minimum = promoValue;
-						}
-						if(promoValue > Number((origPrice*((10 - storeDiscount)/10)).toFixed(2))){
-							new H.widget.msgBox({
-				                title: "加入活动失败",
-				                content: '最低折扣率为  <em class="color-red">'+ (10 - (promoValue/origPrice)*10).toFixed(2) +'</em> 折，您的店铺最低折扣为 <em class="color-red" id="J_latest">'+ storeDiscount +'</em> 折，请修改您的店铺最低折扣后再重试！',
-				                type: "confirm",
-				                buttons: [{ value: "立即修改" }],
-				                success: function (result) {
-				                    if (result == "立即修改"){
-				                        window.open('http://ecrm.taobao.com/promotion/show_other_activity.htm');
-				                        promotionControl.getLowestDisAdd();
-				                    }
-				                }
-				            });	
-							error = true;
-						}
-					}
-					
-					//if (type == 'tbspec' && isUmp ==1 ){
-					if (type == 'tbspec' || type == 'tbspec_buyerLimit' || type == 'onetbspec' || type == 'tg'){
-							
-					}else{
-						if(promoValue >Number((origPrice*0.3).toFixed(2))){
-							new H.widget.msgBox({
+    			}else{
+    				
+    				if (promoType == '0') {
+    					
+    					//判断优惠内容 “元”
+    					if (type == 'tbspec' || type == 'tbspec_buyerLimit' || type == 'onetbspec' || type == 'tg'){
+    							
+    						if(DOM.val('#J_joinAgain') != 'again'){
+    							if(joinType == 'all'){
+    								var minimum = minPromoValue;
+    							}else{
+    								var minimum = promoValue;
+    							}
+    							
+    							if(minimum <= 2){
+    								new H.widget.msgBox({
+    					                title: "温馨提醒",
+    					                content: '您要加入的宝贝中有折扣等于或低于 <em class="color-red">2</em> 折，确定加入吗？',
+    					                type: "confirm",
+    					                buttons: [{ value: "确定" },{ value: "取消" }],
+    					                success: function (result) {
+    					                    if (result == "确定"){
+    					                    	
+    					                    	if(promoValue > Number((origPrice*((10 - storeDiscount)/10)).toFixed(2))){
+    			    								new H.widget.msgBox({
+    			    					                title: "请修改店铺最低折扣",
+    			    					                content: '您设置的宝贝最低折扣率为 <em class="color-red">'+ minimum +'</em> 折，'+
+    			    					                		 '您的店铺最低折扣为 <em class="color-red">'+ storeDiscount +'</em> 折可能会不生效，请修改店铺最低折扣低于宝贝折扣 '+
+    			    					                		 '<a target="_blank" href="http://ecrm.taobao.com/promotion/show_other_activity.htm">修改店铺最低折扣>></a>',
+    			    					                type: "confirm",
+    			    					                buttons: [{ value: "已修改完折扣价，确定加入活动" }], 
+    			    								 	success: function (result) {
+    			    					                    if (result == "已修改完折扣价，确定加入活动"){
+    			    					                    	DOM.val('#J_joinAgain','again');
+    			    					                    	promotionControl.getLowestDisAdd();
+    			    					                    }
+    			    					                }
+    			    					            });
+    			    								error = true;
+    			    							}
+    					                    	
+    					                    }
+    					                }
+    					            });
+    								error = true;
+    							}
+    							
+    						}
+    					
+    					}else{
+    						if(promoValue >Number((origPrice*0.3).toFixed(2))){
+    							new H.widget.msgBox({
 								    title:"错误提示",
 								    content:'优惠金额有误，折扣有效范围在 7.00~9.99之间！',
 								    type:"error"
-								
 								});
-							error = true;
-						}
-						
-					}
-					
-				} else {
-					//自动取整或着设置只有一件优惠，促销设置转成"元"无须判断
-					
-					//判断优惠内容 “折”
-					if (type == 'tbspec'||type == 'onetbspec' || type == 'tbspec_buyerLimit' || type == "tg" || type == "jtj " || type == "onetbspec") {
-						if(joinType == 'all'){
-							var minimum = minPromoValue;
-						}else{
-							var minimum = promoValue;
-						}
-						if(promoValue < storeDiscount){
-							new H.widget.msgBox({
-				                title: "加入活动失败",
-				                content: '您设置的宝贝最低折扣为 <em class="color-red">'+ minimum +'</em> 折，您的店铺最低折扣为 <em class="color-red" id="J_latest">'+ storeDiscount +'</em> 折请修改店铺最低折扣后重新加入活动！',
-				                type: "confirm",
-				                buttons: [{ value: "立即修改" }],
-				                success: function (result) {
-				                    if (result == "立即修改"){
-				                        window.open('http://ecrm.taobao.com/promotion/show_other_activity.htm'); 
-				                        promotionControl.getLowestDisAdd();
-				                    }
-				                }
-				            });
-							error = true;
-						}
-					}	
-					
-					//促销方式折七折以上限制
-					if (type == 'tbspec' || type == 'tbspec_buyerLimit' ||  type == 'tg' || type == 'onetbspec') {
-						//限购 不限制折扣
-					}else {
-						if (!KISSY.isNumber(promoValue) || promoValue < 7 || promoValue >= 10) {
-							//DOM.get('#J_PromoValue_'+id).value = '';
-							//DOM.get('#J_PromoValue_'+id).focus();
-							new H.widget.msgBox({
-							    title:"错误提示",
-							    content:'传入了不合法或不正确的参数,有效范围在 7.00~9.99之间！',
-							    type:"error"
-							
-							});
-							DOM.addClass(DOM.get('#J_PromoValue_' + id), 'text-error');
-							error = true;
-						}
-						else {
-							var re = /(^[0-9]([.][0-9]{1,2})?$)|(^1[0-9]([.][0-9]{1,2})?$)|(^2[0-3]([.][0-9]{1,2})?$)|(^10([.]0{1,2})?$)/;
-							if (!re.test(promoValue)) {
-								//DOM.get('#J_PromoValue_'+id).value = '';
-								//DOM.get('#J_PromoValue_'+id).focus();
-								new H.widget.msgBox({
-								    title:"错误提示",
-								    content:'传入了不合法或不正确的参数,有效范围在 7.00~9.99之间！',
-								    type:"error"
-								
-								});
-								DOM.addClass(DOM.get('#J_PromoValue_' + id), 'text-error');
-								error = true;
-							}
-						}
-					}
-						
-				}
+    							error = true;
+    						}
+    					}
+    					
+    				} else {
+
+    					//促销方式折七折以上限制
+    					if (type == 'tbspec' || type == 'tbspec_buyerLimit' ||  type == 'tg' || type == 'onetbspec') {
+    						
+    						if(DOM.val('#J_joinAgain') != 'again'){
+    							if(joinType == 'all'){
+    								var minimum = minPromoValue;
+    							}else{
+    								var minimum = promoValue;
+    							}
+    							if(minimum <= 2){
+    								new H.widget.msgBox({
+    					                title: "温馨提醒",
+    					                content: '您要加入的宝贝中有折扣等于或低于 <em class="color-red">2</em> 折，确定加入吗？',
+    					                type: "confirm",
+    					                buttons: [{ value: "确定" },{ value: "取消" }],
+    					                success: function (result) {
+    					                    if (result == "确定"){
+    					                    	
+    					                    	if(promoValue < storeDiscount){
+    			    								new H.widget.msgBox({
+    			    					                title: "请修改店铺最低折扣",
+    			    					                content: '您设置的宝贝最低折扣为 <em class="color-red">'+ minimum +'</em> 折，您的店铺最低折扣为 '+
+    			    					                		 '<em class="color-red">'+ storeDiscount +'</em> 折可能会不生效，请修改店铺最低折扣低于宝贝折扣 '+
+    			    					                		 '<a target="_blank" href="http://ecrm.taobao.com/promotion/show_other_activity.htm">修改店铺最低折扣>></a>',
+    			    					                type: "confirm",
+    			    					                buttons: [{ value: "已修改完折扣，确定加入活动" }],
+    			    					                success: function (result) {
+    			    					                    if (result == "已修改完折扣，确定加入活动"){
+    			    					                    	DOM.val('#J_joinAgain','again');
+    			    					                    	promotionControl.getLowestDisAdd();
+    			    					                    }
+    			    					                }
+    			    					            });
+    			    								error = true;
+    			    							}
+    					                    	
+    					                    }
+    					                }
+    					            });
+    								error = true;
+    							}
+    							
+    						}
+    						
+    					}else {
+    						if (!KISSY.isNumber(promoValue) || promoValue < 7 || promoValue >= 10) {
+    							new H.widget.msgBox({
+    							    title:"错误提示",
+    							    content:'传入了不合法或不正确的参数,有效范围在 7.00~9.99之间！',
+    							    type:"error"
+    							});
+    							DOM.addClass(DOM.get('#J_PromoValue_' + id), 'text-error');
+    							error = true;
+    						}else{
+    							var re = /(^[0-9]([.][0-9]{1,2})?$)|(^1[0-9]([.][0-9]{1,2})?$)|(^2[0-3]([.][0-9]{1,2})?$)|(^10([.]0{1,2})?$)/;
+    							if (!re.test(promoValue)) {
+    								new H.widget.msgBox({
+    								    title:"错误提示",
+    								    content:'传入了不合法或不正确的参数,有效范围在 7.00~9.99之间！',
+    								    type:"error"
+    								});
+    								DOM.addClass(DOM.get('#J_PromoValue_' + id),'text-error');
+    								error = true;
+    							}
+    						}
+    					}
+    						
+    				}	
+    				
+    			}
+				
 				promoValue.toFixed(2);
 				params.push(promoType);
 				params.push(promoValue);
@@ -463,37 +491,31 @@ KISSY.add(function (S) {
 					if ( specPrice >= origPrice) {
 	    				DOM.addClass(promoValue[m], 'text-error');
 						new H.widget.msgBox({
-									    title:"错误提示",
-									    content:'特价金额有误（特价必须小于原价），请检查后再加入！',
-									    type:"error"
-									
-									});
+						    title:"错误提示",
+						    content:'特价金额有误（特价必须小于原价），请检查后再加入！',
+						    type:"error"
+						});
 						error = true;
     				}	
-					
 					
 					//促销方式折七折以上限制
 					if(isSku == '1' || newType == '1'){
 						if(!KISSY.isNumber(newValue) || newValue <= 0 || newValue >=10){
 							DOM.addClass(promoValue[m], 'text-error');
-								new H.widget.msgBox({
-									    title:"错误提示",
-									    content:'传入了不合法或不正确的参数,有效范围在 0.00~9.99之间！',
-									    type:"error"
-									
-									});
+							new H.widget.msgBox({
+							    title:"错误提示",
+							    content:'传入了不合法或不正确的参数,有效范围在 0.00~9.99之间！',
+							    type:"error"
+							});
 							error = true;
 						} else {
 							var re = /(^[0-9]([.][0-9]{1,2})?$)|(^1[0-9]([.][0-9]{1,2})?$)|(^2[0-3]([.][0-9]{1,2})?$)|(^10([.]0{1,2})?$)/;
 							if(!re.test(newValue)){
 								new H.widget.msgBox({
-									    title:"错误提示",
-									    content:'传入了不合法或不正确的参数,有效范围在 0.00~9.99之间！',
-									    type:"error"
-									
-									});
-								//DOM.get('#J_PromoValue_'+id).value = '';
-								//DOM.get('#J_PromoValue_'+id).focus();
+								    title:"错误提示",
+								    content:'传入了不合法或不正确的参数,有效范围在 0.00~9.99之间！',
+								    type:"error"
+								});
 								DOM.addClass(promoValue[m], 'text-error');
 								error = true;
 							}	
@@ -510,7 +532,6 @@ KISSY.add(function (S) {
 					param = [newType,newValue];
 					params.push(param);
 				}
-				
 				return [error,params];
 				
 			}

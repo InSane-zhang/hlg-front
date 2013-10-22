@@ -4,3 +4,11 @@
  
 **/
 
+.caps-icon{ background: url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat;width:16px; height:16px; display:inline-block; margin-left:5px; vertical-align:text-top; background-position:-98px -636px;}
+.data-detail{overflow:hidden;}
+.data-detail li{width:220px;color:#434a54;float:left;line-height:36px;border-bottom:1px solid #eaedf2;}
+.data-detail em{color:#aab2bd;}
+.bui-stdmod-body h1{height:40px;line-height:40px;font-size:14px;font-weight: bold;padding-top: 10px;}
+
+.import{line-height:28px;color:#656d78;}
+.import em{color:#fb745a;}

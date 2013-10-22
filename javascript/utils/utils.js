@@ -34,7 +34,18 @@ KISSY.add(function(S) {
 		strProcess : function(str){
 				return str.replace(/\\/g, '\\\\').replace(/\"/g, '\\"').replace(/[\t\n&]/g, '%26').replace(/%/g, '%25');
 		},
-
+		/**
+         * 将 正则 的符号转义
+         * @param {Object} str
+         * @return {Object}
+         */
+		escape: function(str){
+			if (str == null) {
+				return "";
+			}else {
+				return str.replace(/\//g, '\\/').replace(/\./g, "\\.").replace(/\*/g, "\\*").replace(/\+/g, "\\+").replace(/\(/g, "\\(").replace(/\)/g, "\\)").replace(/\$/g, "\\$").replace(/\?/g, "\\?").replace(/\[/g, "\\[").replace(/\]/g, "\\]").replace(/\^/g, "\\^").replace(/\{/g, "\\{").replace(/\}/g, "\\}");
+			}
+		},
         /**
          * 判断是否为空字符串
          * @param {Object} v

@@ -1,0 +1,38 @@
+/**
+**/
+
+/*横排宝贝缩略图列表 START*/
+.goods{ margin:0 6px; text-align:center;}
+.goods-list{ margin:auto;}
+.goods .goods-price{ float:left; display:inline-block; width:150px;}
+.goods .goods-price b{color:#fA6D63;}
+.goods .goods-list li,.baobei .goods-list li .ol-base  {width:163px; height:226px;}/*IE6下覆盖层设置宽高度，兼容性*/
+.goods .goods-list li {margin:15px 0px 0px -1px; float:left; _display:inline; text-align:center; list-style:none; background:#f2f2f2; border:1px solid #e4e4e4; background-color:#fff; position:relative;}
+.goods .goods-list li .goods-text {background:#f2f0f0; padding:5px 5px; height:56px; line-height:18px; text-align:left;overflow:hidden;}
+.goods .goods-list li .goods-text .goods-info {height: 38px;overflow: hidden;display: inline-block;*display:inline;*zoom:1}
+.goods .goods-list li .goods-text a,.goods .goods-list li .goods-text a:link{ color: #999}
+.goods-img a{*font-size:140px; /*约为高度的0.873，300*0.873 约为262*/ height:160px;width:160px;}
+.goods-list .goods-img{text-align:center; }
+.goods-list .goods-img a{display:table-cell;vertical-align:middle;*display:block;*font-family:Arial!important;*line-height:1; }
+.goods-list .goods-img img{vertical-align:middle;background-color:#FFF;}
+.goods-list .ol-base {position:absolute;top:0px;left:0;background-color:#333;filter:alpha(opacity=0); -moz-opacity:0; opacity: 0; -khtml-opacity: 0;visibility:hidden;color:white;text-align:center;font-size:14px;width:100%;height:100%;}
+.goods-list .selected .ol-base {filter:alpha(opacity=50); -moz-opacity:0.5; opacity: 0.5; -khtml-opacity: 0.5;}
+.goods-list .uncheck .ol-base {background-color:#fff;filter:alpha(opacity=50); -moz-opacity:0.5; opacity: 0.5; -khtml-opacity: 0.5;}/*9.3修改*/
+.goods-list .ol-text-ext {width:100%;height:40px;display:inline-block;line-height:40px;color:white;font-size:14px;font-weight:700;}
+.goods-list .ol-mouseover {width:100%;height:100%;position:absolute; visibility:hidden;top:0px;left:0; cursor:pointer;}
+.goods-list .ol-mouseover .border {border:#8bd167 solid 4px;padding-bottom:58px;}
+.goods-list .ol-mouseover .ol-text-ext {background-color:#8bd167;margin-top:120px;}
+.goods-list .ol-click {width:100%;height:100%;position:absolute; visibility:hidden;top:0px;left:0;}
+.goods-list .ol-click .ol-text-ext {margin-top:22px;background-color:#333;color:#fff;filter:alpha(opacity=50);-moz-opacity:0.5; opacity: 0.5;  -khtml-opacity: 0.5;}
+.goods-list .ol-uncheck {width:100%;height:100%;position:absolute; visibility:hidden;top:0px;left:0;}
+.goods-list .ol-uncheck .ol-text-ext {margin-top:124px;background-color: #333;background-color:#333;color:#fff;filter:alpha(opacity=50);-moz-opacity:0.5; opacity: 0.5;  -khtml-opacity: 0.5;}
+/*图片*/
+.goods-list .ol-img-checked {display:inline-block;width:72px;height:71px; background:url(http://resource.aliapp.com/img/hlg-app/common/hlg-app-common.png) no-repeat;background-position:0 -169px;margin:26px 0 0;}
+.goods-list .ol-img-view {display:inline-block;margin-top:17px;width:70px;height:23px;background-position:0 -75px;}
+.goods-list .ol-img-choose, .goods-list .ol-img-view{ background-image:url(http://cdn.huanleguang.com/img/hlg/v3/select-treasure.png);background-repeat:no-repeat; cursor:pointer;}
+/*状态样式:控制visibility的三个样式顺序不要改变,会影响实现效果; .ol-mouseover响应鼠标滑过； .ol-click响应鼠标点击，并与.ol-mouseover互锁； .ol-base 响应鼠标滑过和点击； .ol-uncheck不响应鼠标事件*/
+.goods-list .mouseover .ol-base , .goods-list .selected .ol-base , .goods-list .uncheck .ol-base , .goods-list .mouseover .ol-mouseover {visibility:visible;}
+.goods-list .selected .ol-mouseover {visibility:hidden;}
+.goods-list .selected .ol-click {visibility:visible;}
+.goods-list .uncheck .ol-mouseover , .goods-list .uncheck .ol-click , .goods-list .mouseover .ol-uncheck , .goods-list .selected .ol-uncheck {visibility:hidden;}
+.goods-list .uncheck .ol-uncheck { visibility:visible;cursor: default}

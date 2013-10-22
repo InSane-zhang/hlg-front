@@ -1,339 +1,280 @@
-KISSY.add(function(S){
+KISSY.add("common/main",function(S,Switchable){
 	
-	S.ready(function(){
-			//  消息框  头部
-			var DOM = S.DOM ,Event = S.Event;
-//			var Width = DOM.width('#J_MenuMouse')-2;
-//			if(Width > 83){
-//				DOM.style('#J_Width','width',Width);
-//			}else{
-				DOM.style('#J_Width','width','85px');
-				DOM.style('#J_MenuMouse','width','85px');
-//			}
-//			
-			S.use('node,overlay', function(S, Node, O) {	
-				 var popup = new KISSY.Popup(KISSY.one("#J_SubMenu"), {
-			    	 srcNode :'#J_MenuMouse',
-			         trigger : '#J_MenuMouse',//配置Popup的触发器
-			         triggerType : 'mouse',    //触发类型
-			         align : {
-			            node : '#J_MenuMouse',
-			            points : ['br', 'tr'],
-			            offset : [2, 0]
-			         }
-			    });
-			    popup.render();
-			    popup.hide();
-			    DOM.css('.ks-contentbox','border','0px'); 
-			    popup.on('beforeVisibleChange',function(ev){
-			    	if(ev.newVal == true){
-			    		DOM.addClass('#J_MenuMouse','current');
-				    }else if(ev.newVal == false){
-				    	DOM.removeClass('#J_MenuMouse','current');
-					}
-				})
-			});
-			S.use('node,overlay', function(S, Node, O) {	
-				 var popup = new KISSY.Popup(KISSY.one("#J_Upgrade"), {
-			    	 srcNode :'#J_UpgradeMouse',
-			         trigger : '#J_UpgradeMouse',//配置Popup的触发器
-			         triggerType : 'mouse',    //触发类型
-			         align : {
-			            node : '#J_UpgradeMouse',
-			            points : ['br', 'tr'],
-			            offset : [0,-1]
-			         }
-			    });
-			    popup.render();
-			    popup.hide();
-			    DOM.css('.ks-contentbox','border','0px'); 
-			    popup.on('beforeVisibleChange',function(ev){
-			    	if(ev.newVal == true){
-			    		DOM.addClass('#J_UpgradeMouse','current');
-				    }else if(ev.newVal == false){
-				    	DOM.removeClass('#J_UpgradeMouse','current');
-					}
-				})
-			});	
-			S.io.get(getMsgUrl,{
-				type:"mess"
-			},function(o){
-				if(o.payload > 0){ 
-					//DOM.html('#J_MsgNum1',o.payload);
-					var str =  '<a title="消息" href="'+messIndexUrl+'" ><em  ><span class="msg-radius" id="J_MsgNum">'+o.payload+'</span></em></a>';
-					DOM.html(DOM.get('#J_SyetemMessage'),str);
-//					DOM.addClass('#J_SyetemMessage','current');
-//					KISSY.use('node,overlay', function(S, Node, O) {	
-//					  var popupMsg = new KISSY.Popup(KISSY.one("#J_MessContent"), {
-//						   	 closable : false,
-//						   	 closeAction:'hide',
-//					         align : {
-//					            node : '#J_MenuMouse',
-//					            points : ['br', 'tr'],
-//					            offset : [47, 1]
-//					         }
-//					    });
-//					    popupMsg.render();
-//					    DOM.css(DOM.get('.ks-contentbox','#J_MessContent'),'border','0px'); 
-//						popupMsg.show();
-//					})
-					}
-			},"json");
-//			Event.delegate(document,'click','#J_MakeAllRead',function(){
-//		        var submitHandle = function(o) {
-//		            DOM.hide('#J_MessContent');
-//		            DOM.removeClass('#J_SyetemMessage','current');
-//		            DOM.text('#J_MsgNum','0');
-//		        }
-//				var data = "type=mess";
-//				new H.widget.asyncRequest().setURI(afterUserReadUrl).setHandle(submitHandle).setMethod("GET").setData(data).setDataType('json').send();
-//			})
-				var menuModuleId =  DOM.val('#J_MenuModuleId');
-//				var allGroup = DOM.query('.kefu-preview');
-//				DOM.hide(allGroup);
-				DOM.show('#kefu-preview-'+menuModuleId);
-				//  左边栏
-				var menuItemHeader = S.query("#menu .title");
-				var menuUl = S.query('.menu-ul');	
-				Event.on(menuItemHeader,'click',function(ev){
-					var nextMenu = DOM.next(ev.currentTarget);
-					//DOM.hide(menuUl);
-					DOM.toggle(nextMenu);
-					//DOM.hide(subMenu);
-					DOM.removeClass(DOM.siblings(DOM.parent(ev.currentTarget,'.menu-item')),'current');
-					//DOM.addClass(DOM.parent(ev.currentTarget,'.menu-item'),'current');
-					Prev = DOM.parent(ev.currentTarget,'.menu-item');
-					DOM.toggleClass(Prev,"current none");
-					var data = DOM.attr(ev.currentTarget,'data');
-					 var allGroup = DOM.query('.kefu-preview');
-					DOM.hide(allGroup);
-					DOM.show('#kefu-preview-'+data); 
-					
-				});
-				
-				var ItemHeader = S.query("#menu .second-title");
-				var subMenu = S.query('.submenu');
-				Event.on(ItemHeader,'click',function(ev){
-					var NextMenu = DOM.next(ev.currentTarget);
-					DOM.toggle(NextMenu);
-				});
-				Event.on('.kefu-zu','click',function(ev){
-					if(ev.type == 'click'){
-						if(DOM.hasClass('.kefu','.block')){
-							DOM.addClass(ev.currentTarget,'service');
-							DOM.hide('.kefu');
-							DOM.removeClass('.kefu','.block');
-						}else{
-							DOM.removeClass(ev.currentTarget,'service');
-							DOM.addClass('.kefu','.block')
-							DOM.show('.kefu');
+	var DOM = S.DOM ,Event = S.Event,$ = S.Node.all;
+	
+	return mainControl = {
+		
+				init : function(){
+		
+						/*消息公告滚动*/
+						var msgNum = DOM.query('#J_NoticeBox li').length;;
+						if(msgNum > 1){
+							new Switchable.Slide('#J_NoticeBox', {
+					            contentCls : 'news-items',
+					            hasTriggers : false,
+					            effect : 'scrolly',
+					            easing : 'easeOutStrong',
+					            interval : 5,
+					            duration : 0.5
+					        });
 						}
-					}
-				});	
-				Event.on('.kefu-other','click',function(ev){
-					if(ev.type == 'click'){
-						if(DOM.hasClass('.other_kefu','.block')){
-							DOM.addClass(ev.currentTarget,'service');
-							DOM.hide('.other_kefu');
-							DOM.removeClass('.other_kefu','.block');
-						}else{
-							DOM.removeClass(ev.currentTarget,'service');
-							DOM.addClass('.other_kefu','.block')
-							DOM.show('.other_kefu');
-						}
-					}
-				});	
-				Event.on('.kefu-qun','click',function(ev){
-					if(ev.type == 'click'){
-						if(DOM.hasClass('.group','.block')){
-							DOM.removeClass(ev.currentTarget,'service');
-							DOM.show('.group');
-							DOM.removeClass('.group','.block');
-						}else{
-							DOM.addClass(ev.currentTarget,'service');
-							DOM.addClass('.group','.block')
-							DOM.hide('.group');
-						}
-					}
-				});	
-				S.each(DOM.query('.submenu'), function(item,i) {
-					var subLi = DOM.children(item, 'li');
-					Event.on(subLi, 'click', function(ev) {
-						//DOM.hide(menuUl);
-						//DOM.show(DOM.parent(Parent)); 
-						//DOM.removeClass(subLi,'first');
-						//DOM.addClass(ev.currentTarget,'first');
-						Parent = DOM.parent(ev.currentTarget);
-						DOM.addClass(DOM.parent(Parent),'active');
-					})
-				});
-				//在线帮助 漂浮块  
-			    Event.on('#online_help','mouseenter mouseleave',function(ev){
-				 		if(ev.type== "mouseenter"){
-				 			DOM.show('#J_help');
-				 	 	}else if(ev.type== "mouseleave"){
-				 	 		DOM.hide('#J_help');
-				 	 	}
-				});
-			    //反馈建议 漂浮块  
-			    Event.on('#J_fkjy','click',function(ev){
-						KISSY.use("node,overlay", function(S, Node, O) {
-							if(!window.suggestDialog){
-								window.suggestDialog = new O.Dialog({
-								      width:500,
-								      headerContent: '<div style="line-height:50px;font-weight:bold;font-size:14px;border-bottom:1px solid #ebebeb;">反馈建议</div>',
-								      bodyContent:cont,
-									  mask: true,
-								      align: {
-								          points: ['cc', 'cc']
-								      },
-								      closable :true,
-								      draggable: true,
-								      aria:true
-								  });
-								var cont='<div class=""><form method="post" id="J_SuggestAddForm" action=""><ul><input type="hidden" name="type" value="2" /><input type="hidden" name="source" value="1" />'
-										+'<li><div class="align-right fl">类型:</div><div class="fl ml6"><select id="J_Suggest_ProjectType" name="project_type"><option value="1">促销活动</option><option value="2">模板</option><option value="3">会员</option><option value="4">数据</option><option value="5">批量工具</option><option value="6">标题优化</option><option value="7">移动端</option><option value="8">其它</option></select></div></li>'
-										+'<li><div class="align-right fl">标题:</div><div class="fl ml6"><input type="text" id="J_Suggest_Title" name="title" value="" class="suggest_input_text"></div></li>'
-										+'<li><div class="align-right fl">旺旺:</div><div class="fl ml6"><input type="text" id="J_Suggest_Shopnick" name="shop_nick" value="" class="suggest_input_text"></div></li>'
-										+'<li><div><textarea class="textarea J_CheckNum required-entry" style=" width:460px; height: 200px;" title="Template Content" id="J_Suggest_Content" name="content"></textarea></div></li>'
-										+'<li style="line-height:0;min-height:0;margin-bottom:0;"><div class="ui-msg mt15" style="display: none; width:460px;" id="J_Suggest_ParamsErrorBox"><div class="error-msg"><div class="img-16-1"></div><div class="text-16 color-red" id="J_Suggest_ParamsErrorMsg"></div></div></div><div class="ui-msg mt15" style="display: none;width:460px;" id="J_Suggest_ParamsSucessBox"><div class="success-msg"><div class="img-16-6"></div><div class="text-16" id="J_Suggest_ParamsSucessMsg"></div></div></div></li>'
-										+'</ul>'
-										+'<div style="height:60px;border-top:1px solid #e6e6e6;background:#F3F3F2;"><div style="width:150px;margin:15px auto;"><input id="J_SubmitPost" class="clickable" style="cursor:pointer;border:0;background:url(http://cdn.huanleguang.com/img/hlg/v3/nav-left/page_suggest_btn.png) 0px 0px no-repeat;width:69px;height:30px; " type="button" name="" value=""><input class="cancle" style="margin-left:10px;background:url(http://cdn.huanleguang.com/img/hlg/v3/nav-left/page_suggest_btn.png) 0px -30px no-repeat;border:0;width:69px;height:30px;cursor:pointer;" type="button" name="" value="" ></div></div></form></div>'
-								window.suggestDialog.set('bodyContent',cont);	
-								window.suggestDialog.render();
-								window.suggestDialog.show();
-								DOM.val('#J_Suggest_Shopnick',DOM.val('#J_ShopNick'));
-								DOM.style('.ks-ext-close',{top:'18px'});
-								DOM.style('.ks-stdmod-header',{background:'#FFFFFF',border:'0',height:'50px',margin:'0px 20px',padding:'0'});
-								DOM.style('.ks-dialog',{border:'0',top:'expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight))','z-index':'19999'});
-								editor = S.Editor('#J_Suggest_Content',{
-									attachForm : true,
-									baseZIndex : 10000,
-									focus: false,
-									pluginConfig:{
-									   	"resize": {
-								       	//只能在y轴拖放，[“x”,”y”]表示任意拖放
-								       	direction: ["y"]
-								   		 },
-									    "image": {
-									        //上传图片配置, 不需要上传功能可不配置
-									        upload: {
-									            //返回格式
-									            //正确：{"imgUrl":"http://xx.com/yy.jpg"}
-									            //错误：{"error":"i am error!"}
-									            //接受图片的服务器
-									            //发送一个文件过去, 格式为 multipart/form-data
-									            serverUrl: uploadImgURL,
-									            //传给服务器的格外参数, 是函数则传递函数执行结果
-									            serverParams: {
-									                yy: function () {
-									                    return "xx";
-									                }
-									            },
-									            //后缀名白名单
-									            suffix: "png,jpg,jpeg,gif",
-									            // 传递给server的文件域名字
-									            fileInput: "Filedata",
-									            //限制上传的文件大小, 单位KB,
-									            //无法客户端限制, 只能作为提示信息
-									            sizeLimit: 1000
-									        }
-									    }
-									}
-								}).use(
-										"image,separator,smiley,separator," +
-										"resize," +
-										"draft" 
-										);
-								window.editor_config = {
-								        tsfont:{
-								            title:"文字格式",
-								            height: 0,
-								            text:'<span class="ke-toolbar-item ke-tri-button ke-toolbar-fontControl"></span>',
-								            src:''
-								      }
-								}
-								editor.ready(function(){
-
-									var S = KISSY, DOM = S.DOM, Event = S.Event, $ = KISSY.all;
-									
-									var TripleButton = S.Editor.TripleButton;
-							        if (!window.editor_config) {
-							            return;
-							        }
-							        var a = ['ke-toolbar-italic','ke-toolbar-bold','ke-select','ke-toolbar-underline','ke-toolbar-strikeThrough','ke-toolbar-color','ke-toolbar-bgcolor','ke-toolbar-ul','ke-toolbar-ol','ke-toolbar-alignleft','ke-toolbar-aligncenter',,'ke-toolbar-alignright','ke-toolbar-link']; 
-							        var config = window.editor_config,
-							            iframes = {}, tbs = [], l,c;
-							        S.each(config, function(v, k) {
-							            var button = new TripleButton({
-							                render:editor.toolBarDiv,
-							                title: v.title,
-							                text: v.text
-							            });
-							            tbs.push(button);
-							            button.on('offClick', function(e) {
-							                var c = e.target,p = c.get("elCls");
-											if(DOM.hasClass(c.get("el"),'ke-triplebutton-off')){
-												DOM.replaceClass(c.get("el"),'ke-triplebutton-off','ke-triplebutton-on');
-												S.each(a,function(item,index){
-													if(item == 'ke-select'){
-										    			var p = DOM.query('.'+item,'.ke-editor-tools');
-														DOM.show(DOM.parent(p[0]));
-														DOM.show(DOM.parent(p[1]));
-													}else{
-														var p = DOM.parent(DOM.get('.'+item));
-														DOM.show(p);
-													}
-												})
-											}else{
-												DOM.replaceClass(c.get("el"),'ke-triplebutton-on','ke-triplebutton-off');
-												S.each(a,function(item,index){
-													if(item == 'ke-select'){
-										    			var p = DOM.query('.'+item,'.ke-editor-tools');
-														DOM.hide(DOM.parent(p[0]));
-														DOM.hide(DOM.parent(p[1]));
-													}else{
-														var p = DOM.parent(DOM.get('.'+item));
-														DOM.hide(p);
-													}
-												})
-											}
-							            });
-							            button.render();
-							        })
-							        editor.use(
-											"font,color," +
-											"list," +
-											"justify,link" 
-											);
-							        S.each(a,function(item,index){
-							    		if(item == 'ke-select'){
-							    			var p = DOM.query('.'+item,'.ke-editor-tools');
-											DOM.hide(DOM.parent(p[0]));
-											DOM.hide(DOM.parent(p[1]));
-							    		}else{
-							    			var p = DOM.parent(DOM.get('.'+item,'.ke-editor-tools'));
-											DOM.hide(p);
-							    		}
-									})
-								})
-
+						/*账号信息*/
+						Event.on('#J_MenuMouse','mouseenter mouseleave',function(ev){
+							if(ev.type == 'mouseenter'){
+								DOM.addClass(ev.currentTarget,'current');
+								DOM.width('#J_SubMenu',DOM.width('#J_MenuMouse'));
+								DOM.show('#J_SubMenu');
 							}else{
-								window.suggestDialog.show();
-								DOM.val('#J_Suggest_Title','');
-								var html ="";
-								editor.setData(html);
-								DOM.addClass("#J_SubmitPost","clickable");
+								DOM.removeClass(ev.currentTarget,'current');
+								DOM.hide('#J_SubMenu');
 							}
-							Event.remove('#J_SubmitPost');
-							var timeFunName = null;
-							Event.on('#J_SubmitPost','click dblclick',function(ev){
-								if(ev.type == 'click'){
-									clearTimeout(timeFunName);
-									timeFunName = setTimeout(function () {
-										editor.sync();
+						})
+						/*优惠续费*/
+						Event.on('#J_renewal','mouseenter mouseleave',function(ev){
+							if(ev.type == 'mouseenter'){
+								DOM.addClass(ev.currentTarget,'current');
+								DOM.show('#J_renewalMenu');
+							}else{
+								DOM.removeClass(ev.currentTarget,'current');
+								DOM.hide('#J_renewalMenu');
+							}
+						})
+						//获取消息条数
+						S.io.get(getMsgUrl,{
+							type:"mess"
+						},function(o){
+							if(o.payload > 0){ 
+								DOM.addClass('#J_HasMsgBox','has-msg');
+								DOM.html('#J_MsgNum',o.payload);
+							}
+						},"json");
+						
+						//左边菜单
+						//hover
+						var menuItem = DOM.query('#J_menu .J_menuItem');
+						S.each(menuItem,function(item){
+							Event.on(item,'mouseenter mouseleave',function(ev){
+								if(ev.type == 'mouseenter'){
+									DOM.addClass(DOM.parent(item),'menu-hover');
+								}else if(ev.type == 'mouseleave'){
+									DOM.removeClass(DOM.parent(item),'menu-hover');
+								}
+							}); 
+						});
+						
+						//点击展开效果1
+//						var h;		
+//						function height(el){
+//							var h = 0,display = el.css('display'),position = el.css('position'),visibility = el.css('hidden');
+//							if(el.css('display') == 'none'){
+//								el.css({'display':'block','position':'absolute','visibility':'hidden'});
+//								h = el.height();
+//								el.css({'display':'none','position':position,'visibility':visibility});
+//							}else{
+//								h = el.height();
+//							}
+//							return h;	
+//						};
+//						var menuItemHeader = S.all("#J_menu div");
+//						menuItemHeader.on('click',function(ev){
+//							var menu = S.one(ev.target).next();
+//							if(menu){
+//								var display = menu.css('display');	
+//								if(display == 'none'){
+//									h = height(menu);
+//									menu.css({height: 0,display: 'block',overflow:'hidden'});
+//									menu.animate({'height':h+'px'},1,'elasticOut');
+//								}else{
+//									h = menu.height();
+//									menu.animate('height:0',0.2,S.Easing.easeNone,function(){
+//										menu.hide().height(h);
+//									});							
+//								}
+//							};			
+//							return false;		
+//						});
+						
+						//点击展开效果2
+						var menuItemHeader = S.all("#J_menu div");
+						var menuItemContent = S.all("#J_menu ul");
+						menuItemHeader.on('click',function(ev){
+							var menu = S.one(ev.target).next();
+							if(menu){
+								var display = menu.css('display');	
+								if(display == 'none'){
+									menuItemContent.slideUp(0.2);
+									menu.slideDown(0.2);
+								}else{
+									menuItemContent.slideUp(0.2);					
+								}
+							};			
+							return false;		
+						});
+						//  左边栏
+						var menuModuleId =  DOM.val('#J_MenuModuleId');
+						DOM.show('#kefu-preview-'+menuModuleId);
+//						var menuItemHeader = S.query("#J_menu .J_menuItem");
+//						var menuUl = S.query('.menu-item-bd');	
+//						Event.on(menuItemHeader,'click',function(ev){
+//							var data = DOM.attr(ev.currentTarget,'data');
+//							var allGroup = DOM.query('.kefu-preview');
+//							DOM.hide(allGroup);
+//							DOM.show('#kefu-preview-'+data); 
+//							
+//						});
+						var ItemHeader = S.query("#J_menu .second-title");
+						Event.on(ItemHeader,'click',function(ev){
+							var data = DOM.attr(ev.currentTarget,'data');
+							var allGroup = DOM.query('.kefu-preview');
+							DOM.hide(allGroup);
+							DOM.show('#kefu-preview-'+data); 
+						});
+						
+						//在线帮助 漂浮块  
+					    Event.on('#online_help','mouseenter mouseleave',function(ev){
+						 		if(ev.type== "mouseenter"){
+						 			DOM.show('#J_help');
+						 	 	}else if(ev.type== "mouseleave"){
+						 	 		DOM.hide('#J_help');
+						 	 	}
+						});
+						    //反馈建议 漂浮块  
+						    Event.on('#J_fkjy','click',function(ev){
+						    	if(!window.suggestDialog){
+						    		KISSY.use("bui/overlay,editor", function(S, Overlay ,Editor ) {
+										window.suggestDialog = new Overlay.Dialog({
+														  	            title:'<div style="line-height:50px;font-weight:bold;font-size:14px;">反馈建议</div>',
+														  	            width:460,
+														  	            height:542,
+														  	            mask:false,
+														  	            elAttrs :{id : 'J_SuggestDialog'},   
+														  	            footerStyle :{'display' : 'none'},
+														  	            bodyContent:''
+														  	          });
+										var cont='<div class=""><form method="post" id="J_SuggestAddForm" action=""><ul><input type="hidden" name="type" value="2" /><input type="hidden" name="source" value="1" />'
+												+'<li><div class="align-right fl">类型:</div><div class="fl ml6"><select id="J_Suggest_ProjectType" name="project_type"><option value="1">促销活动</option><option value="2">模板</option><option value="3">会员</option><option value="4">数据</option><option value="5">批量工具</option><option value="6">标题优化</option><option value="7">移动端</option><option value="8">其它</option></select></div></li>'
+												+'<li><div class="align-right fl">标题:</div><div class="fl ml6"><input type="text" id="J_Suggest_Title" name="title" value="" class="suggest_input_text"></div></li>'
+												+'<li><div class="align-right fl">旺旺:</div><div class="fl ml6"><input type="text" id="J_Suggest_Shopnick" name="shop_nick" value="" class="suggest_input_text"></div></li>'
+												+'<li><div id="editorContainer" class="ks-editor"><textarea class="ks-editor-textarea  required-entry"  title="Template Content" id="J_Suggest_Content" name="content"></textarea></div></li>'
+												+'<li style="line-height:0;min-height:0;margin-bottom:0;"><div class="ui-msg mt15" style="display: none; width:420px;" id="J_Suggest_ParamsErrorBox"><div class="error-msg"><div class="img-16-1"></div><div class="text-16 color-red" id="J_Suggest_ParamsErrorMsg"></div></div></div><div class="ui-msg mt15" style="display: none;width:420px;" id="J_Suggest_ParamsSucessBox"><div class="success-msg"><div class="img-16-6"></div><div class="text-16" id="J_Suggest_ParamsSucessMsg"></div></div></div></li>'
+												+'</ul></form>'
+												+'<div class="bui-stdmod-footer"><button class="bui-button bui-button-primary clickable" id="J_SubmitPost" >确定</button><button class="bui-button J_SuggestCancle">关闭</button></div></div>'
+										window.suggestDialog.set('bodyContent',cont);	
+										window.suggestDialog.render();
+										DOM.val('#J_Suggest_Shopnick',DOM.val('#J_ShopNick'));
+										 var cfg = {
+								    	            // 是否初始聚焦
+								    	            focused:false,
+								    	            attachForm:true,
+								    	            // 自定义样式
+								    	            // customStyle:"p{line-height: 1.4;margin: 1.12em 0;padding: 0;}",
+								    	            // 自定义外部样式
+								    	            // customLink:["http://localhost/customLink.css","http://xx.com/y2.css"],
+								    	            // render:"#container",
+								    	            srcNode: '#editorContainer',
+								    	            width:'100%',
+								    	            height:"200px"
+								    	        };
+								    	        KISSY.use("editor/plugin/smiley/," +
+								    	            "editor/plugin/font-size/," +
+								    	            "editor/plugin/image/" 
+								    	            , function (S, Smiley, FontSize, Image) {
+
+								    	            cfg.plugins = [Smiley, FontSize, new Image({
+								    	                upload:{
+								    	                    serverUrl:uploadImgURL,
+								    	                    serverParams:{
+								    	                        waterMark:function () {
+								    	                            return S.one("#ke_img_up_watermark_1")[0].checked;
+								    	                        }
+								    	                    },
+								    	                    suffix:"png,jpg,jpeg,gif",
+								    	                    fileInput:"Filedata",
+								    	                    sizeLimit:1000, //k
+								    	                    extraHtml:"<p style='margin-top:10px;'><input type='checkbox' id='ke_img_up_watermark_1' checked='checked'> 图片加水印，防止别人盗用</p>"
+								    	                }
+								    	            })];
+								    	            window.suggestEditor = new Editor(cfg).render();
+								    	        });
+								    	        window.suggestDialog.show();
+								    	    });
+						    			
+						    	}else{
+									window.suggestDialog.show();
+									DOM.val('#J_Suggest_Title','');
+									var html ="";
+									window.suggestEditor.set('data',html);
+									DOM.addClass("#J_SubmitPost","clickable");
+								}
+								Event.remove('#J_SubmitPost');
+								var timeFunName = null;
+								 Event.delegate(document,'click dblclick','#J_SubmitPost',function(ev){
+									if(ev.type == 'click'){
+										clearTimeout(timeFunName);
+										timeFunName = setTimeout(function () {
+											window.suggestEditor.sync();
+											ParamsErrorBox = KISSY.one('#J_Suggest_ParamsErrorBox');
+							    	    	var title = DOM.val('#J_Suggest_Title');
+							    	    	
+							    	    	var shop_nick = DOM.val('#J_Suggest_Shopnick');
+							    	    	var content = DOM.val('#J_Suggest_Content');
+							    	    	if(title == "" || title == "undefined"){
+							    	    		DOM.html('#J_Suggest_ParamsErrorMsg','标题不能为空');
+							    	    		if (ParamsErrorBox.css("display")==="none") {
+							    	    			ParamsErrorBox.slideDown();														
+												}
+							    	    		S.later(function(){
+							    	    			DOM.hide('#J_Suggest_ParamsErrorBox');
+												},2000,false);
+												return;
+											}
+							    	    	if(shop_nick == "" || shop_nick == "undefined"){
+							    	    		DOM.html('#J_Suggest_ParamsErrorMsg','旺旺不能为空');
+							    	    		if (ParamsErrorBox.css("display")==="none") {
+													ParamsErrorBox.slideDown();														
+												}
+							    	    		S.later(function(){
+							    	    			DOM.hide('#J_Suggest_ParamsErrorBox');
+												},2000,false);
+												return;
+											}
+							    	    	if(content == "" || content == "undefined"){
+							    	    		DOM.html('#J_Suggest_ParamsErrorMsg','内容不能为空');
+							    	    		if (ParamsErrorBox.css("display")==="none") {
+													ParamsErrorBox.slideDown();														
+												}	
+							    	    		S.later(function(){
+							    	    			DOM.hide('#J_Suggest_ParamsErrorBox');
+												},2000,false);
+												return;
+											}
+							    	    	if(DOM.hasClass("#J_SubmitPost","clickable")){
+												var submitHandle = function(o) {
+													ParamsSucessBox = KISSY.one('#J_Suggest_ParamsSucessBox');
+													DOM.html('#J_Suggest_ParamsSucessMsg','提交成功！');
+													if (ParamsSucessBox.css("display")==="none") {
+														ParamsSucessBox.slideDown();														
+													}	
+													S.later(function(){
+														DOM.hide('#J_Suggest_ParamsSucessBox');
+														window.suggestDialog.hide();
+													},1000,false);
+													DOM.removeClass("#J_SubmitPost","clickable");
+									    	    };
+									    	    var errorHandle = function(o){	
+									    	    };
+									    	    var data ='';
+												new H.widget.asyncRequest().setURI(suggestUrl).setMethod("POST").setForm('#J_SuggestAddForm').setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).send();
+							    	    	}
+								    	    
+										},300);
+									} 
+									if(ev.type == 'dblclick'){
+										clearTimeout(timeFunName); 
+										//console.log('双击');
+										window.suggestEditor.sync();
 										ParamsErrorBox = KISSY.one('#J_Suggest_ParamsErrorBox');
-						    	    	var title = DOM.val('#J_Suggest_Title');
+						    	    	var title =encodeURIComponent(DOM.val('#J_Suggest_Title'));
 						    	    	
 						    	    	var shop_nick = DOM.val('#J_Suggest_Shopnick');
 						    	    	var content = DOM.val('#J_Suggest_Content');
@@ -385,78 +326,18 @@ KISSY.add(function(S){
 								    	    var data ='';
 											new H.widget.asyncRequest().setURI(suggestUrl).setMethod("POST").setForm('#J_SuggestAddForm').setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).send();
 						    	    	}
-							    	    
-									},300);
-								} 
-								if(ev.type == 'dblclick'){
-									clearTimeout(timeFunName); 
-									//console.log('双击');
-									editor.sync();
-									ParamsErrorBox = KISSY.one('#J_Suggest_ParamsErrorBox');
-					    	    	var title =encodeURIComponent(DOM.val('#J_Suggest_Title'));
-					    	    	
-					    	    	var shop_nick = DOM.val('#J_Suggest_Shopnick');
-					    	    	var content = DOM.val('#J_Suggest_Content');
-					    	    	if(title == "" || title == "undefined"){
-					    	    		DOM.html('#J_Suggest_ParamsErrorMsg','标题不能为空');
-					    	    		if (ParamsErrorBox.css("display")==="none") {
-					    	    			ParamsErrorBox.slideDown();														
-										}
-					    	    		S.later(function(){
-					    	    			DOM.hide('#J_Suggest_ParamsErrorBox');
-										},2000,false);
-										return;
+										
 									}
-					    	    	if(shop_nick == "" || shop_nick == "undefined"){
-					    	    		DOM.html('#J_Suggest_ParamsErrorMsg','旺旺不能为空');
-					    	    		if (ParamsErrorBox.css("display")==="none") {
-											ParamsErrorBox.slideDown();														
-										}
-					    	    		S.later(function(){
-					    	    			DOM.hide('#J_Suggest_ParamsErrorBox');
-										},2000,false);
-										return;
-									}
-					    	    	if(content == "" || content == "undefined"){
-					    	    		DOM.html('#J_Suggest_ParamsErrorMsg','内容不能为空');
-					    	    		if (ParamsErrorBox.css("display")==="none") {
-											ParamsErrorBox.slideDown();														
-										}	
-					    	    		S.later(function(){
-					    	    			DOM.hide('#J_Suggest_ParamsErrorBox');
-										},2000,false);
-										return;
-									}
-					    	    	if(DOM.hasClass("#J_SubmitPost","clickable")){
-										var submitHandle = function(o) {
-											ParamsSucessBox = KISSY.one('#J_Suggest_ParamsSucessBox');
-											DOM.html('#J_Suggest_ParamsSucessMsg','提交成功！');
-											if (ParamsSucessBox.css("display")==="none") {
-												ParamsSucessBox.slideDown();														
-											}	
-											S.later(function(){
-												DOM.hide('#J_Suggest_ParamsSucessBox');
-												window.suggestDialog.hide();
-											},1000,false);
-											DOM.removeClass("#J_SubmitPost","clickable");
-							    	    };
-							    	    var errorHandle = function(o){	
-							    	    };
-							    	    var data ='';
-										new H.widget.asyncRequest().setURI(suggestUrl).setMethod("POST").setForm('#J_SuggestAddForm').setHandle(submitHandle).setErrorHandle(errorHandle).setData(data).send();
-					    	    	}
-									
-								}
-							});
-							Event.on('.cancle','click',function(){
-								window.suggestDialog.hide();
-							});
-							
-						});
-						
-						
-			 	 });
-
-	})		
+								});
+								Event.delegate(document,'click','.J_SuggestCancle',function(ev){		
+									window.suggestDialog.hide();
+								});
+										
+						    })
+				}
+		}
+			
+}, {
+    requires: ['switchable']
 })
 	

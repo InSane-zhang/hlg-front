@@ -2,7 +2,7 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S) {
+KISSY.add(function (S,beautifyForm) {
     // your code here
     var DOM = KISSY.DOM,Event = S.Event;
 	return subControl = {
@@ -10,12 +10,14 @@ KISSY.add(function (S) {
 			msg : null,
 			NameError : false,
 			init: function(){
+		
+				subControl.x = new beautifyForm();
 				Event.on('#J_BtnPublish','click',function(ev){
 					subControl.save();
 				})
 			},
 	        PromoNameAction : function(name){
-					var result = H.util.isNull(name);
+					var result = subControl.isNull(name);
 					var error = result[0];
 					var msg = result[1];
 					if(error){
@@ -49,7 +51,7 @@ KISSY.add(function (S) {
 					subControl.msg.hide();
 		 			ParamsErrorBox.hide();
 		 			ParamsSucessBox = KISSY.one('#J_ParamsSucessBox')
-		 			DOM.html('#J_ParamsSucessMsg','成功创建活动！');
+		 			DOM.html('#J_ParamsSucessMsg','成功保存！');
 					if (ParamsSucessBox.css("display")==="none") {
 						ParamsSucessBox.slideDown();
 					}
@@ -89,10 +91,23 @@ KISSY.add(function (S) {
 						DOM.val(item,1);
 					}
 				})
+			},
+			/*是否为空*/
+			isNull : function(str){
+				var result = [];
+				var error = false;
+				var msg = null;
+				if(str == null ||str == ""){
+					error = true;
+					msg = '请填写，此项不能为空！';
+				}
+				result.push(error);
+				result.push(msg);
+				return result;
 			}
 	}
 	
 	
 }, {
-    requires: []
+    requires: ['utils/beautifyForm/index']
 });

@@ -2,7 +2,7 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,showPages) {
+KISSY.add(function (S,showPages,Select) {
     // your code here
 	var DOM = S.DOM, Event = S.Event;	
 	
@@ -13,7 +13,22 @@ KISSY.add(function (S,showPages) {
 			checkBoxs : null,
 	    	
 	    	init : function() {
-				
+				//条数
+				var items4 = [
+					{text:'10条',value:'10'},
+					{text:'20条',value:'20'}
+						     
+				],
+				statusSelect = new Select.Select({  
+					render:'#J_SelectPage',
+					valueField:'#J_SelectItemPage',
+					items:items4
+				});
+				statusSelect.render();
+				statusSelect.setSelectedValue('10');
+				statusSelect.on('change', function(ev){
+					checkprop.searchTbItems();
+				});
 				checkprop.searchTbItems();
 				Event.on('#J_SearchBtn','click',checkprop.searchTbItems); //活动中宝贝全选   	 
 			    Event.on('#J_TCheckAll','click',checkprop.CheckAll); //活动中宝贝全选   	    
@@ -226,5 +241,5 @@ KISSY.add(function (S,showPages) {
 			
     	};
 }, {
-    requires: ['utils/showPages/index']
+    requires: ['utils/showPages/index','bui/select']
 });

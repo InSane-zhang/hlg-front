@@ -1,0 +1,417 @@
+/*
+combined files : 
+
+utils/showPages/index
+page/ordersDetail-init
+
+*/
+/**
+ * @分页组件
+ * @author  @sjs_stef
+ */
+KISSY.add('utils/showPages/index',function (S) {
+    var DOM = S.DOM, Event = S.Event, doc = document;
+  
+    function showPages(name) { //初始化属性 
+        var self = this; 
+        if (!(self instanceof showPages)) { 
+            return new showPages(name); 
+        }   
+        this.pageNum = 4 ;   
+        this.name = name;      //对象名称
+        this.page = 1;         //当前页数
+        this.pageCount = 200;    //总页数
+        this.argName = 'page'; //参数名    
+    }
+
+    S.mix(showPages.prototype,{
+        jump: function() {
+            return undefined;
+        },
+        
+        //进行当前页数和总页数的验证
+        checkPages: function() { 
+            if (isNaN(parseInt(this.page))) this.page = 1;
+            if (isNaN(parseInt(this.pageCount))) this.pageCount = 1;
+            if (this.page < 1) this.page = 1;
+            if (this.pageCount < 1) this.pageCount = 1;
+            if (this.page > this.pageCount) this.page = this.pageCount;
+            this.page = parseInt(this.page);
+            this.pageCount = parseInt(this.pageCount);
+        },
+        
+        //生成html代码    
+        _createHtml: function(mode) { 
+       
+            var self = this, strHtml = '', prevPage = this.page - 1, nextPage = this.page + 1;   
+            if (mode == '' || typeof(mode) == 'undefined') mode = 1;
+        
+            switch (mode) {
+                case 1: 
+                    //模式1 (页数)
+                     strHtml += '<div class="page-bottom"> <div class="sabrosus">';
+	   					strHtml += '<font class="number">';
+	   					strHtml += '共'+this.pageCount+'页&nbsp;';
+	   					strHtml += '<input style="" type="text"  class="page-input" id="pageInput' + self.name + '"  value="页码" onkeypress="return window.' + self.name + '.formatInputPage(event);" onfocus="this.className=\'page-input page-input-text-on \';if(this.value==\'页码\'){this.value = \'\';}" onblur="this.className=\'page-input\';if(this.value==\'\'){this.value = \'页码\'}">';
+	   					strHtml += '<input type="button" value="Go" class="btm-go" onclick="javascript:var page = document.getElementById(\'pageInput' + self.name + '\').value; if(isNaN(Number(page))|| Number(page)==0) { var turnTo = 1;} else if(page>'+this.pageCount+'){ var turnTo = '+this.pageCount+';} else{var turnTo = page;}  window.' + self.name + '.toPage(turnTo);" >';
+	   					strHtml += '</font>';	
+	   				    if (prevPage < 1) {
+	                        strHtml += '<span class="pre-none page-pic-no"></span>';
+	                    } else {
+	                        strHtml += '<span title="上一页" class="pre page-pic-no" onclick="' + self.name + '.toPage(' + prevPage + ');"></span>';
+	                    }
+	   					if (nextPage > this.pageCount) {
+	                    	strHtml += '<span class="next-none page-pic-no"></span>';
+	                    } else {
+	                    	strHtml += '<span title="下一页" class="next page-pic-no" onclick="' + self.name + '.toPage(' + nextPage + ');"></span>';
+	                    }
+	   				 strHtml += '<div style="clear:both"></div></div></div> '; 
+                    break;
+                                 
+                    case 2: 
+    					//模式2 (前后缩略,页数,首页,前页,后页,尾页)
+                    	
+    					if(this.pageCount > 1){
+    	                    strHtml += '<div class="page-bottom"> <div class="sabrosus">';
+    	                    
+    	                    if (this.pageCount > 5) {
+    		   					strHtml += '<font class="number">';
+    		   					strHtml += '共'+this.pageCount+'页&nbsp;';
+    		   					strHtml += '<input style="" type="text"  class="page-input" id="pageInput' + self.name + '"  value="页码" onkeypress="return window.' + self.name + '.formatInputPage(event);" onfocus="this.className=\'page-input page-input-text-on \';if(this.value==\'页码\'){this.value = \'\';}" onblur="this.className=\'page-input\';if(this.value==\'\'){this.value = \'页码\'}">';
+    		   					strHtml += '<input type="button" value="Go" class="btm-go" onclick="javascript:var page = document.getElementById(\'pageInput' + self.name + '\').value; if(isNaN(Number(page))|| Number(page)==0) { var turnTo = 1;} else if(page>'+this.pageCount+'){ var turnTo = '+this.pageCount+';} else{var turnTo = page;}  window.' + self.name + '.toPage(turnTo);" >';
+    		   					strHtml += '</font>';	
+    	                    }
+    	                    
+    	                    
+    	                    if (prevPage < 1) {
+    	                        strHtml += '<span class="pre-none page-pic-no"></span>';
+    	                    } else {
+    	                        strHtml += '<span title="上一页" class="pre page-pic-no" onclick="' + self.name + '.toPage(' + prevPage + ');"></span>';
+    	                    }
+    	                    
+    	                    if (this.page != 1) {
+    							//strHtml += ' <a class="a-padding" href="javascript:' + self.name  + '.toPage(1);">1</a>';
+    						}
+    						if(this.page - 2<=0){
+    							var start = 1;
+    								if (this.pageCount > this.page + 4) {
+    	                           		var endPage = this.page + 4;
+    	                           } else {
+    	                             	var endPage = this.pageCount; 
+    	                            }
+    						}else if(this.page + 2>=this.pageCount){
+    							var start = this.pageCount-4;
+    							if (this.pageCount > this.page + 4) {
+    	                       		var endPage = this.page + 4;
+    	                        } else {
+    	                         	var endPage = this.pageCount; 
+    	                        }
+    						}else {
+    							var start = this.page - 2;
+    							if (this.pageCount > this.page + 2) {
+    		                           		var endPage = this.page + 2;
+    		                           } else {
+    		                             	var endPage = this.pageCount; 
+    		                             }
+    						}
+    	                    for (var i = start; i <= endPage; i++) {
+    	                    if (i > 0) {
+    	                       	if (i == this.page) {
+    	                           	strHtml += '<span class="current a-padding">'+ i + '</span>';
+    	                        } else {
+    	                           // if (i != 1 && i != this.pageCount) {
+    	                              	strHtml += '<a class="a-padding" href="javascript:' + self.name + '.toPage(' + i + ');">' + i + '</a>';
+    	                           // }
+    						      }
+    	                    }
+    	                    }
+    	                    if (this.page + 5 < this.pageCount) {
+    							strHtml += '<a class="a-padding" title="" href="javascript:' + self.name + '.toPage(' + (this.page + 3) + ');">...</a>';
+    						}
+    				  	    if (this.page != this.pageCount) {
+    							//strHtml += '<span title="Page ' + this.pageCount + '"><a href="javascript:' + self.name + '.toPage(' + this.pageCount + ');">' + this.pageCount + '</a></span>';
+    						}
+    						if (nextPage > this.pageCount) {
+    	                    	strHtml += '<span class="next-none page-pic-no"></span>';
+    	                    } else {
+    	                    	strHtml += '<span title="下一页" class="next page-pic-no" onclick="' + self.name + '.toPage(' + nextPage + ');"></span>';
+    	                      }
+    						
+    						
+    						
+    	                   strHtml += '<div style="clear:both"></div></div></div> ';
+    					}
+                       break;
+    			   case 3 :
+    				   strHtml += '<div class="page-top"><div class="sabrosus"><span class="count">' + this.page + ' / ' + this.pageCount + '</span>';
+                       if (prevPage < 1) {
+                           strHtml += ' <span class="pre-none page-pic-no"></span>';
+                       } else {
+                           strHtml += '<a class="border-left-dedede" href="javascript:' + self.name + '.toPage(' + prevPage + ');" title="上一页"><span class="pre page-pic-no"></span></a>';
+                         }
+                       if (nextPage > this.pageCount) {
+                       	strHtml += '<span class="next-none page-pic-no"></span>';
+                       } else {
+                           strHtml += '<a href="javascript:' + self.name + '.toPage(' + nextPage + ');" title="下一页"><span class="next page-pic-no"></span></a>';
+                         }
+                      strHtml += '<div style="clear:both"></div></div></div>';
+                      break;
+                    
+            }
+            return strHtml; 
+               
+        },
+         //限定输入页数格式
+        formatInputPage : function(e){
+            var ie = navigator.appName=="Microsoft Internet Explorer"?true:false;
+            if(!ie) var key = e.which;
+            else var key = event.keyCode;
+            if (key == 8 || key == 46 || (key >= 48 && key <= 57)) return true;
+            return false;
+        },
+      
+        //页面跳转 返回将跳转的页数
+        toPage: function( page ,flag) { 
+            var turnTo = 1;
+            var self = this;    
+            if (typeof(page) == 'object') {
+                turnTo = page.options[page.selectedIndex].value;
+            } else {
+                turnTo = page;
+              }
+            
+            self.jump(turnTo,flag,'');
+              
+        },
+              
+        //显示html代码
+        printHtml: function(contian, mode) {  
+            this.checkPages();
+            DOM.html(contian,this._createHtml(mode));
+            return this;
+        },
+                   
+        //设置总页数           
+        setPageCount: function( pagecount ) {
+            this.pageCount=pagecount;
+            return this;
+        },              
+        
+        getPageCount: function() {
+            return this.pageCount;
+        },
+        
+        //设置跳转 执行函数
+        setRender: function(fn) {
+            this.jump = fn;
+            return this;
+        },  
+        setPageNum:function(page_num){
+            this.pageNum = page_num;
+            return this;
+         },
+        setPage:function(page){
+            this.page = page;  
+            return this; 
+        }          
+
+               
+    });
+
+    return showPages;
+  
+});
+/**
+ * @fileOverview 
+ * @author  
+ */
+KISSY.add('page/ordersDetail-init',function (S,showPages,Overlay,Select) {
+    // your code here
+	var DOM = S.DOM, Event = S.Event;	
+	
+	return ordersDetailControl = {
+		paginator : null,
+		msg : null,
+		handlePagination :null,
+		panel : null,	
+		init : function() {
+			
+			// 编辑input
+			Event.delegate(document,'click','.J_EditTiger',function(ev){
+				var p =DOM.parent(ev.currentTarget);
+				DOM.addClass(p,'hover');
+				DOM.get('input',p).focus();
+			})
+			// 失去焦点
+			Event.delegate(document,'focusout','.J_ExpressNick',function(ev){
+				KISSY.later(function(){
+					DOM.removeClass('#J_ExpressNickBox','hover');
+		 		},200,false,null);
+			})
+			// 收件人
+			Event.delegate(document,'click','.J_ExpressNickSubmit',function(ev){
+				var title = DOM.val('#J_ExpressNick_1');
+				var submitHandle = function(o) {
+					new H.widget.msgBox({ 
+						type: "sucess", 
+						content: "修改成功",
+						dialogType:"msg", 
+						autoClose:true, 
+						timeOut:3000
+					});
+					DOM.val('#J_ExpressNick1',title);
+					DOM.html(DOM.get("#J_ExpressNickBox .J_Name"),title);
+				};
+				var otitle = DOM.val('#J_ExpressNick1');
+				if(otitle == title){
+					return ;
+				}
+				var data = "item_id="+id+"&item_number="+title;
+				new H.widget.asyncRequest().setURI().setMethod("GET").setHandle(submitHandle).setData(data).send();
+			})
+			// 失去焦点
+			Event.delegate(document,'focusout','.J_ExpressTel',function(ev){
+				KISSY.later(function(){
+					DOM.removeClass('#J_ExpressTelBox','hover');
+		 		},200,false,null);
+			})
+			// 联系电话
+			Event.delegate(document,'click','.J_ExpressTelSubmit',function(ev){
+				var title = DOM.val('#J_ExpressTel_1');
+				var submitHandle = function(o) {
+					new H.widget.msgBox({ 
+						type: "sucess", 
+						content: "修改成功",
+						dialogType:"msg", 
+						autoClose:true, 
+						timeOut:3000
+					});
+					DOM.val('#J_ExpressTel1',title);
+					DOM.html(DOM.get("#J_ExpressTelBox .J_Name"),title);
+				};
+				var otitle = DOM.val('#J_ExpressTel1');
+				if(otitle == title){
+					return ;
+				}
+				var data = "item_id="+id+"&item_number="+title;
+				new H.widget.asyncRequest().setURI().setMethod("GET").setHandle(submitHandle).setData(data).send();
+			})
+			// 失去焦点
+			Event.delegate(document,'focusout','.J_ExpressAdress',function(ev){
+				KISSY.later(function(){
+					DOM.removeClass('#J_ExpressAdressBox','hover');
+		 		},200,false,null);
+			})
+			// 地址
+			Event.delegate(document,'click','.J_ExpressAdressSubmit',function(ev){
+				var title = DOM.val('#J_ExpressTel_1');
+				var submitHandle = function(o) {
+					new H.widget.msgBox({ 
+						type: "sucess", 
+						content: "修改成功",
+						dialogType:"msg", 
+						autoClose:true, 
+						timeOut:3000
+					});
+					DOM.val('#J_ExpressAdress1',title);
+					DOM.html(DOM.get("#J_ExpressAdressBox .J_Name"),title);
+				};
+				var otitle = DOM.val('#J_ExpressAdress1');
+				if(otitle == title){
+					return ;
+				}
+				var data = "item_id="+id+"&item_number="+title;
+				new H.widget.asyncRequest().setURI().setMethod("GET").setHandle(submitHandle).setData(data).send();
+			})
+			// 失去焦点
+			Event.delegate(document,'focusout','.J_ExpressYb',function(ev){
+				KISSY.later(function(){
+					DOM.removeClass('#J_ExpressYbBox','hover');
+		 		},200,false,null);
+			})
+			// 邮编
+			Event.delegate(document,'click','.J_ExpressYbSubmit',function(ev){
+				var title = DOM.val('#J_ExpressTel_1');
+				var submitHandle = function(o) {
+					new H.widget.msgBox({ 
+						type: "sucess", 
+						content: "修改成功",
+						dialogType:"msg", 
+						autoClose:true, 
+						timeOut:3000
+					});
+					DOM.val('#J_ExpressYb1',title);
+					DOM.html(DOM.get("#J_ExpressYbBox .J_Name"),title);
+				};
+				var otitle = DOM.val('#J_ExpressYb1');
+				if(otitle == title){
+					return ;
+				}
+				var data = "item_id="+id+"&item_number="+title;
+				new H.widget.asyncRequest().setURI().setMethod("GET").setHandle(submitHandle).setData(data).send();
+			})
+			// 失去焦点
+			Event.delegate(document,'focusout','.J_ExpressNum',function(ev){
+				KISSY.later(function(){
+					DOM.removeClass('#J_ExpressNumBox','hover');
+		 		},200,false,null);
+			})
+			// 快递单号
+			Event.delegate(document,'click','.J_ExpressNumSubmit',function(ev){
+				var title = DOM.val('#J_ExpressNum_1');
+				var submitHandle = function(o) {
+					new H.widget.msgBox({ 
+						type: "sucess", 
+						content: "修改成功",
+						dialogType:"msg", 
+						autoClose:true, 
+						timeOut:3000
+					});
+					DOM.val('#J_ExpressNum1',title);
+					DOM.html(DOM.get("#J_ExpressNumBox .J_Name"),title);
+				};
+				var otitle = DOM.val('#J_ExpressNum1');
+				if(otitle == title){
+					return ;
+				}
+				var data = "item_id="+id+"&item_number="+title;
+				new H.widget.asyncRequest().setURI().setMethod("GET").setHandle(submitHandle).setData(data).send();
+			})
+			// 失去焦点
+			Event.delegate(document,'focusout','.J_PrintShortName',function(ev){
+				var id = DOM.attr(ev.currentTarget,'data');
+				KISSY.later(function(){
+					DOM.removeClass('#J_PrintShortNameBox_'+id,'hover');
+		 		},200,false,null);
+			})
+			// 快递单号
+			Event.delegate(document,'click','.J_PrintShortNameSubmit',function(ev){
+				var id = DOM.attr(ev.currentTarget,'data');
+				var title = DOM.val('#J_PrintShortName_'+id);
+				var submitHandle = function(o) {
+					new H.widget.msgBox({ 
+						type: "sucess", 
+						content: "修改成功",
+						dialogType:"msg", 
+						autoClose:true, 
+						timeOut:3000
+					});
+					DOM.val('#J_PrintShortName'+id,title);
+					DOM.html(DOM.get('#J_PrintShortNameBox_'+id+' .J_Name'),title);
+				};
+				var otitle = DOM.val('#J_PrintShortName'+id);
+				if(otitle == title){
+					return ;
+				}
+				var data = "item_id="+id+"&item_number="+title;
+				new H.widget.asyncRequest().setURI().setMethod("GET").setHandle(submitHandle).setData(data).send();
+			})
+		}
+	
+	
+		
+	}
+	
+}, {
+    requires: ['utils/showPages/index','bui/overlay','bui/select']
+});

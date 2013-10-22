@@ -685,7 +685,6 @@ KISSY.add(function (S,checkUtil) {
 			checkTitleLen : function(str,num){
 				var len = str.replace(/[^\x00-\xff]/g, "*").length ;
 				DOM.html(DOM.get('#J_Zs_Num'+num), len);
-			
 			},
 			/*是否签订彩票协议*/
 			checkCpAgreement : function(el){

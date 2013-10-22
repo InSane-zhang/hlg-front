@@ -33,8 +33,8 @@ small { font-size: 12px; } /* 小于 12px 的中文很难阅读，让 small 正�
 ul, ol, li{ list-style: none; }
 
 /** 重置文本格式元素 **/
-a { text-decoration: none; color:#009ae3; cursor:pointer; outline:none;}
-a:hover { text-decoration: none; color:#CC0000; }
+a { text-decoration: none; color:#4dc1e8; cursor:pointer; outline:none;}
+a:hover { text-decoration: none; color:#8BD167; }
 
 sup { vertical-align: text-top; } /* 重置，减少对行高的影响 */
 sub { vertical-align: text-bottom; }
@@ -112,8 +112,8 @@ build time: Oct 15 14:07
 .ks-invisible{ visibility: hidden;}
 
 /* 清除浮动 */
-.ks-clear:after { content:'\20'; display:block; height:0; clear:both; }
-.ks-clear { *zoom:1;}
+.clear:after,.ks-clear:after { content:'\20'; display:block; height:0; clear:both; }
+.clear,.ks-clear { *zoom:1;}
 
 /* inline block */
 .ks-inline-block { display: inline-block; *display: inline; }
@@ -131,164 +131,153 @@ select option{ padding:3px;}
 
 /*显示为块*/
 .block{ display:block;}
-
+.m-auto{margin: 0 auto}
+.center {text-align: center;}
 /*字体颜色*/
-.color-red{ color:#e54022;}
-.color-green{ color:#1cc200;}
-.color-orange{ color:#ff6501;}
-.color-gray{ color:#999;}
+.color-v1{ color:#F6F7FB;} /*一般用作淡色背景*/
+.color-v2{ color:#E5E8ED;} /*一般用线条描边*/
+.color-v3{ color:#ccd0d9;} /*辅助色*/
+.color-v4{ color:#aab2bd;} /*说明辅助文字*/
+.color-v5{ color:#656d78;} /*标题主题文字 按钮背景色*/
+.color-v6{ color:#434a54;} /*大标题 按钮hover背景*/
+.color-red{color:#fb6e52;}
+.color-green{ color:#73bf4d;}
+
 
 /*input START*/
 input{ vertical-align:middle}
 *:focus{ outline:none;}
-.input-text,
-.input-text-on,
-.text-error,
-.input-text-2,
-.edit-activity-hover .qianbi,.edit-qianbi,
-.input-day,
-.input-day-2,
-.input-day-3{ vertical-align:middle; background:url(http://cdn.huanleguang.com/img/hlg-app/common/input-dayman.gif) no-repeat; border:0;}
-.input-text,
-.input-text-on,
-.text-error{ background-position:100% -84px;}
-.input-text{ border:1px solid #A7A6AA; color:#7d7d7d;}
-.input-text-on{ border:1px solid #FF9C00; color:#3E3E3E;}
-.text-error{border:1px solid red;}
-.input-text,
-.input-text-on,
-.text-error{ height: 22px; *height:20px; line-height:22px; padding:0 4px 0 4px; -moz-box-sizing: border-box; -webkit-box-sizing:border-box; box-sizing: border-box; font-size:12px; font-family:Arial;}
-.input-text-2{ height: 27px; line-height:27px; _height: 25px; padding:0 4px 0 4px; background-position:0 -42px; color:#999; -moz-box-sizing: border-box; -webkit-box-sizing:border-box; box-sizing: border-box; font-size:12px; font-family:Arial;}
+.input-text-1{ width:120px;height:28px;*height:28px;line-height:28px;}
+.input-text-2{ width:150px;height:28px;*height:28px;line-height:28px;}
+.input-text-3{ width:230px;height:36px;*height:36px;line-height:36px;}
+.input-text-1,.input-text-2,.input-text-3{ border:1px solid #E5E8ED; color:#7a818b;border-radius:5px;padding:0 4px;}
+.input-text-1:hover,.input-text-2:hover,.input-text-3:hover{ border:1px solid #ccd0d9;}
+.input-text-1:focus,.input-text-2:focus,.input-text-3:focus{ border:1px solid #8bd167;}
+.input-text-1:disabled,.input-text-2:disabled,.input-text-3:disabled{ border:1px solid #e5e9ec;background-color:#f6f7fb;}
+html.ie8 input[disabled]{border:1px solid #e5e9ec;background-color:#f6f7fb;}
 .input-none{ vertical-align:middle; height:22px; line-height:22px; color:#666; background:none; border:0;}
-.edit-activity-hover .qianbi,.edit-qianbi{ background-position:0 -71px;}
-.input-day,
-.input-day-2,
-.input-day-3{background-position:100% 0;}
-.input-day{ width:184px; *width:174px;}
-.input-day-2{ width:144px; *width:130px;}
-.input-day-3{ width:95px; *width:85px;}
+.text-error{border:1px solid red;}
+.input-text-on{border:1px solid #ccd0d9;}
 /*input END*/
 
+.x-caret {
+display: inline-block;
+width: 0;
+height: 0;
+border: 4px solid rgba(0, 0, 0, 0);
+line-height: 0;
+_border-color: tomato;
+_filter: chroma(color=#ff6347);
+}
+/*<span class="x-caret x-caret-down"></span>  三角形 向下 */
+.x-caret-down {
+	border-top: 4px solid #000;
+	border-bottom: 0;
+}
+/*<span class="x-caret x-caret-down"></span>  三角形 向上*/
+.x-caret-up {
+	border-top: 0;
+	border-bottom: 4px solid #000;
+}
+/*<span class="x-caret x-caret-down"></span>  三角形 向左 */
+.x-caret-left {
+	border-left: 4px solid #000;
+	border-right: 0;
+}
+/*<span class="x-caret x-caret-down"></span>  三角形 向右 */
+.x-caret-right {
+	border-right: 4px solid #000;
+	border-left: 0;
+}
+
+
 /*按钮   START*/
-.btm-margin-15auto{ margin: 15px auto;}
-.btm-orange-baocun,
-.btm-orange-queding,
-.btm-orange-yulan,
-.btm-orange-xiayibu,
-.btm-orange-quxiao,
-.btm-gray-baocun,
-.btm-gray-queding,
-.btm-gray-yulan,
-.btm-gray-xiayibu,
-.btm-gray-quxiao,
-.btm-orange,
-.btm-gray,
-.btm-caozuo-orange,
-.btm-caozuo-gray,
-.btm-caozuo-gray-none,
-.btm-kaishi-zhizuo,
-.btm-chongxin-zhizuo,
-.btm-mokuai-guanbi,
-.btm-sousuo,
-.btm-toufang,
-.btm-tubiao,
-.gray-btm-h-20-2,
-.gray-btm-h-10,
-.bianji .gongxiang,
-.bianji .shezhi,
-.bianji .toufang,
-.bianji .huoqu,
-.bianji .shanchu,
-.gray-btm-h-20,
-.toufang-sucai,
-.haoping-guanbi,
-.haoping-kaiqi,
-.creat-control,
-.btm-68-orange,
-.btm-68-gray,
-.button-search,
-.search-bb,
-.search-button,
-.no-details .no-details-pic{ background:url(http://cdn.huanleguang.com/img/hlg-app/common/save-btm-1.png) no-repeat; _background:url(http://cdn.huanleguang.com/img/hlg-app/common/save-btm-1.jpg) no-repeat;}
+.button {
+display: inline-block;
+*zoom:1;
+*display:inline;
+padding:0px 20px;
+*padding:0px 20px;
+margin-bottom: 0;
+font-size: 16px;
+height:38px;
+line-height:38px;
+font-weight: 700;
+color: #fff;
+text-align: center;
+cursor: pointer;
+background-image:none; 
+background-color:#E5E8ED; 
+border:1px solid #E5E8ED; 
+border-radius: 5px; 
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+-khtml-border-radius: 5px; 
+}
+.ie7 .button {line-height:32px;}
+.ie8 .button {line-height:40px;}
+.button-creat{display: inline-block;*zoom:1;
+*display:inline;
+padding:9px;
+*padding:8px 0px;
+margin-bottom: 0;
+font-size: 15px;
+line-height: 18px;
+font-weight: 700;
+color: #fff;
+text-align: center;
+cursor: pointer;
+background-image:none; 
+background-color:#E5E8ED; 
+border:1px solid #E5E8ED; 
+border-radius: 5px; 
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+-khtml-border-radius: 5px; }
+.button,.button:hover,.button-creat,.button-creat:hover{
+color: #fff;
+text-decoration:none;
+}
+.btm-small{
+display: inline-block;
+*zoom:1;
+*display:inline;
+padding:0px 12px;
+*padding:0px 6px;
+margin-bottom: 0;
+font-size: 12px;
+line-height:22px;
+*line-height:20px;
+font-weight: 400;
+color: #fff;
+text-align: center;
+cursor: pointer;
+background-image:none; 
+background-color:#E5E8ED; 
+border:1px solid #E5E8ED; 
+border-radius: 5px; 
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+-khtml-border-radius: 5px; 	
+}
+.ie8 .btm-small{line-height:24px;}
+.button-green{
+border:1px solid #8BD167; 
+background-color: #8BD167;
+}
+.button-green:hover, .button-green:active, .button-green.active, .button-green.disabled{border:1px solid #73BF4D; background-color:#73BF4D;}
+.button-gray{
+border:1px solid #656D78; 
+background-color: #656D78;
+}
+.button-gray:hover, .button-gray:active, .button-gray.active, .button-gray.disabled{border:1px solid #434A54; background-color:#434A54;}
+.button-blue{
+border:1px solid #4DC1E8; 
+background-color: #4DC1E8;
+}
+.button-blue:hover, .button-blue:active, .button-blue.active, .button-blue.disabled{border:1px solid #3CAFDB; background-color:#3CAFDB;}
+.button-creat .add-plus{font-style:normal; font-size:20px; font-weight:700;filter:alpha(opacity =50);-moz-opacity:0.5 ;-khtml-opacity: 0.5;opacity: 0.5; padding-right:5px;}
+
+.button-disabled,.button-disabled:hover{border:1px solid #CCD0D9; background-color: #CCD0D9; color:#E5E8ED; cursor: default;}
 /*按钮位置*/
-.btm-orange-baocun{background-position:0 0;}
-.btm-orange-queding{background-position:0 -35px;}
-.btm-orange-yulan{background-position:0 -70px;}
-.btm-orange-xiayibu{ background-position:0 -105px;}
-.btm-orange-quxiao{ background-position:0 -140px;}
-.btm-gray-baocun{background-position:-124px 0;}
-.btm-gray-queding{background-position:-124px -35px;}
-.btm-gray-yulan{background-position:-124px -70px;}
-.btm-gray-xiayibu{ background-position:-124px -105px;}
-.btm-gray-quxiao{ background-position:-124px -140px;}
-.btm-orange{ background-position:0 -175px;}
-.btm-gray{ background-position:-124px -175px;}
-.btm-kaishi-zhizuo{ background-position:-91px -211px;}
-.btm-chongxin-zhizuo{ background-position:0 -211px;}
-.btm-sousuo{ background-position:-163px -239px;}
-.btm-caozuo-orange{ background-position:0 -239px;}
-.btm-caozuo-gray,.btm-caozuo-gray-none{ background-position:-82px -239px;}
-.btm-toufang{ background-position:0 -265px;}
-.btm-tubiao{background-position:-105px -265px;}
-.gray-btm-h-20-2{ background-position:100% -323px;}
-.gray-btm-h-10,.gray-btm-h-20{background-position:0 -350px;}
-.btm-mokuai-guanbi{background-position: 0 -371px;}
-.bianji .gongxiang{background-position:-93px -382px;}
-.bianji .shezhi{ background-position:-111px -383px;}
-.bianji .toufang{ background-position:-128px -382px;}
-.bianji .huoqu{ background-position:-145px -382px;}
-.bianji .shanchu{ background-position:-163px -383px;}
-.toufang-sucai{background-position:0 -492px;}
-.haoping-guanbi{ background-position:0 -519px;}
-.haoping-kaiqi{background-position:-79px -519px;}
-.creat-control{background-position:-104px -492px;}
-.button-search{background-position:-65px -546px;}
-.search-bb{background-position: 0 -546px;}
-.search-button{ background-position: -569px;}
-.no-details .no-details-pic{ background-position:0 -592px;}
-/*按钮属性*/
-.btm-orange-baocun,
-.btm-orange-queding,
-.btm-orange-yulan,
-.btm-orange-xiayibu,
-.btm-orange-quxiao,
-.btm-gray-baocun,
-.btm-gray-queding,
-.btm-gray-yulan,
-.btm-gray-xiayibu,
-.btm-gray-quxiao,
-.btm-orange,.btm-gray{border:0; cursor:pointer; width:124px; height:35px; font-size:15px;}
-.btm-gray,.btm-caozuo-gray,.gray-btm-h-20-2{ color:#666666;}
-.btm-orange,.btm-caozuo-orange{ color:#fff;}
-.btm-caozuo-orange,.btm-caozuo-gray,.btm-caozuo-gray-none{ width:81px; height:24px; float:left; margin-right:5px; _display:inline; border:0;cursor:pointer;text-align:center;}
-.btm-caozuo-gray-none{ color:#999; cursor:default;}.btm-caozuo-gray a{ color:#666;}
-.btm-kaishi-zhizuo,.btm-chongxin-zhizuo,.btm-mokuai-guanbi{ display:block; width:90px; height:26px;}
-.btm-kaishi-zhizuo{margin:auto;}.btm-chongxin-zhizuo,.btm-mokuai-guanbi{float:left; margin-right:10px;}
-.btm-sousuo{ width:70px; height:23px; display:block;}
-.btm-toufang,.btm-tubiao{ width:104px; height:26px; float:left; border:0; cursor:pointer; font-size:12px;}
-.creat-control{ width:103px; height:26px;}.creat-control{border:0;cursor:pointer; width:103px; height:26px;}
-.gray-btm-h-20-2{ display:inline-block; padding:0 6px; height: 26px; *height: 26px; border-left:1px #d3d3d3 solid; text-align:center; cursor:pointer;}
-.gray-btm-h-10 a,.gray-btm-h-20 a{color:#666;}
-.gray-btm-h-10{border:1px solid #A7A6AB;border-left:0; display:inline-block; height:20px; line-height: 20px; padding:0; text-align: center; }
-.gray-btm-h-20{border:1px solid #A7A6AB; display:inline-block; height:20px; line-height: 20px; padding:0; color:#333; text-align: center; cursor:pointer; }
-.bianji{display:inline-block; margin-right:15px; }
-.bianji a{color:#ff7d00;}
-.bianji span{ display:inline-block; width:18px; height:16px; margin-right:3px;vertical-align: middle;}
-.toufang-sucai{border:0;cursor:pointer; width:103px; height:26px;}
-.haoping-guanbi,.haoping-kaiqi{border:0;cursor:pointer; width:78px; height:26px;}
-.button-search,.search-bb{ height:22px; border:0; vertical-align:middle; cursor:pointer;}
-.button-search{ width:110px; }.search-bb{ border:0;width:64px;}
-.search-button{height:22px; vertical-align:middle; text-align:left; text-indent:25px; cursor:pointer;border:1px solid #A7A6AA; border-left:0;}
-/*弹出框按钮*/
-.btm-68-orange,.btm-68-gray{width:68px; height:31px;display:block; line-height:31px; text-align:center; border:0;cursor:pointer; margin:0 5px;}
-.btm-68-gray{color:#555;}.btm-68-orange{color:#fff}
-.btm-68-orange{background-position:-1px -292px; background-color:#ffa53c}
-.btm-68-gray{ background-position:-70px -292px; background-color:#f0f0f0}
-.ui-dialog .btm-content{ height:31px; line-height:31px; font-size:12px;}
-.ui-dialog .gengxin-btm{ background-repeat:no-repeat; background-position:0 0; width:200px; height:90px; display:block;}
-.btm-margin-30auto{ margin:30px auto;}
-button::-moz-focus-inner, input[type="reset"]::-moz-focus-inner, input[type="button"]::-moz-focus-inner, input[type="submit"]::-moz-focus-inner, input[type="file"] > input[type="button"]::-moz-focus-inner {border:none ;padding:0;} 
-/*授权按钮*/
-#shouquan .lijishouquan{background:url(http://cdn.huanleguang.com/img/hlg-app/common/shouquan-bg.gif) no-repeat; background-position:-36px -94px; width:64px; height:26px; display:block; float:left; margin-left:15px; _display:inline}
-#shouquan .shouquan{display:block; height:26px; line-height:26px;color:#ff7a00;border-top:1px dashed #cccccc; padding:10px 0; background-color:#fff; width:322px; margin-bottom:2px; margin-top:8px; }
-/*按钮   END*/
+

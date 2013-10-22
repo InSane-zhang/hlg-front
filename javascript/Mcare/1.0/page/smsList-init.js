@@ -61,7 +61,8 @@ KISSY.add(function (S,showPages) {
    	    	    var Type = DOM.val(DOM.get('#J_Caretype'));
                 var start_at = DOM.val('#J_StartTime');
                 var end_at = DOM.val('#J_EndTime');
-        	    var data = "buyer_nick="+buyer_Nick+"&type="+Type+"&start_at="+start_at+"&end_at="+end_at; 		        	    
+                var history = DOM.val('#J_history');
+        	    var data = "buyer_nick="+buyer_Nick+"&type="+Type+"&start_at="+start_at+"&end_at="+end_at+"&history="+history; 		        	    
 	 			return data ;
 			},
 	    	handlePagination : function(turnTo) {

@@ -4,24 +4,17 @@
  
 **/
 
-/*页面基础样式*/
-@import '../common/base.css';
-
-/*页面布局样式*/
-@import '../layout/layout.css';
- 
 /*页面utils样式*/
-@import '../utils/ui-list.css';  /*列表*/
-@import '../utils/ui-edit.css'; /*编辑*/
-@import '../utils/ui-page.css'; /*分页*/
-@import '../utils/ui-calendar.css';  /*日历*/
-@import '../utils/ui-tab.css';  /*tab*/
+@import '../utils/ui-list.css';
+@import '../utils/ui-tab.css';
+@import '../utils/ui-calendar.css';
+@import '../utils/ui-page.css';
 
-/*账户明细样式core.css*/
+/**首页样式*/
 @import '../Mcore/core.css';
 
-/*子账户管理样式sub.css*/
+/**子账号管理样式*/
 @import '../Msub/sub.css';
 
-/*消息样式news.css*/
+/**子账号管理样式*/
 @import '../Mnews/news.css';

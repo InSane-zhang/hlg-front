@@ -1,5 +1,5 @@
 
-KISSY.add(function (S,showPages) {
+KISSY.add(function (S,showPages,beautifyForm,Select) {
     // your code here
 	var DOM = S.DOM, Event = S.Event;
     
@@ -10,9 +10,68 @@ KISSY.add(function (S,showPages) {
 			checkBoxs : null,
 			previewed : false,
 			init : function() {	
-				Event.on('#J_SelectItemCid',"change",function(S){
+				renum.Form = new beautifyForm();
+				//选择分类
+				promoSelect = new Select.Select({  
+				    render:'#J_SelectItemCidBox',
+			      	valueField:'#J_SelectItemCid',
+			      	items:S.JSON.parse(sellerCats),
+			      	visibleMode : 'display'
+				});
+				promoSelect.render();
+				promoSelect.setSelectedValue('0');
+				DOM.css(DOM.get('.bui-list-picker'),{'left':'-999px','top':'-999px'});
+				//默认排序
+				var items3 = [
+					{text:'最新上架',value:'0'},
+					{text:'最晚上架',value:'1'}
+						     
+				],
+				sortSelect = new Select.Select({  
+					render:'#J_SelectOrder',
+					valueField:'#J_SelectItemOrder',
+					items:items3
+				});
+				sortSelect.render();
+				sortSelect.setSelectedValue('0');
+				sortSelect.on('change', function(ev){
 					renum.searchTbItems();
 				});
+				// 全部 出售中 库中
+				var Sellingitems = [
+			      {text:'全部',value:'0'},
+			      {text:'出售中',value:'1'},
+			      {text:'库中',value:'2'}
+			    ],
+			    SellingSelect = new Select.Select({  
+				    render:'#J_SearchItemSelling',
+			      	valueField:'#J_SearchSelling',
+			      	items:Sellingitems
+				});
+				SellingSelect.render();
+				SellingSelect.setSelectedValue('0');
+				SellingSelect.on('change', function(ev){
+					renum.searchTbItems();
+				});
+				//条数
+				var items4 = [
+					{text:'10条',value:'10'},
+					{text:'20条',value:'20'},
+					{text:'50条',value:'50'},
+					{text:'100条',value:'100'}
+						     
+				],
+				statusSelect = new Select.Select({  
+					render:'#J_SelectPage',
+					valueField:'#J_SelectItemPage',
+					items:items4
+				});
+				statusSelect.render();
+				statusSelect.setSelectedValue('10');
+				statusSelect.on('change', function(ev){
+					rename.searchTbItems();
+				});
+				
 				renum.searchTbItems();
 				Event.on('#J_SearchBtn','click',renum.searchTbItems); //搜索宝贝 
 			    Event.on('#J_TCheckAll','click',renum.CheckAll); //活动中宝贝全选   
@@ -565,15 +624,22 @@ KISSY.add(function (S,showPages) {
 				var data = "items="+itemsJson+"&form_key="+FORM_KEY;
 		
 		        var submitHandle = function(o) {
-						DOM.attr('#J_TCheckAll','checked',false);
-						renum.msg.hide();
-		        	 	new H.widget.msgBox({ 
-				 			type: "sucess", 
-				 			content: "成功修改",
-							dialogType:"msg", 
-							autoClose:true, 
-							timeOut:3000
-						});
+					DOM.attr('#J_TCheckAll','checked',false);
+					renum.msg.hide();
+	        	 	new H.widget.msgBox({ 
+			 			type: "sucess", 
+			 			content: "成功修改",
+						dialogType:"msg", 
+						autoClose:true, 
+						timeOut:3000
+					});
+	        	 	
+	        	 	if (renum.paginator) {
+	        	 		renum.paginator.toPage(renum.paginator.page);
+                    }else {
+                    	renum.searchTbItems();
+                    }
+	        	 	
 			    };
 			    var errorHandle = function(o){
 						renum.msg.hide();
@@ -661,5 +727,5 @@ KISSY.add(function (S,showPages) {
 			}
 };
 },{
-    requires: ['utils/showPages/index']
+    requires: ['utils/showPages/index','utils/beautifyForm/index','bui/select']
 });

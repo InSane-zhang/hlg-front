@@ -1,10 +1,53 @@
-KISSY.add(function(S,showPages){
+KISSY.add(function(S,showPages,beautifyForm,Select){
 	var S = KISSY,DOM = S.DOM,Event = S.Event;
 	return specifyAdd = {
 			msg :null ,
 			isLoad : false,
 			paginator:null,
 			init : function(){
+				specifyAdd.Form = new beautifyForm();
+				
+				var items3 = [
+					{text:'10条',value:'10'},
+					{text:'20条',value:'20'}     
+				],
+				sortSelect = new Select.Select({  
+					render:'#J_SelectPage',
+					valueField:'#J_SelectItemPage',
+					items:items3
+				});
+				sortSelect.render();
+				sortSelect.setSelectedValue('10');
+				sortSelect.on('change', function(ev){
+					specifyAdd.searchTbItems();
+				});
+				var items2 = [
+					{text:'最新上架',value:'0'},
+					{text:'最晚上架',value:'1'}     
+				],
+				sortSelect = new Select.Select({  
+					render:'#J_SelectOrder',
+					valueField:'#J_SelectItemOrder',
+					items:items2
+				});
+				sortSelect.render();
+				sortSelect.setSelectedValue('0');
+				sortSelect.on('change', function(ev){
+					specifyAdd.searchTbItems();
+				});
+				
+				var Sellingitems = [
+					{text:'全部',value:'0'},
+					{text:'出售中',value:'1'},
+					{text:'库中',value:'2'}
+				],
+				SellingSelect = new Select.Select({  
+				    render:'#J_SelectItemSelling',
+			      	valueField:'#J_SearchSelling',
+			      	items:Sellingitems
+				});
+				SellingSelect.render();
+				SellingSelect.setSelectedValue('0');
 				specifyAdd.run();
 			},
 			//搜索活动中宝贝
@@ -279,5 +322,5 @@ KISSY.add(function(S,showPages){
 				}
 	}
 }, {
-    requires: ['utils/showPages/index']
+    requires: ['utils/showPages/index','utils/beautifyForm/index','bui/select']
 });

@@ -3,4 +3,42 @@
 	crm公共样式文件public.css
  
 **/
-
+.fl{float:left;}
+.fr{float:right;}
+.Mcrm .beautify_check{display:inline-block;}
+.emptyContent{font-size:16px;width:460px;margin:20px auto 60px auto;text-align: right;}
+.planList{overflow:hidden;}
+.plan-list li{width:470px;height:235px;float:left;margin:0 9px 18px 9px;display:inline; border:1px solid #e5e8ed;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;-khtml-border-radius: 5px;}
+.plan-list .plan-content{height:176px;padding:20px 20px 0 20px;overflow: hidden;}
+.plan-list .plan-time{font-size: 24px;margin-bottom:15px;}
+.plan-list .plan-msg{width:370px;margin:auto;line-height:24px;}
+.plan-list .plan-msg em{color:#aab2bd;}
+.plan-list .plan-msg span{color:#656d78;}
+.plan-list .plan-time span{background: url(http://cdn.huanleguang.com/img/hlg-app/Mcrm/crm.jpg) no-repeat;display: inline-block;width:20px;height:20px;margin-right:10px;}
+.plan-list .plan-foot{background:#f6f7fb;height:38px;line-height:38px;padding:0 15px;border-top:1px solid #e5e8ed;vertical-align: middle;color:#aab2bd;}
+.plan-list .plan-foot a{padding:0 8px;}
+.doubt{background: url(http://cdn.huanleguang.com/img/hlg-app/Mcrm/crm.jpg) no-repeat;background-position: 0 -32px;display:inline-block;height:16px;line-height:16px;vertical-align: middle;}
+.plan-list .plan-foot .error{background: url(http://cdn.huanleguang.com/img/hlg-app/Mcrm/crm.jpg) no-repeat;background-position: 0 -20px;color:#ed5564;display:inline-block;height:16px;line-height:16px;padding-left:22px;vertical-align: middle;}
+.Mcrm .button-light-gray{background-color: #f6f7fb;color:#4dc1e8;border:0;line-height: 28px;margin:0 25px;}
+.createImg{background: url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat;background-position: -32px -831px;display: inline-block;width:169px;height:75px;margin-left: 35px;}
+.calendarImg{width:150px;height:27px;border:1px solid #ddd;vertical-align: middle;background: url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat;background-position: 100% -988px;padding: 0 5px;}
+.bui-datepicker{z-index:10000;}
+.addlist .listitem{float:left;margin:10px 10px;}
+.additems{width:438px;height:50px;padding:15px;border:1px solid #eaedf2;border-radius: 5px;}
+.additems li{float:left;}
+.item-title{line-height:20px;padding-left:15px;}
+.item-title a{width:200px;display: inline-block;color:#aab2bd;}
+.hlg-app .main .main-header a.current{color:#fff;}
+.groups{width:510px;height:80px;padding:20px;background:#f6f7fb;border-radius:5px;margin-left: 29px;}
+.groups label{width:96px;float:left;margin-bottom: 5px;}
+.stat{height:28px;line-height:28px;display:inline-block;cursor:pointer;border:1px solid #e5e8ed; background:#f6f7fb;font-size: 14px;font-weight: bold;padding: 0 8px;border-radius: 5px;color:#aab2bd;}
+.manage{width:138px;height:30px;line-height:30px;float:left;margin-bottom: 20px;_display:inline;}
+.manage a{color:#656d78;}
+.current a{color:#8BD167}
+.manage em{display:none;height: 20px;width: 20px;background: url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat -171px -190px;float:right;margin:5px 10px 0 0;cursor: pointer;}
+.current em{display:inline-block;}
+#J_SelectCustomBox_0 .bui-select{display:block;margin-bottom:10px;}
+.list-item .active{color:#fff;background:#73bf4d;padding:8px;border-radius:5px;}
+.J_Market{color: #73bf4d;background:#fff;padding:8px;}
+.cancleGroup{float:right;height:32px;line-height:32px;overflow: hidden;color:#ccd0d9;font-size: 14px;font-weight: bold;cursor: pointer;}
+.newly-build .block{display:inline-block;}

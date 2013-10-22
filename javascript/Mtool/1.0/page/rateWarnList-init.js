@@ -1,9 +1,25 @@
-KISSY.add(function(S,showPages){
+KISSY.add(function(S,showPages,Select){
 	var S = KISSY,DOM = S.DOM, Event = S.Event, descType = 1;	
 	return rateWarnList = {
     	paginator : null,
     	msg : null,
     	init : function() {
+			//状态
+			var items3 = [
+				{text:'状态',value:'0'},
+				{text:'已修改',value:'3'},
+				{text:'未修改',value:'1'}	     
+			],
+			sortSelect = new Select.Select({  
+				render:'#J_StatusItem',
+				valueField:'#J_Status',
+				items:items3
+			});
+			sortSelect.render();
+			sortSelect.setSelectedValue('0');
+			sortSelect.on('change', function(ev){
+				rateWarnList.getWarnList();
+			});
 			rateWarnList.getWarnList();
 			Event.on('#J_SearchRateWarn','click',rateWarnList.getWarnList);
 			Event.on('#J_UpdateRate','click',rateWarnList.updateRateResult);
@@ -90,5 +106,5 @@ KISSY.add(function(S,showPages){
 		}
 	};
 },{
-	requires : ['utils/showPages/index']
+	requires : ['utils/showPages/index','bui/select']
 });

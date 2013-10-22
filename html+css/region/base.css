@@ -1,0 +1,11 @@
+/**
+	 欢乐逛基本ui样式文件base.css
+**/
+@charset "utf-8";
+
+/*页面基础样式*/
+@import '../common/base.css';
+/*页面布局样式*/
+@import '../layout/layout.css';
+
+

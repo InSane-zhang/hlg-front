@@ -12,10 +12,14 @@
  
 /*页面utils样式*/
 @import '../utils/ui-list.css';  /*列表*/
+@import '../utils/ui-page.css'; /*分页*/
+
 
 /*optim公共样式*/
 @import 'mods/public.css';
 
+/*optim 样式optimIndex*/
+@import 'mods/optimIndex.css';
 
-
-
+/*optim 样式optimView*/
+@import 'mods/optimView.css';

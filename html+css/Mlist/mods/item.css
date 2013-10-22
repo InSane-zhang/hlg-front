@@ -1,0 +1,34 @@
+/**
+ 
+	item投放素材样式文件item.css
+ 
+**/
+.hlg-app .main .Mlist .uboxstyle-1,.hlg-app .main .Mlist .uboxstyle-2{margin-right:10px;}
+.hlg-app .main .Mlist .uboxstyle-1 .bui-select{width:116px;}
+.hlg-app .main .Mlist .uboxstyle-1 .bui-select .bui-select-input{width:86px;}
+.hlg-app .main .Mlist .uboxstyle-1 .bui-select .x-icon{width:18px;}
+.hlg-app .main .Mlist .uboxstyle-2 .bui-select{width:96px;}
+.hlg-app .main .Mlist .uboxstyle-2 .bui-select .bui-select-input{width:66px;}
+.hlg-app .main .Mlist .uboxstyle-2 .bui-select .x-icon{width:18px;}
+.hlg-app .main .Mlist .uboxstyle-2 .input-text-1{width: 70px}
+ 
+
+.hlg-app .main .Mlist .data-tip{ height:45px;line-height:30px;border-bottom: 1px solid #EAEDF2;}
+.hlg-app .main .Mlist .data-tip-left{float:left;}
+.hlg-app .main .Mlist .data-tip-left .beautify_check{margin-right:20px;font-family: \5fae\8f6f\96c5\9ed1}
+.hlg-app .main .Mlist .data-tip-right{float:right;}
+.hlg-app .main .Mlist .data-tip-right .down-more{top:0;}
+.hlg-app .main .Mlist .data-tip-right .ui-page{padding: 0;}
+.hlg-app .main .Mlist .list-item .ui-list .list-bd .list-item ul {padding-left: 0px}
+.hlg-app .main .Mlist .list-item .ui-list .list-bd .list-item{line-height: 60px;height: 60px;}
+.hlg-app .main .Mlist .list-item .ui-list .list-bd .list-item .summary {width:160px}
+.hlg-app .main .Mlist .list-item .ui-list .list-bd .list-item .price em{color: #656d7a;font-weight: bolder;font-size: 20px;}
+
+.hlg-app .main .Mlist .list-item .bottom-opertion{position: relative;line-height: 40px;padding: 15px 0px;height: 40px;}
+.hlg-app .main .Mlist .list-item .bottom-opertion .ui-page{height:40px; padding-bottom:15px;position: absolute;top: 0px;right: 0px;}
+/*最底部操作*/
+.hlg-app .main .Mlist .list-item .bottom-step{height: 82px;background-color: #f5f7f8;line-height: 82px;text-align: center;}
+.hlg-app .main .Mlist .list-item .bottom-step .data-text {float: left;line-height: 82px;margin-left: 30px}
+.hlg-app .main .Mlist .list-item .bottom-step .data-text span {color: #FB6E52;}
+.hlg-app .main .Mlist .list-item .bottom-step .m-180 {margin-left: 180px}
+

@@ -1,0 +1,81 @@
+/**
+ 
+	optim样式文件optimView.css
+ 
+**/
+
+.hlg-app .main .Moptim .optimView .ui-list-title a{color:#666;}
+.hlg-app .main .Moptim .optimView .ui-list-title a:hover{color:#cc0000;}
+.hlg-app .main .Moptim .optimView .comeBack-title {color:#000;font-size:28px;font-family:'微软雅黑';}
+.hlg-app .main .Moptim .optimView .hlg-app .main .Moptim .optimView .btyh-list li:hover {background-color:#FbFbFb;}
+.hlg-app .main .Moptim .optimView .hlg-app .main .Moptim .optimView .btyh-list a {color:#555;}
+.hlg-app .main .Moptim .optimView .hlg-app .main .Moptim .optimView .btyh-list a:hover {color:#3366cc;}
+.hlg-app .main .Moptim .optimView .bt-number-notice {width:522px;height:24px;line-height:24px;text-align:right;color:#aaa;}
+.hlg-app .main .Moptim .optimView .bt-input {width:522px;height:40px;line-height:40px;border:1px solid #DDDDDD;border-radius:4px;display:inline-block;background:none;}
+.hlg-app .main .Moptim .optimView .bt-input-title {display:inline-block;background:#fafafa;padding:0 5px;margin-right:10px;}
+.hlg-app .main .Moptim .optimView .btm-grade {display:inline-block;width:60px;height:40px;line-height:40px;text-align:center;font-size:14px;background:#3366CC;color:#fff;border-radius:3px;cursor:pointer;margin:0 10px;}
+.hlg-app .main .Moptim .optimView .btm-upToShop {display:inline-block;width:100px;height:40px;line-height:40px;text-align:center;font-size:14px;background:#E44417;color:#fff;border-radius:3px;cursor:pointer;}
+.hlg-app .main .Moptim .optimView .grade-ul {float:none;padding:115px 40px 0;color:#aaa;}
+.hlg-app .main .Moptim .optimView .grade-ul li{min-height:25px;height:auto !important;height:25px;margin:0 0 15px;}
+.hlg-app .main .Moptim .optimView .item-info {padding:30px;background:#F5F5F5;border:1px #eaedf2 solid;border-top: 0;border-right: 0;border-left: 0;}
+.hlg-app .main .Moptim .optimView .grade-area {float:left;width:300px;height:455px;background:#F5F5F5;border:1px solid #EBEBEB;border-radius:5px;margin-right:60px;}
+.hlg-app .main .Moptim .optimView .grade-listArea {float:left;width:528px;height:455px;border:1px solid #e6e6e6;border-radius:4px;overflow:hidden;}
+.hlg-app .main .Moptim .optimView .grade-bottomArea {position:absolute;bottom:0;left:0;right:0;}
+.hlg-app .main .Moptim .optimView .grade-level {height:75px;line-height:75px;color:#fff;border-radius:5px;font-size:50px;padding-right:30px;text-align:right;}
+.hlg-app .main .Moptim .optimView .grade-text {display:inline-block;width:86%;}
+/*img*/
+.hlg-app .main .Moptim .optimView .btyh-bg {background:url('http://resource.aliapp.com/img/hlg/v3/btyh-bg.jpg') no-repeat;}
+.hlg-app .main .Moptim .optimView .btyh-sprite {background:url('http://resource.aliapp.com/img/hlg/v3/btyh-sprite.png') no-repeat;_background:url('http://resource.aliapp.com/img/hlg/v3/btyh-sprite.gif') no-repeat;}
+.hlg-app .main .Moptim .optimView .img-star {background:url('http://resource.aliapp.com/img/hlg/v3/star.png') no-repeat;}
+.hlg-app .main .Moptim .optimView .img-question {width:14px;height:14px;margin:4px 4px 0 0;background-position:-40px -61px;display:inline-block;}
+.hlg-app .main .Moptim .optimView .img-remind {width:14px;height:14px;margin:4px 4px 0 0;background-position:-59px -61px;display:inline-block;}
+.hlg-app .main .Moptim .optimView .img-trigon-up {width:7px;height:4px;margin:9px 0 0;background-position:-103px -39px;display:inline-block;float:right;}
+.hlg-app .main .Moptim .optimView .img-trigon-down {width:7px;height:4px;margin:9px 0 0;background-position:-103px -44px;display:inline-block;float:right;}
+.hlg-app .main .Moptim .optimView .mouseover .img-trigon-up {width:7px;height:4px;margin:9px 0 0;background-position:-94px -39px;display:inline-block;float:right;}
+.hlg-app .main .Moptim .optimView .mouseover .img-trigon-down {width:7px;height:4px;margin:9px 0 0;background-position:-94px -44px;display:inline-block;float:right;}
+.hlg-app .main .Moptim .optimView .img-afreshGrade {width:100px;height:35px;background-position:-1px -1px;display:inline-block;float:right;cursor:pointer;}
+.hlg-app .main .Moptim .optimView .img-comeBack {width:35px;height:35px;margin:4px 4px 0 0;background-position:-104px -1px;display:inline-block;float:left;}
+.hlg-app .main .Moptim .optimView .img-attribute {width:12px;height:12px;margin:4px 4px 0 0;background-position:-78px -61px;display:inline-block;}
+.hlg-app .main .Moptim .optimView .img-nice {width:16px;height:16px;background-position:-1px -61px;display:inline-block;float:left;}
+.hlg-app .main .Moptim .optimView .img-warn {width:16px;height:16px;background-position:-20px -61px;display:inline-block;float:left;}
+.hlg-app .main .Moptim .optimView .img-up {width:8px;height:8px;background-position:-114px -48px;display:inline-block;float:left;margin:4px 5px 0 0;}
+.hlg-app .main .Moptim .optimView .img-down {width:8px;height:8px;background-position:-114px -39px;display:inline-block;float:left;margin:4px 5px 0 0;}
+.hlg-app .main .Moptim .optimView .img-same {width:8px;height:8px;background-position:-124px -39px;display:inline-block;float:left;margin:4px 5px 0 0;}
+.hlg-app .main .Moptim .optimView .grade-5 {width:300px;height:455px;background-position:-2px -3px;}
+.hlg-app .main .Moptim .optimView .grade-4 {width:300px;height:455px;background-position:-308px -3px;}
+.hlg-app .main .Moptim .optimView .grade-3 {width:300px;height:455px;background-position:-615px -3px;}
+.hlg-app .main .Moptim .optimView .grade-2 {width:300px;height:455px;background-position:-921px -3px;}
+.hlg-app .main .Moptim .optimView .grade-1 {width:300px;height:455px;background-position:-1227px -3px;}
+.hlg-app .main .Moptim .optimView .img-grade-5 {width:18px;height:18px;background-position:-1px -39px;display:inline-block;}
+.hlg-app .main .Moptim .optimView .img-grade-4 {width:16px;height:18px;background-position:-22px -39px;display:inline-block;}
+.hlg-app .main .Moptim .optimView .img-grade-3 {width:18px;height:18px;background-position:-38px -39px;display:inline-block;}
+.hlg-app .main .Moptim .optimView .img-grade-2 {width:18px;height:18px;background-position:-58px -39px;display:inline-block;}
+.hlg-app .main .Moptim .optimView .img-grade-1 {width:16px;height:18px;background-position:-77px -39px;display:inline-block;}
+.hlg-app .main .Moptim .optimView .img-star-5 {width:85px;height:15px;background-position:-0px -1px;display:inline-block;}
+.hlg-app .main .Moptim .optimView .img-star-4 {width:85px;height:15px;background-position:-0px -17px;display:inline-block;}
+.hlg-app .main .Moptim .optimView .img-star-3 {width:85px;height:15px;background-position:-0px -33px;display:inline-block;}
+.hlg-app .main .Moptim .optimView .img-star-2 {width:85px;height:15px;background-position:-0px -49px;display:inline-block;}
+.hlg-app .main .Moptim .optimView .img-star-1 {width:85px;height:15px;background-position:-0px -65px;display:inline-block;}
+.hlg-app .main .Moptim .optimView .img-star-0 {width:85px;height:15px;background-position:-0px -81px;display:inline-block;}
+/*tab*/
+.hlg-app .main .Moptim .optimView .project-tabs{height:38px;border-bottom:2px #626262 solid;background-color:#fff;}
+.hlg-app .main .Moptim .optimView .project-tabs li{width:88px;}
+.hlg-app .main .Moptim .optimView .project-tabs li a{color:#666666;display:block;}
+.hlg-app .main .Moptim .optimView .project-tabs li.hlg-tabs-item{display: inline-block;width:88px;float:left;zoom: 1; *display: inline; /* IE < 8: fake inline-block */word-spacing: normal;vertical-align: top; text-align:center;height:38px;line-height:38px;color:#666666;font-size:12px;background-color:#fff;font-weight:700;}
+.hlg-app .main .Moptim .optimView .project-tabs li.current{height:40px;background-color:#626262;border-radius:4px;}
+.hlg-app .main .Moptim .optimView .project-tabs li.current a{color:#fff;}
+.hlg-app .main .Moptim .optimView .hotword-word {border-left:1px solid #737373;color:#b3b3b3;display:inline-block;font-size:12px;width:65px;text-align:center;height:14px;line-height:14px;cursor:pointer;}
+.hlg-app .main .Moptim .optimView .current-word {color:#ff814f;}
+.hlg-app .main .Moptim .optimView .ui-list-title {height: 20px;line-height: 20px;padding: 3px 10px;background: #F4F4F4;}
+.hlg-app .main .Moptim .optimView .ui-list-title li,.hlg-app .main .Moptim .optimView .ui-list li{float:left;text-align:left;}
+.hlg-app .main .Moptim .optimView .ui-list .list-item {width: 100%;border-bottom: 1px #e4e4e4 dotted;}
+.hlg-app .main .Moptim .optimView .ui-list .list-item .list-div {padding: 0px 10px;overflow: hidden;zoom: 1;vertical-align: middle;}
+.hlg-app .main .Moptim .optimView .ui-list .list-item .list-div li {padding: 13px 0;text-align: left;overflow: hidden;}
+
+
+.hlg-app .main .Moptim .optimView .main-seach{padding:0px 20px; height:50px;}
+
+
+
+
+

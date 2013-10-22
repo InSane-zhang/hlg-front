@@ -1,8 +1,25 @@
-KISSY.add(function(S,showPages){
+KISSY.add(function(S,showPages,Select){
 	var S = KISSY,DOM = S.DOM,Event = S.Event;
 	return instock = {
 			msg : null,
 			init : function(){
+				var items = [
+				        {text:'状态',value:'-1'},
+		     	    	{text:'待上架',value:'0'},
+		     	    	{text:'已上架成功',value:'2'},
+		     	    	{text:'上架失败',value:'4'}
+		     	],
+		     	select = new Select.Select({  
+		     			render:'#J_StatusItem',
+		     		    valueField:'#J_Status',
+		     	      	items:items
+		     	});
+		     	select.render();
+		    	select.setSelectedValue('-1');
+		    	select.on('change', function(ev){
+		    		instock.searchList();
+				});
+		    	
 				instock.getPlanItemNum();
 				instock.searchList();
 				Event.on('#J_DelPlan','click',function(){
@@ -11,6 +28,7 @@ KISSY.add(function(S,showPages){
 				Event.on('#J_SearchBtn','click',function(){
 					instock.searchList();
 				})
+				
 			},
      		searchList : function() {
 	            var submitHandle = function(o) {
@@ -152,7 +170,13 @@ KISSY.add(function(S,showPages){
 				};
 				var error = function(o){
 					instock.msg.hide();
-					instock.msg.setMsg('<div class="point relative"><div class="point-w-1">'+o.desc+'</div></div>').showDialog();
+					new H.widget.msgBox({
+					    title:"错误提示",
+					    content:o.desc,
+					    type:"error"
+					});
+					return;
+					//instock.msg.setMsg('<div class="point relative"><div class="point-w-1">'+o.desc+'</div></div>').showDialog();
 				};
 	        	var plan_id = DOM.val('#J_PlanId');
 				var data = "plan_id="+plan_id+"&plan_item_id="+plan_item_id;
@@ -206,5 +230,5 @@ KISSY.add(function(S,showPages){
 			}
 	}
 }, {
-    requires: ['utils/showPages/index']
+    requires: ['utils/showPages/index','bui/select']
 });

@@ -2,7 +2,7 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,iconControl) {
+KISSY.add(function (S,iconControl,Switchable,Calendar) {
     // your code here
    return addControl = {
 		msg : null,
@@ -11,16 +11,93 @@ KISSY.add(function (S,iconControl) {
 			var inputs = DOM.filter (DOM.query('input'),function(i){if(i.type =='text')return true;})
 			Event.on(inputs,'focus blur',function(ev){
 				if(ev.type == 'focus'){
-					DOM.removeClass(ev.target,'input-text text text-error');
+					DOM.removeClass(ev.target,'text-error');
 					DOM.addClass(ev.target,'input-text-on');
 				} else if(ev.type == 'blur'){
 					DOM.removeClass(ev.target,'input-text-on');
-					DOM.addClass(ev.target,'input-text');
 				}
 			})
 			
-			//图标
-			window.tabs =	S.Tabs('#icon_panel',{
+			if(S.one("#J_startDate")){
+				  var datepicker = new Calendar.DatePicker({
+     	              trigger:'#J_startDate',
+     	              showTime:true,
+     	              autoRender : true,
+     	              autoSetValue :false,
+     	              textField  : '2',
+     	              hour : 0,
+	 	              minute : 0,
+	 	              second : 0,
+	 	              minDate : new Date()
+     	              
+     	            });
+				  datepicker.on('selectedchange',function (e) {
+					  	var ParamsErrorBox = KISSY.one('#J_ParamsErrorBox');
+						ParamsErrorBox.hide();
+	 	        	 	var endDate = H.util.stringToDate(S.one('#J_endDate').val());
+						var startDate   = e.value;
+						if((endDate !='')&&(startDate.getTime() >= endDate.getTime()))
+						{
+							DOM.addClass(promotionForm.start_date,'text-error');
+							ParamsErrorBox = KISSY.one('#J_ParamsErrorBox');
+							DOM.html('#J_ParamsErrorMsg','开始时间不能大于结束时间');
+							if (ParamsErrorBox.css("display")==="none") {
+								ParamsErrorBox.slideDown();
+							}
+							//S.one('#J_startDate').val('');
+						}else{
+							S.one('#J_startDate').val(e.text);
+							DOM.removeClass(promotionForm.start_date,'text-error');
+							var leftsecond = parseInt((endDate.getTime() - startDate.getTime()) / 1000);
+			                d = parseInt((leftsecond / 86400) % 10000);
+			                h = parseInt((leftsecond / 3600) % 24);
+							str = '活动持续<b class="color-red">'+d+'</b>天<b class="color-red">'+h+'</b>小时';
+							DOM.html("#J_PromoTimeLast" , str);
+						}
+						
+	 	         });
+			}
+			if(S.one("#J_endDate")){
+			   var datepicker2 = new Calendar.DatePicker({
+	 	              trigger:'#J_endDate',
+	 	              showTime:true,
+	 	              autoRender : true,
+	 	              autoSetValue :false,
+	 	              textField  : '2',
+	 	              hour : '23',
+	 	              minute : '59' ,
+	 	              second : '59',
+	 	              minDate : new Date()
+ 	            });
+	 	        datepicker2.on('selectedchange',function (e) {
+		 	        	var ParamsErrorBox = KISSY.one('#J_ParamsErrorBox');
+						ParamsErrorBox.hide();
+		     	       	var endDate   =  e.value;
+		     	        var nowDate = new Date();
+						var startTime = H.util.stringToDate(S.one('#J_startDate').val());
+						var endTime = H.util.stringToDate(endDate);
+						var invalidate =H.util.stringToDate(invalidate);
+						if((endTime.getTime() <= startTime.getTime() || endTime.getTime() <= nowDate.getTime())&&(startTime !='')){
+							DOM.addClass(promotionForm.end_date,'text-error');
+							DOM.html('#J_ParamsErrorMsg','结束时间不能小于开始时间');
+							if (ParamsErrorBox.css("display")==="none") {
+								ParamsErrorBox.slideDown();
+							}
+							//S.one('#J_endDate').val('');
+						}else{
+							S.one('#J_endDate').val(e.text);
+							DOM.removeClass(promotionForm.end_date,'text-error');
+							var leftsecond = parseInt((endTime.getTime() - startTime.getTime()) / 1000);
+			                d = parseInt((leftsecond / 86400) % 10000);
+			                h = parseInt((leftsecond / 3600) % 24);
+							str = '活动持续<b class="color-red">'+d+'</b>天<b class="color-red">'+h+'</b>小时';
+							DOM.html("#J_PromoTimeLast" , str);
+						}
+	 	         });
+			}
+	   						
+ 			//图标
+			window.tabs = new Switchable.Tabs('#icon_panel',{
 				navCls: 'ks-switchable-nav',
 				contentCls: 'icon-content',
 				triggerType: 'click',
@@ -42,6 +119,26 @@ KISSY.add(function (S,iconControl) {
 						break;
 				}
 			})
+			
+//			Event.delegate(document,'click','.J_icon',function(ev){
+//				var data=DOM.attr(ev.currentTarget,'data');
+//				DOM.removeClass('.J_icon','current');	
+//				DOM.addClass(ev.currentTarget,'current');
+//				if(data==0){
+//					iconControl.show('comm');	
+//				}
+//				if(data==1){
+//				   iconControl.show('commDesign');
+//				}
+//				if(data==2){
+//					iconControl.show('smart');	
+//				}
+//				if(data==3){
+//					iconControl.show('me');	
+//				}
+//				
+//			});
+			
 			iconControl.scale = 2;
 			iconControl.frontPageNum = 14;
 			iconControl.show('comm');
@@ -73,13 +170,7 @@ KISSY.add(function (S,iconControl) {
 						    }
 						});
 	  		});
-			if(S.one("#J_startDate")){
-				myCalendar('J_startDate',new Date(2038,11,29,00,00,00));
-			}
-			if(S.one("#J_endDate")){
-				myCalendar('J_endDate',new Date(2038,11,29,00,00,00));
-			}
-			
+		
 		},
 		initIcon : function(icon, iconPositionId, iconColorId, undefined){
 			iconControl.initIcon(icon, iconPositionId, iconColorId, undefined)
@@ -115,9 +206,9 @@ KISSY.add(function (S,iconControl) {
 				if(KISSY.one("#J_endDate")){
 					var endDate = S.one('#J_endDate').val();
 					var nowDate = new Date();
-					var startTime = H.util.StringToDate(S.one('#J_startDate').val());
-					var endTime = H.util.StringToDate(endDate);
-					var invalidate =H.util.StringToDate(invaliDate);
+					var startTime = H.util.stringToDate(S.one('#J_startDate').val());
+					var endTime = H.util.stringToDate(endDate);
+					var invalidate =H.util.stringToDate(invaliDate);
 					
 					if(endTime.getTime() <= nowDate.getTime() || endTime.getTime()<=startTime ){
 						DOM.html('#J_ParamsErrorMsg','结束时间不能小于开始时间，请重新选择');
@@ -185,8 +276,8 @@ KISSY.add(function (S,iconControl) {
 			if(KISSY.inArray( typeId ,['2','9','10'])){
 				DOM.hide('#J_ShowSmartIconMsg');
 			}
-			var startTime = H.util.StringToDate(S.one('#J_startDate').val());
-			var endTime = H.util.StringToDate(S.one('#J_endDate').val());
+			var startTime = H.util.stringToDate(S.one('#J_startDate').val());
+			var endTime = H.util.stringToDate(S.one('#J_endDate').val());
 			var leftsecond = parseInt((endTime.getTime() - startTime.getTime()) / 1000);
             d = parseInt((leftsecond / 86400) % 10000);
             h = parseInt((leftsecond / 3600) % 24);
@@ -197,5 +288,5 @@ KISSY.add(function (S,iconControl) {
 					
 	};
 }, {
-    requires: ['./mods/icon-control']
+    requires: ['./mods/icon-control','switchable','bui/calendar']
 });

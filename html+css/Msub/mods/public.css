@@ -3,3 +3,156 @@
 	sub公共样式文件public.css
  
 **/
+
+ /*item
+ .goog-inline-block {position: relative;display: -moz-inline-box;display: inline-block;}
+* html .goog-inline-block {display: inline;}
+*:first-child+html .goog-inline-block {display: inline;}
+.goog-tree-root:focus {-moz-outline: none;outline: none;}
+.goog-tree-row {white-space: nowrap;font: icon;line-height: 26px;height: 26px;font-size:12px;}
+.goog-tree-row span {overflow: hidden;text-overflow: ellipsis;}
+.goog-tree-children {background-repeat: repeat-y;background-image: url("http://img.huanleguang.com/hlg/v2/I.png") !important;background-position-y: 1px !important;	font: icon;}
+.goog-tree-children-nolines {font: icon;}
+.goog-tree-icon {background-image: url("http://img.huanleguang.com/hlg/v2/tree.png");}
+.goog-tree-expand-icon {vertical-align: middle;height: 26px;width: 26px;cursor: default;}
+.goog-tree-expand-icon-plus {width: 19px;background-position: 0 0;}
+.goog-tree-expand-icon-minus { width: 19px;  background-position: -24px 0;}
+.goog-tree-expand-icon-tplus {width: 19px;background-position: -48px 0;}
+.goog-tree-expand-icon-tminus {width: 19px;background-position: -72px 0;}
+.goog-tree-expand-icon-lplus {width: 19px;background-position: -96px 0;}
+.goog-tree-expand-icon-lminus {width: 19px;background-position: -120px 0;}
+.goog-tree-expand-icon-t {width: 19px;background-position: -144px 0;}
+.goog-tree-expand-icon-l {width: 19px;background-position: -168px 0;}
+.goog-tree-expand-icon-blank {width: 19px;background-position: -168px -24px;}
+.goog-tree-collapsed-folder-icon {vertical-align: middle;height: 16px;width: 16px;background-position: -0px -24px;}
+.goog-tree-expanded-folder-icon {vertical-align: middle;height: 16px;width: 16px;background-position: -24px -24px;*width:0px;}
+.goog-tree-file-icon {vertical-align: middle;height: 16px;width: 16px;background-position: -48px -24px;*width:0px;}
+.goog-tree-item-label {margin-left: 3px;padding: 1px 2px 1px 2px;text-decoration: none;color: WindowText;cursor: default;}
+.goog-tree-item-label:hover {text-decoration: underline;}
+.selected .goog-tree-item-label {background-color: ButtonFace;color: ButtonText;}
+.focused .selected .goog-tree-item-label {background-color: Highlight;color: HighlightText;}
+.goog-tree-hide-root{display: none;}
+.goog-tree-expanded-folder-icon{display: none;} 
+.goog-tree-file-icon{display: none;}
+.goog-tree-collapsed-folder-icon{display: none;}
+
+.goog-tree-children {padding-left: 19px;}
+.goog-tree-lchildren {padding-left: 19px;}
+.goog-tree-item-selected .goog-tree-item-label {background: buttonface;color: buttontext;}
+.goog-tree-item-focused {outline: none;}
+.goog-tree-item-focused .goog-tree-item-selected .goog-tree-item-label {background: highlight;color: highlighttext;}
+.goog-tree-item-checked0 {background: url(http://img.huanleguang.com/hlg/v2/check0.gif) 0 -2px;width: 16px;height: 16px;vertical-align: middle;}
+.goog-tree-item-checked1 {background: url(http://img.huanleguang.com/hlg/v2/check1.gif) 0 -2px;width: 16px;height: 16px;vertical-align: middle;}
+.goog-tree-item-checked2 {background: url(http://img.huanleguang.com/hlg/v2/check2.gif) 0 -2px;width: 16px;height: 16px;vertical-align: middle;}
+  .main .main-content .main-content-list li div {overflow:visible;}
+ */ 
+ /*index
+   .goog-inline-block {position: relative;display: -moz-inline-box; display: inline-block;}
+* html .goog-inline-block {display: inline;}
+*:first-child+html .goog-inline-block {display: inline;}
+.goog-tree-root:focus {-moz-outline: none;outline: none;}
+.goog-tree-row {white-space: nowrap;font: icon;line-height: 26px;height: 26px;font-size:12px;}
+.goog-tree-row span {overflow: hidden;text-overflow: ellipsis;}
+.goog-tree-children {background-repeat: repeat-y;background-image: url("http://img.huanleguang.com/hlg/v2/I.png") !important;background-position-y: 1px !important;	font: icon;}
+.goog-tree-children-nolines {font: icon;}
+.goog-tree-icon {background-image: url("http://img.huanleguang.com/hlg/v2/tree.png");}
+.goog-tree-expand-icon {vertical-align: middle;height: 26px;width: 26px;cursor: default;}
+.goog-tree-expand-icon-plus {width: 19px;background-position: 0 0;}
+.goog-tree-expand-icon-minus { width: 19px;  background-position: -24px 0;}
+.goog-tree-expand-icon-tplus {width: 19px;background-position: -48px 0;}
+.goog-tree-expand-icon-tminus {width: 19px;background-position: -72px 0;}
+.goog-tree-expand-icon-lplus {width: 19px;background-position: -96px 0;}
+.goog-tree-expand-icon-lminus {width: 19px;background-position: -120px 0;}
+.goog-tree-expand-icon-t {width: 19px;background-position: -144px 0;}
+.goog-tree-expand-icon-l {width: 19px;background-position: -168px 0;}
+.goog-tree-expand-icon-blank {width: 19px;background-position: -168px -24px;}
+.goog-tree-collapsed-folder-icon {vertical-align: middle;height: 16px;width: 16px;background-position: -0px -24px;}
+.goog-tree-expanded-folder-icon {vertical-align: middle;height: 16px;width: 16px;background-position: -24px -24px;}
+.goog-tree-file-icon {vertical-align: middle;height: 16px;width: 16px;background-position: -48px -24px;}
+.goog-tree-item-label {margin-left: 3px;padding: 1px 2px 1px 2px;text-decoration: none;color: WindowText;cursor: default;}
+.goog-tree-item-label:hover {text-decoration: underline;}
+.selected .goog-tree-item-label {background-color: ButtonFace;color: ButtonText;}
+.focused .selected .goog-tree-item-label {background-color: Highlight;color: HighlightText;}
+.goog-tree-hide-root{display: none;}
+.goog-tree-expanded-folder-icon{display: none;} 
+.goog-tree-file-icon{display: none;}
+.goog-tree-collapsed-folder-icon{display: none;}
+.goog-tree-children {padding-left: 19px;}
+.goog-tree-lchildren {padding-left: 19px;}
+.goog-tree-item-selected .goog-tree-item-label {background: buttonface;color: buttontext;}
+.goog-tree-item-focused {outline: none;}
+.goog-tree-item-focused .goog-tree-item-selected .goog-tree-item-label {background: highlight;color: highlighttext;}
+.goog-tree-item-checked0 {background: url(http://img.huanleguang.com/hlg/v2/check0.gif) 0 -2px;width: 16px;height: 16px;vertical-align: middle;}
+.goog-tree-item-checked1 {background: url(http://img.huanleguang.com/hlg/v2/check1.gif) 0 -2px;width: 16px;height: 16px;vertical-align: middle;}
+.goog-tree-item-checked2 {background: url(http://img.huanleguang.com/hlg/v2/check2.gif) 0 -2px;width: 16px;height: 16px;vertical-align: middle;}
+ */
+ 
+ 
+ /*add*/
+ .text-error {border:1px solid #ff0000; color:#ff0000;}
+ .goog-inline-block {position: relative;display: -moz-inline-box; /* Ignored by FF3 and later. */display: inline-block;}
+* html .goog-inline-block {display: inline;}
+*:first-child+html .goog-inline-block {display: inline;}
+.goog-tree-root:focus {-moz-outline: none;outline: none;}
+.goog-tree-row {white-space: nowrap;font: icon;line-height: 26px;height: 26px;font-size:12px;}
+.goog-tree-row span {overflow: hidden;text-overflow: ellipsis;}
+.goog-tree-children {background-repeat: repeat-y;background-image: url("http://img.huanleguang.com/hlg/v2/I.png") !important;background-position-y: 1px !important;	/* IE only */font: icon;}
+.goog-tree-children-nolines {font: icon;}
+.goog-tree-icon {background-image: url("http://img.huanleguang.com/hlg/v2/tree.png");}
+.goog-tree-expand-icon {vertical-align: middle;height: 26px;width: 26px;cursor: default;}
+.goog-tree-expand-icon-plus {width: 19px;background-position: 0 0;}
+.goog-tree-expand-icon-minus { width: 19px;  background-position: -24px 0;}
+.goog-tree-expand-icon-tplus {width: 19px;background-position: -48px 0;}
+.goog-tree-expand-icon-tminus {width: 19px;background-position: -72px 0;}
+.goog-tree-expand-icon-lplus {width: 19px;background-position: -96px 0;}
+.goog-tree-expand-icon-lminus {width: 19px;background-position: -120px 0;}
+.goog-tree-expand-icon-t {width: 19px;background-position: -144px 0;}
+.goog-tree-expand-icon-l {width: 19px;background-position: -168px 0;}
+.goog-tree-expand-icon-blank {width: 19px;background-position: -168px -24px;}
+.goog-tree-collapsed-folder-icon {vertical-align: middle;height: 16px;width: 16px;background-position: -0px -24px;}
+.goog-tree-expanded-folder-icon {vertical-align: middle;height: 16px;width: 16px;background-position: -24px -24px;}
+.goog-tree-file-icon {vertical-align: middle;height: 16px;width: 16px;background-position: -48px -24px;}
+.goog-tree-item-label {margin-left: 3px;padding: 1px 2px 1px 2px;text-decoration: none;color: WindowText;cursor: default;}
+.goog-tree-item-label:hover {text-decoration: underline;}
+.selected .goog-tree-item-label {background-color: ButtonFace;color: ButtonText;}
+.focused .selected .goog-tree-item-label {background-color: Highlight;color: HighlightText;}
+.goog-tree-hide-root{display: none;}
+.goog-tree-expanded-folder-icon{display: none;} 
+.goog-tree-file-icon{display: none;}
+.goog-tree-collapsed-folder-icon{display: none;}
+
+.goog-tree-children {padding-left: 19px;}
+.goog-tree-lchildren {padding-left: 19px;}
+.goog-tree-item-selected .goog-tree-item-label {background: buttonface;color: buttontext;}
+.goog-tree-item-focused {outline: none;}
+.goog-tree-item-focused .goog-tree-item-selected .goog-tree-item-label {background: highlight;color: highlighttext;}
+.check0 {background: url(http://img.huanleguang.com/hlg/v2/check0.gif) 0 -2px;width: 16px;height: 16px;vertical-align: middle;}
+.check1 {background: url(http://img.huanleguang.com/hlg/v2/check1.gif) 0 -2px;width: 16px;height: 16px;vertical-align: middle;}
+.checked2 {background: url(http://img.huanleguang.com/hlg/v2/check2.gif) 0 -2px;width: 16px;height: 16px;vertical-align: middle;}
+
+#treeContainer label{font-size:12px;}
+.main-content-list .w-180 .block {height:20px;}
+
+
+.ui-tip{ padding:15px; border:1px #e5e8ed solid; border-radius:5px; background:#fff; z-index:1000;box-shadow:0px 2px 3px 2px #e5e8ed; filter: progid:DXImageTransform.Microsoft.Shadow(color='#e5e8ed', Direction=135, Strength=5);}
+.ui-tip .x-align-arrow{ width:0; height:0; font-size:0; border-style:solid; overflow:hidden; border-width:7px; border-color:#fff transparent transparent transparent; position:absolute; left:115px; bottom:-14px; margin-left:-7px;}
+.ui-tip .x-align-arrow .x-align-arrow-inner{}
+
+
+ /* 更新版本v3 圆角*/
+.yuanjiao{}
+.yuanjiao .yuanjiao-top-left{ width:12px; height:12px; background:url(http://img.huanleguang.com/hlg/v2/yuanjiao-top-left.png) no-repeat;overflow: hidden/*ie6 DIV最小高度设置*/}
+.yuanjiao .yuanjiao-top-center{ height:12px; background:url(http://img.huanleguang.com/hlg/v2/yuanjiao-top-x.png) repeat-x;overflow: hidden}
+.yuanjiao .yuanjiao-top-right{ width:12px; height:12px; background:url(http://img.huanleguang.com/hlg/v2/yuanjiao-top-right.png) no-repeat;overflow: hidden}
+.yuanjiao .yuanjiao-bottom-left{ width:12px; height:12px; background:url(http://img.huanleguang.com/hlg/v2/yuanjiao-bottom-left.png) no-repeat;overflow: hidden}
+.yuanjiao .yuanjiao-bottom-center{ height:12px; background:url(http://img.huanleguang.com/hlg/v2/yuanjiao-bottom-x.png) repeat-x;overflow: hidden}
+.yuanjiao .yuanjiao-bottom-right{ width:12px; height:12px; background:url(http://img.huanleguang.com/hlg/v2/yuanjiao-bottom-right.png) no-repeat;overflow: hidden}
+.yuanjiao .yuanjiao-ul{border-left:1px solid #ccc; padding:0 12px 0 11px;background:#F1F6F9 url(http://img.huanleguang.com/hlg/v2/yuanjiao-right-y.png) right repeat-y;}
+.yuanjiao .yuanjiao-ul li{ float:left; margin:6px 10px; padding:0 2px; _display:inline; }
+.yuanjiao .yuanjiao-ul li a,.yuanjiao .yuanjiao-ul li a:link{ color:#666}
+.yuanjiao .yuanjiao-ul .current{ background:#FD7517; color:#fff}
+.yuanjiao .yuanjiao-ul .current a,.yuanjiao .yuanjiao-ul .current a:link{color:#fff}
+.yuanjiao .yuanjiao-top{background:url(http://img.huanleguang.com/hlg/v2/yuanjiao-top-center.png) no-repeat; width:16px; height:11px; position:absolute; }
+.ui-list .list-item .list-div{overflow:visible }
+.iconDeletelink { background:url("http://img.huanleguang.com/hlg/msg_bg.png") no-repeat scroll 0 0 transparent;display:inline-block;height:16px;position:absolute;right:0;top:0;width:16px;}
+ 

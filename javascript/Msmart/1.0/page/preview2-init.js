@@ -18,11 +18,7 @@ KISSY.add(function (S,showPages) {
 				 searchPromoId : null,
 			     init: function() {
 			
-			   	 	 if(DOM.hasClass('#body-html','w-1000')){
-			   			smartControl.pageNum = 5;
-				     }else{
-				    	 smartControl.pageNum = 6;
-					 }									
+				    smartControl.pageNum = 6;
 			   	 	if(!(DOM.get('#J_PromoId'))){
 			   	 		smartControl.promoId = 0;
 			   	 	 }else{
@@ -93,7 +89,7 @@ KISSY.add(function (S,showPages) {
 							DOM.get("#J_PromoItemsPaging").style.display = '';
 						} else {
 							DOM.get("#J_PromoItemsPaging").style.display = 'none';
-							DOM.html(DOM.get('#J_PromoItemsList'),'<div class="no-details"><div><span class="no-details-pic"></span><span class="prompt-1">暂无记录！</span></div></div>');
+							DOM.html(DOM.get('#J_PromoItemsList'),'<div class="no-details" ><div><div class="no-details-pic no-details-cry"></div><div class="prompt-1"><span>暂无记录！</span></div></div></div>');
 							return;
 						}
 						pageCount = Math.ceil(totalRecords/smartControl.pageNum); 
@@ -117,10 +113,14 @@ KISSY.add(function (S,showPages) {
 					    			pageCount = Math.ceil(totalRecords/smartControl.pageNum); 
 					        	    smartControl.renderPromoItems(o.payload.items);
 					    	        smartControl.paginator.setPage(pageId).setPageCount(pageCount).printHtml('#J_PromoItemsPaging',2);
-					    			smartControl.paginator.setPage(pageId).setPageCount(pageCount).printHtml('#J_TopPaging',3);
 					    			
 						    	};
-						    	var searchTitle = encodeURIComponent(DOM.val(DOM.get("#J_SearchTitle")));
+						    	 if(DOM.val(DOM.get("#J_SearchTitle")) != '关键字、商品链接、商品编码'){
+				        	    	var searchTitle = encodeURIComponent(DOM.val(DOM.get("#J_SearchTitle"))); //标题
+				        	    }else{
+				        	    	var searchTitle ='';
+				        	    }
+						    	
 						    	var promo_id = DOM.val("#J_PromoId");
 					    	    var data = "promo_id="+promo_id+"&q="+searchTitle+"&type_id="+typeId+"&page_id="+pageId+"&page_size="+smartControl.pageNum;
 					        	smartControl.msg = new H.widget.msgBox({
@@ -132,7 +132,6 @@ KISSY.add(function (S,showPages) {
 				    	    new H.widget.asyncRequest().setURI(getPromoItemsUrl).setMethod("GET").setHandle(submitHandle).setData(data).send();
 						}
 						smartControl.paginator = new showPages('smartControl.paginator').setRender(handlePagination).setPageCount(pageCount).printHtml('#J_PromoItemsPaging',2);
-						smartControl.paginator.printHtml('#J_TopPaging',3);
 			    	};
 			    	var errorHandle = function(o){
 				    	smartControl.msg.hide();
@@ -150,7 +149,11 @@ KISSY.add(function (S,showPages) {
 					    return ;
 				    }*/
 				    smartControl.searchPromoId = promo_id;
-				    var searchTitle = encodeURIComponent(KISSY.trim(DOM.val(DOM.get("#J_SearchTitle"))));
+				    if(DOM.val(DOM.get("#J_SearchTitle")) != '关键字、商品链接、商品编码'){
+	        	    	var searchTitle = encodeURIComponent(DOM.val(DOM.get("#J_SearchTitle"))); //标题
+	        	    }else{
+	        	    	var searchTitle ='';
+	        	    }
 				    var data = "promo_id="+promo_id+"&q="+searchTitle+"&type_id="+typeId+"&page_size="+smartControl.pageNum;
 					smartControl.msg = new H.widget.msgBox({
 								    title:"",
@@ -177,16 +180,16 @@ KISSY.add(function (S,showPages) {
 						els += 
 						'<li class="J_ThinkIt w-172 J_TbItem '+hasSelected+' relative" id="J_TbItem_'+items[i].promo_item_id+'">'+
 							'<input type="hidden" id="J_TbItemPic_'+items[i].promo_item_id+'" value="'+items[i].item_pic+'"/>'+
-			                '<div class="baobei-img baobei-img-h-160">'+
+			                '<div class="goods-img baobei-img-h-160">'+
 			                    '<a target="_blank" href="#2" class="w-160">'+
 			                        '<img border="0" width="120" height="120" src="'+items[i].item_pic+'_120x120.jpg"/>'+
 			                    '</a>'+
 			                '</div>'+
-			                '<div class="baobei-text">'+
+			                '<div class="goods-text">'+
 			                    '<a target="_blank" class="" href="http://item.taobao.com/item.htm?id='+items[i].item_id+'">'+
-			                        '<span class="inline-block baobei-info">'+items[i].item_title+'</span>'+
+			                        '<span class="goods-info">'+items[i].item_title+'</span>'+
 			                    '</a>'+
-			                    '<span class="fl inline-block w-150">￥<b class="color-red">'+items[i].item_price+'</b></span>'+
+			                    '<span class="goods-price">￥<b class="color-red">'+items[i].item_price+'</b></span>'+
 			                '</div>'+
 			                '<div class="ol-base"></div><div class="ol-mouseover"><div class="border"><span class="ol-text-ext">点击选择</span></div></div><div class="ol-click"><div class="ol-img-checked"></div><span class="ol-text-ext">点击取消</span><br/><a href="http://item.taobao.com/item.htm?id='+items[i].item_id+'"target="_blank"><span class="ol-img-view"></span></a></div><div class="ol-uncheck"><span class="ol-text-ext">已加入活动<br/></span><a href="http://item.taobao.com/item.htm?id='+items[i].item_id+'"target="_blank"><span class="ol-img-view"></span></a></div>'
 			            '</li>';
@@ -216,7 +219,7 @@ KISSY.add(function (S,showPages) {
 					        '<div class="baobei-img  pic pic-80">'+
 					    	'<a class="w-80"  href="#"><img  border="0" src="'+item_pic+'_80x80.jpg"/></a>'+
 					       	'</div>'+ 
-					    	'<a id="J_Remove_'+promo_item_id+'" href="#2" class="iconDeletelink" onclick="smartControl.removeItem(\''+promo_item_id+'\')" style="display:none;"></a>'+                
+					    	'<a id="J_Remove_'+promo_item_id+'" href="#2" class="iconDeletelink" onclick="smartControl.removeItem(\''+promo_item_id+'\')" style="display:none;top:0px;right:0px"></a>'+                
 							'</li>';
 					var node = new S.Node(nodeStr)
 				    DOM.append(node, '#J_SelectedItems');
@@ -385,6 +388,7 @@ KISSY.add(function (S,showPages) {
 					            '</div>'+
 					        '</div>';
 							DOM.html('#J_ChajianContent',successHtml);
+							DOM.addClass('#J_Step_3','current');
 			        };
 			        var failure = function() {
 						smartControl.msg.hide();

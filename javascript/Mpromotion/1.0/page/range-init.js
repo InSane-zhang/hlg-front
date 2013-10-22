@@ -11,6 +11,32 @@ KISSY.add(function (S,showPages) {
 			msg : null,
 			promotionItemPaginator : null,
 			init : function() {
+                //初始加载一次
+                if(isEditMode){
+                    promotionControl.loadRange();
+                     Event.on('.J_ChooseShowType','click',function(ev){
+                         var val = DOM.attr(ev.currentTarget,'data');
+                         DOM.val('#J_TypeId',val);
+                         DOM.removeClass('.J_ChooseShowType','current');
+                         DOM.addClass(ev.currentTarget,'current');
+                         promotionControl.loadRange();
+                     })
+                }else{
+                    promotionControl.searchTbItems();
+                     Event.on('.J_ChooseTbShowType','click',function(ev){
+                         var val = Number(DOM.attr(ev.currentTarget,'data'));
+                         switch(val){
+                             case 1:
+                             case 2:
+                             case 3:
+                                 DOM.val('#J_SearchSelling',val);
+                                 break;
+                         }
+                         DOM.removeClass('.J_ChooseTbShowType','current');
+                         DOM.addClass(ev.currentTarget,'current');
+                         promotionControl.searchTbItems();
+                     })
+                }
 				/*编辑活动*/
 				 Event.delegate(document,'click','.J_Editor_Promo', function(ev) {
 					 if(!showPermissions('editor_promotion',"编辑促销活动")){

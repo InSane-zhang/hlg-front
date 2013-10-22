@@ -3,7 +3,7 @@
 	 欢乐逛会员入口样式文件crm.css
  
 **/
-
+@charset "utf-8";
 /*会员等级，会员分组样式crm.css*/
 @import '../Mcrm/crm.css';
 
@@ -14,6 +14,7 @@
 @import '../Mmember/member.css';
 
 /*会员积分样式point.css*/
-@import '../Mcare/point.css';
+@import '../Mpoint/point.css';
+
 
 

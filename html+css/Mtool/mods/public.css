@@ -3,4 +3,66 @@
 	tool公共样式文件public.css
  
 **/
+.Mtool .mt15,.Mratedesc .mt15{margin-top:15px;}
+.Mtool .w-25{width:25px;}
+.Mtool .w-30{width:30px;}
+.Mtool .w-35{width:35px;}
+.Mtool .w-50{width:50px;}
+.Mtool .w-55{width:55px;}
+.Mtool .w-80{width:80px;}
+.Mtool .w-85{width:85px;}
+.Mtool .w-90{width:90px;}
+.Mtool .w-100{width:100px;}
+.Mtool .w-110{width:110px;}
+.Mtool .w-120{width:120px;}
+.Mtool .w-130{width:130px;}
+.Mtool .w-140{width:140px;}
+.Mtool .w-150{width:150px;}
+.Mtool .w-200{width:200px;}
+.Mtool .w-230{width:230px;}
+.Mtool .w-320{width:320px;}
+.Mtool .w-350{width:350px;}
+.Mtool .w-400{width:400px;}
+.Mtool .w-500{width:500px;}
+.Mtool .w-680{width:680px;}
+.Mtool .w-700{width:700px;}
+.Mtool .display-inline{display:inline-block;}
+.Mtool .min-height-30{min-height:30px;}
+.Mtool .min-height-40{min-height:40px;}
+.Mtool .btm-margin-15auto {margin: 15px auto;}
+.Mtool .height-auto{overflow:auto;}
+.Mtool .align-right{text-align:right;}
+.Mtool .goog-tree-row, .Mtool .align-left{text-align:left;} 
+.Mtool .active-add-edit-title{text-align:right; float:left; line-height:25px;}
+.Mtool .active-add-edit-edit{text-align:left; float:left; line-height:25px; }
+.hlg-app .main .Mtool .main-content-th {background:#F4F4F4;border: 1px solid #E4E4E4;overflow: auto;padding: 6px 10px;text-align: center;}
+.hlg-app .main .Mtool .main .main-content .main-content-th li {float: left;}
+.hlg-app .main .Mtool .margin-left-6 {margin-left: 6px;}
+.hlg-app .main .Mtool .margin-rightorleft-10{margin-left: 5px;}
+.hlg-app .main .Mtool .border-E4E4E4{border: 1px solid #E4E4E4;}
+.hlg-app .main .Mratedesc .haoping-moban {width:930px;margin:0 auto;}
+.hlg-app .main .Mratedesc .haoping-moban li {cursor: pointer;float: left;margin: 0 10px;width: 200px;padding:10px 5px; display:inline; text-align:left;border:1px solid #fff;}
 
+.hlg-app .main .Mtool .data-tip {height: 36px;overflow: hidden;margin:10px 0px;}
+.hlg-app .main .Mtool .data-tip .data-text{float:left;line-height:36px;}
+.hlg-app .main .Mtool .data-tip .data-text span {color: #fb6e52;}
+.hlg-app .main .Mtool .wc-detail-area{width:80%;float:left;}
+.hlg-app .main .Mtool .wc-operate-area {color:#aab2bd; width: 20%;float: left;text-align: left;}
+
+.hlg-app .main .Mtool .ui-tab-1 {float: left;font-family: '宋体';}
+.hlg-app .main .Mtool .ui-tab-1 a {color: #656d78;}
+.hlg-app .main .Mtool .ui-tab-1 a.current {color: #fff;}
+
+.hlg-app .main .Mtool .baobei{text-align: left;position: relative;}
+.hlg-app .main .Mtool .baobei span {display: block;position: absolute;left: 70px;top:0px;width: 130px;height: 60px;overflow: hidden;line-height: 20px;}
+
+.hlg-app .main .Mtool .ratesend .msgbox,.hlg-app .main .Mtool .rateContent .msgbox{width: 380px;height: 90px;border: 1px solid #E5E8ED;color: #7a818b;border-radius: 5px;padding: 4px;}
+
+/*旧版弹窗样式*/
+.hlg-app .main .Mtool .relative{position:relative;}
+.hlg-app .main .Mtool .point{font-size:14px; margin:0 auto; padding:40px 0px 10px; text-align:center;width:380px;}
+
+/*好评有礼*/
+.hlg-app .main .Mtool .ratesend .uboxstyle-1,.hlg-app .main .Mtool .neutralllist .uboxstyle-1{width:100px;float:left;display:inline;}
+.hlg-app .main .Mtool .ratesend .uboxstyle-1 .bui-select,.hlg-app .main .Mtool .neutralllist .uboxstyle-1 .bui-select{width:80px;}
+.hlg-app .main .Mtool .ratesend .uboxstyle-1 .bui-select .bui-select-input,.hlg-app .main .Mtool .neutralllist .uboxstyle-1 .bui-select .bui-select-input{width:41px;}

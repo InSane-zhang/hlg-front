@@ -2,7 +2,7 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,showPages) {
+KISSY.add(function (S,showPages,Select) {
     // your code here
     	var DOM = S.DOM, Event = S.Event;	
 		return promodesc = {
@@ -13,6 +13,61 @@ KISSY.add(function (S,showPages) {
 			    	panel : null,
 			    	msg : null,
 			    	init : function() {
+						var items = [
+						  {text:'状态',value:'0'},
+						  {text:'处理失败',value:'1'},
+						  {text:'等待处理',value:'2'},
+						  {text:'成功加入',value:'3'}
+						],
+						select = new Select.Select({  
+						  render:'#J_Status',
+						  valueField:'#J_SearchStatus',
+						  items:items
+						});
+						select.render();
+	     	            select.on('change', function(ev){
+	     	            	promodesc.loadPromotionItems(); 
+	     	            });
+						select.setSelectedValue('0');
+						
+						var items = [
+						  {text:'10条',value:'10'},
+						  {text:'20条',value:'20'},
+						  {text:'30条',value:'30'},
+						  {text:'40条',value:'40'}
+						],
+						select = new Select.Select({  
+						  render:'#J_Page',
+						  valueField:'#J_SelectItemPage',
+						  items:items
+						});
+						select.render();
+	     	            select.on('change', function(ev){
+	     	            	promodesc.loadPromotionItems(); 
+	     	            });
+						select.setSelectedValue('10');
+						
+						
+						
+//						
+//				        <select id="J_SelectItemPage" name="Page">
+//				        <option value="10">10条</option>
+//				        <option value="20">20条</option>
+//				        <option value="30">30条</option>
+//				        <option value="40">40条</option>
+//				        </select>
+						
+						
+//				        <select id="J_SearchStatus" name="status" onchange="promodesc.loadPromotionItems();">
+//			              <option value="0">状态</option>
+//			              <option value="1">处理失败</option>
+//			              <option value="2">等待处理</option>
+//			              <option value="3">成功加入</option>
+//			          </select>
+			
+			
+			
+			
 						Event.on(doc, 'keydown', function(evt) {
 							if ( evt.which === 13) {
 								if(promodesc.promodescItemPaginator){
@@ -187,5 +242,5 @@ KISSY.add(function (S,showPages) {
 					}
 			}
 }, {
-    requires: ['utils/showPages/index']
+    requires: ['utils/showPages/index','bui/select']
 });

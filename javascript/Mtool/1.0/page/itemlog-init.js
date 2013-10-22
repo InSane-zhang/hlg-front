@@ -3,7 +3,7 @@
  * 宝贝错误列表 item js
  * 
  * **/
-KISSY.add(function(S,showPages){
+KISSY.add(function(S,showPages,beautifyForm,Select){
 		var S = KISSY,DOM = S.DOM, Event = S.Event;	
 		return itemlog = {
 	    	paginator : null,
@@ -11,10 +11,91 @@ KISSY.add(function(S,showPages){
 	    	msg : null,
 			checkBoxs : null,    	
 	    	init : function() {	
-				itemlog.searchTbItems();
-				Event.on('#J_SelectItemCid',"change",function(S){
+			
+				itemlog.Form = new beautifyForm();
+				//选择操作类型
+				var Logitems = [
+			      {text:'操作类型',value:'0'},
+			      {text:'修改名称',value:'1'},
+			      {text:'修改编码',value:'2'},
+			      {text:'修改库存',value:'3'},
+			      {text:'修改归类',value:'4'},
+			      {text:'修改属性',value:'5'}
+			    ],
+			    LogSelect = new Select.Select({  
+				    render:'#J_SelectItem',
+			      	valueField:'#J_SelectItemLog',
+			      	items:Logitems
+				});
+				LogSelect.render();
+				LogSelect.setSelectedValue('0');
+				LogSelect.on('change', function(ev){
 					itemlog.searchTbItems();
-				});		
+				});
+				//选择分类
+				promoSelect = new Select.Select({  
+				    render:'#J_SelectItemCidBox',
+			      	valueField:'#J_SelectItemCid',
+			      	items:S.JSON.parse(sellerCats),
+			      	visibleMode : 'display'
+				});
+				promoSelect.render();
+				promoSelect.setSelectedValue('0');
+				DOM.css(DOM.get('.bui-list-picker'),{'left':'-999px','top':'-999px'});
+				// 全部 出售中 库中
+				var Sellingitems = [
+			      {text:'全部',value:'0'},
+			      {text:'出售中',value:'1'},
+			      {text:'库中',value:'2'}
+			    ],
+			    SellingSelect = new Select.Select({  
+				    render:'#J_SearchItemSelling',
+			      	valueField:'#J_SearchSelling',
+			      	items:Sellingitems
+				});
+				SellingSelect.render();
+				SellingSelect.setSelectedValue('0');
+				SellingSelect.on('change', function(ev){
+					itemlog.searchTbItems();
+				});
+				//默认排序
+				var items3 = [
+					{text:'最新上架',value:'0'},
+					{text:'最晚上架',value:'1'}
+						     
+				],
+				sortSelect = new Select.Select({  
+					render:'#J_SelectOrder',
+					valueField:'#J_SelectItemOrder',
+					items:items3
+				});
+				sortSelect.render();
+				sortSelect.setSelectedValue('0');
+				sortSelect.on('change', function(ev){
+					itemlog.searchTbItems();
+				});
+				//条数
+				var items4 = [
+					{text:'10条',value:'10'},
+					{text:'20条',value:'20'},
+					{text:'50条',value:'50'},
+					{text:'100条',value:'100'},
+					{text:'200条',value:'200'}
+						     
+				],
+				statusSelect = new Select.Select({  
+					render:'#J_SelectPage',
+					valueField:'#J_SelectItemPage',
+					items:items4
+				});
+				statusSelect.render();
+				statusSelect.setSelectedValue('10');
+				statusSelect.on('change', function(ev){
+					itemlog.searchTbItems();
+				});
+			
+				itemlog.searchTbItems();
+				
 				Event.on('#J_SearchBtn','click',itemlog.searchTbItems); //活动中宝贝全选   	 
 			    Event.on('#J_TCheckAll','click',itemlog.CheckAll); //活动中宝贝全选   	    
 	        },
@@ -247,5 +328,5 @@ KISSY.add(function(S,showPages){
 						
     	};
 },{
-    requires: ['utils/showPages/index']
+    requires: ['utils/showPages/index','utils/beautifyForm/index','bui/select']
 });

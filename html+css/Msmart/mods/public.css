@@ -3,4 +3,87 @@
 	smart公共样式文件public.css
  
 **/
+/*列表页*/
+.hlg-app .main .Msmart .zandan .upgrade{background:url(http://cdn.huanleguang.com/img/hlg/v3/zadan-upgrade.jpg) no-repeat;width:430px; height:50px; background-position:0 0;margin:60px auto 30px auto;}
+.hlg-app .main .Msmart .zandan .order{background:url(http://cdn.huanleguang.com/img/hlg/v3/zadan-upgrade.jpg) no-repeat;width:900px; height:221px;margin:auto;}
+.hlg-app .main .Msmart .zandan .order-btm{background:url(http://cdn.huanleguang.com/img/hlg/v3/zadan-upgrade.jpg) no-repeat;width:127px; height:44px;display:block;background-position:0 -617px;margin-top:22px;}
+.hlg-app .main .Msmart .zandan .left{width:300px;padding:35px 75px;float:left;}
+.hlg-app .main .Msmart .zandan .left h2{color:#000;font-size:16px;margin-bottom:15px;}
+.hlg-app .main .Msmart .zandan .left h3{color:#8c8f9b;font-size:14px;font-weight:normal;}
+.hlg-app .main .Msmart .zandan .list p{background:url(http://cdn.huanleguang.com/img/hlg/v3/zadan-upgrade.jpg) no-repeat;width:900px; height:178px;display:block; background-position:0 -110px;margin:60px auto 0 auto;}
+.hlg-app .main .Msmart .zandan .list span{font-size:16px;font-family:'微软雅黑';color:#8c8f9b;display:inline-block;margin:30px 0 0 116px;}
+.hlg-app .main .Msmart .choujiang{color:#999;border-bottom:1px dashed #e4e4e4;padding:20px 0;position:relative;}
+.hlg-app .main .Msmart .choujiang .img{background:url(http://cdn.huanleguang.com/img/hlg/v3/choujiang-upgrade.jpg) no-repeat;display:block;margin:15px auto;}
+.hlg-app .main .Msmart .choujiang .btm{background:url(http://cdn.huanleguang.com/img/hlg/v3/choujiang-upgrade.jpg) no-repeat;width:114px; height:26px;line-height:26px;text-align:center;font-size:12px;display:block; background-position:0 -976px;margin:30px auto;color:#fff}
+.hlg-app .main .Msmart .used{background:url(http://cdn.huanleguang.com/img/hlg/v3/choujiang-upgrade.jpg) no-repeat;width:89px; height:26px;line-height:26px;text-align:center;font-size:12px;display:block;margin:0 10px;background-position:-114px -976px;color:#fff;margin:30px auto;}
+.hlg-app .main .Msmart .single{background:url(http://cdn.huanleguang.com/img/hlg/v3/choujiang-upgrade.jpg) no-repeat;width:89px; height:26px;line-height:26px;text-align:center;font-size:12px;display:block;margin:0 10px;background-position:-203px -976px;color:#000;margin:15px auto;}
+.hlg-app .main .Msmart .choujiang .huiyuan{width:710px; height:186px;background-position:0 -254px;}
+.hlg-app .main .Msmart .choujiang .chou-jiang{width:855px; height:192px;background-position:0 -784px;}
+.hlg-app .main .Msmart .choujiang .za-dan{width:956px; height:159px;background-position:0 -626px;}
+.hlg-app .main .Msmart .choujiang .paiming{width:956px; height:254px;background-position:0 0px;}
+.hlg-app .main .Msmart .choujiang .zhenrenxiu{width:650px; height:185px;background-position:0 -441px;}
 
+
+.center {
+margin: auto;
+}
+.hlg-app .main .Msmart .smart-list .choose-type {width: 100%;height: 42px;margin-top: 30px;}
+.hlg-app .main .Msmart .smart-list .choose-type .choose-list {width: 984px;height: 42px;overflow: hidden;float: left;}
+.hlg-app .main .Msmart .smart-list .choose-type li {float: left;font-size: 14px;}
+.hlg-app .main .Msmart .smart-list .choose-type li.current a {
+border: 1px #CCC solid;
+background: #D6D6D6;
+color: #000;
+}
+.hlg-app .main .Msmart .smart-list .choose-type li a {
+display: block;
+width: 140px;
+height: 40px;
+line-height: 40px;
+margin: 0px 11px;
+text-align: center;
+border: 1px #DEDEDE solid;
+border-radius: 5px;
+background: #EFEFEF;
+color: #333;
+}
+
+.hlg-app .main .Msmart .smart-list .groupon-choose-item {
+padding: 15px 0;
+text-align: center;
+}
+
+.hlg-app .main .Msmart .smart-list .btm-kaishi-zhizuo {
+background: url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/material-icon.png) 0px -30px no-repeat;
+vertical-align: top;
+width: 107px;
+height: 31px;
+margin: 10px auto;
+display: inline-block;
+*display: inline;
+*zoom: 1;
+}
+
+/**制作模块*/
+.hlg-app .main .Msmart .page-preview .liebiao-yulan {display: block;background-color: #FFFFFF;text-align: center;border-bottom: 1px #eaedf2 solid;overflow: hidden;zoom: 1;}
+.hlg-app .main .Msmart .page-preview .preview-icon {width:81px;height:84px;position: absolute;top: 0;left: 0;background:url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/preview-icon.png) 0px 0px no-repeat;}
+.hlg-app .main .Msmart .page-preview .content-box{overflow-x:auto;}
+.hlg-app .main .Msmart .page-preview .btm-yulan{display:inline-block; *display:inline;}
+.hlg-app .main .Msmart .page-preview .btm-yulan button,.hlg-app .main .Msmart .edit .page-preview .btm-xiayibu button{width:140px;}
+.hlg-app .main .Msmart .page-preview .layer-block {width: 160px;height: 25px;margin: auto;border: 1px solid #eaedf2;background: #FFFFFF;border-radius: 0 0 5px 5px;border-top: 0;color: #656d78;cursor: pointer;font-size: 12px;line-height: 25px;text-align: center;margin-top: -1px;}
+.hlg-app .main .Msmart .smart-edit .inner{margin: 20px 0px}
+.hlg-app .main .Msmart .smart-edit .have-chosen {background: #F7F7F7;}
+.hlg-app .main .Msmart .smart-edit .have-chosen .baby-pictures {float: left;padding: 15px 0;width: 900px;}
+.hlg-app .main .Msmart .smart-edit img.rights {
+float: right;
+padding: 8px 10px 0px 0px;
+_padding: 8px 5px 0px 0px;
+}
+.hlg-app .main .Msmart .smart-edit .have-chosen .baby-pictures li {
+border: 1px solid #CCC;
+float: left;
+height: 80px;
+margin: 15px 4px 15px 4px;
+width: 80px;
+_display: inline;
+}

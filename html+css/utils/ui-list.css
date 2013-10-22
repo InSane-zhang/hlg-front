@@ -141,26 +141,34 @@
  
 **/
 
-.ui-list{ width:100%;}
+.ui-list{ width:100%; font-family:'宋体'; color:#656d78;}
 .ui-list ul:after,.ui-list ul li:after{ content:'\20'; display:block; height:0; clear:both; visibility:hidden;}
- html.lte8 .ui-list ul,html.lte8 .ui-list ul li{ zoom:1;}
-.ui-list .list-hd{ padding:6px 10px; background:#f4f4f4;}
-.ui-list .list-hd li{ float:left; color:#989898;}
-.ui-list .list-hd .list-edit{ width:15%; float:right;}
+ html.lte7 .ui-list ul,html.lte7 .ui-list ul li{ zoom:1;}
+.ui-list .list-hd{ height:26px; line-height:26px; padding:0 10px; background:#F6F7FB; border-top:1px #EAEDF2 solid; border-bottom:1px #EAEDF2 solid;}
+.ui-list .list-hd li{ float:left; color:#aab2bd; text-align:center;}
+.ui-list .list-hd li.list-edit{ width:18%; float:right;}
 .ui-list .list-hd li .refresh-list img{ vertical-align:middle;}
 
-.ui-list .list-bd .list-item{ padding-top:10px; padding-bottom:10px; border-bottom:1px #eee dotted;}
+.ui-list .list-bd .list-item{ padding-top:13px; padding-bottom:13px; border-bottom:1px solid #EAEDF2;}
+.ui-list .list-bd .current{ background:#f6f7fb;}
 .ui-list .list-bd .list-item ul{ padding-left:10px; padding-right:10px;}
-.ui-list .list-bd .current{ background:#f6f6f6; } 
-.ui-list .list-bd .list-item li{ float:left;}
-.ui-list .list-bd .list-item li.list-edit{ width:15%; float:right;}
-
+.ui-list .list-bd .pauseing{ background:#f6f6f6; } 
+.ui-list .list-bd .list-item li{ float:left; text-align:center;}
+.ui-list .list-bd .list-item li.list-edit{ width:18%; float:right;}
+.ui-list .list-bd .list-item li.list-edit a{margin-right:2px;display: inline-block;padding: 5px;}
+.ui-list .list-bd .list-item li.list-edit a:hover{margin-right:2px;color: #FFF;display: inline-block;padding: 5px;background-color: #4DC1E8;border-radius: 5px;}
+.ui-list .list-bd .list-item li .color-gray{ color:#aab2bd;}
+.ui-list .list-bd .list-item li .color-orange{ color:#fb6e52;}
+.ui-list .list-bd .list-item li .color-red{ color:#ed5564;}
 /*列表操作*/
-.ui-list .list-edit{ width:15%; float:right;}
+.ui-list .list-edit a{ padding-right:7px;}
 
 /*含有宝贝图 and 标题*/
 .ui-list .list-bd .list-item .item-pic{ width:60px; height:60px; display:block; float:left; background-repeat: no-repeat; background-position:50% 50%;}
 .ui-list .list-bd .list-item .summary{ width:110px; height:40px; line-height:20px; float:left; overflow:hidden; margin-left:5px;}
 .ui-list .list-bd .list-item .price{ display:block; float:left; margin-left:5px;}
 .ui-list .list-bd .list-item .price em{ color:#e54022;}
+
+
+
 

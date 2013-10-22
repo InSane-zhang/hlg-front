@@ -3,7 +3,7 @@
  * 批量改归类 item js
  * 
  * **/
-KISSY.add(function(S,showPages){
+KISSY.add(function(S,showPages,beautifyForm,Select){
 		var S = KISSY,DOM = S.DOM, Event = S.Event, catsType = 1;	
 		return recats = {
 	    	paginator : null,
@@ -12,10 +12,69 @@ KISSY.add(function(S,showPages){
 			checkBoxs : null,
 	    	
 	    	init : function() {
-				recats.searchTbItems();
-				Event.on('#J_SelectItemCid',"change",function(S){
+				recats.Form = new beautifyForm();
+				//选择分类
+				promoSelect = new Select.Select({  
+				    render:'#J_SelectItemCidBox',
+			      	valueField:'#J_SelectItemCid',
+			      	items:S.JSON.parse(sellerCats),
+			      	visibleMode : 'display'
+				});
+				promoSelect.render();
+				promoSelect.setSelectedValue('0');
+				DOM.css(DOM.get('.bui-list-picker'),{'left':'-999px','top':'-999px'});
+				// 全部 出售中 库中
+				var Sellingitems = [
+			      {text:'全部',value:'0'},
+			      {text:'出售中',value:'1'},
+			      {text:'库中',value:'2'}
+			    ],
+			    SellingSelect = new Select.Select({  
+				    render:'#J_SearchItemSelling',
+			      	valueField:'#J_SearchSelling',
+			      	items:Sellingitems
+				});
+				SellingSelect.render();
+				SellingSelect.setSelectedValue('0');
+				SellingSelect.on('change', function(ev){
 					recats.searchTbItems();
 				});
+				//默认排序
+				var items3 = [
+					{text:'最新上架',value:'0'},
+					{text:'最晚上架',value:'1'}
+						     
+				],
+				sortSelect = new Select.Select({  
+					render:'#J_SelectOrder',
+					valueField:'#J_SelectItemOrder',
+					items:items3
+				});
+				sortSelect.render();
+				sortSelect.setSelectedValue('0');
+				sortSelect.on('change', function(ev){
+					recats.searchTbItems();
+				});
+				//条数
+				var items4 = [
+					{text:'10条',value:'10'},
+					{text:'20条',value:'20'},
+					{text:'50条',value:'50'},
+					{text:'100条',value:'100'}
+				
+				],
+				statusSelect = new Select.Select({  
+					render:'#J_SelectPage',
+					valueField:'#J_SelectItemPage',
+					items:items4
+				});
+				statusSelect.render();
+				statusSelect.setSelectedValue('10');
+				statusSelect.on('change', function(ev){
+					recats.searchTbItems();
+				});
+				
+				recats.searchTbItems();
 				var cats = DOM.query('#J_CatsTree input');
 	       		var addCats = '';
 	       		var selectCats = DOM.prop('#J_SelectCats','title');
@@ -603,5 +662,5 @@ KISSY.add(function(S,showPages){
     	};
 	
 },{
-    requires: ['utils/showPages/index']
+    requires: ['utils/showPages/index','utils/beautifyForm/index','bui/select']
 });

@@ -4,7 +4,7 @@
  
 **/
 
-.hlg-app .main .content .ui-edit li .ui-edit-title{ width:120px;}
+.hlg-app .main .content .w-150{ width:150px;}
 
 /*tree*/
 .hlg-app .main .content .edit-tree{ width:428px; height:130px; border:1px solid #EEEEEE; overflow:auto;}

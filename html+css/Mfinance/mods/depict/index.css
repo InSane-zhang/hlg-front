@@ -1,0 +1,39 @@
+
+/**
+	本月财务样式
+**/
+.depict-index .cw-content .rim{box-shadow: 0 2px 1px -1px #E2E3E9; border-radius: 5px 5px 5px 5px; float:left;background-color:#FFFFFF; border-bottom: 2px solid #E2E3E9;}
+.depict-index .cw-content .rim .sale{padding:15px 20px;}
+.depict-index .cw-content .rim .line-chart-r{ height:274px;}
+.depict-index .cw-content .rim .chart-foot-r{height:45px; padding:15px 0px 10px 0px; background:#F6F7FB; border-right:none; border-left:none; border-top:1px solid #EAEDF2;}
+.depict-index .cw-content .rim .chart-foot-r li{ float:left; padding:0px 25px;}
+.depict-index .cw-content .chart-foot{ height:45px; padding:15px 0px 10px 0px; background:#F6F7FB; border-right:none; border-left:none; border-top:1px solid #EAEDF2;}
+.depict-index .cw-content .chart-foot li{ float:left; padding:0px 25px;}
+.depict-index .cw-content .sale-chart{width:420px; height:400px;margin-right:18px; float:left; margin-bottom:15px;}
+.depict-index .cw-content .sale-chart .sale{padding:15px 20px;}
+.depict-index .cw-content .sale-chart .sale .sale-title{ height:25px; line-height:25px;}
+.depict-index .cw-content .sale-chart .sale .line-chart{ height:274px;}
+
+.depict-index .cw-content .in-ex-chart{ width:600px; height:400px; margin-bottom:18px;}
+.depict-index .cw-content .in-ex-chart .sale-title{ height:25px; font-size:12px;}
+.depict-index .cw-content .in-ratio-area{ width:420px; height:300px; margin-right:18px;}
+.depict-index .cw-content .in-ratio-area .sale .area-chart-l{ height:245px;}
+.depict-index .cw-content .out-ratio-area{ width:600px; height:300px; margin-bottom:18px;}
+.depict-index .cw-content .out-ratio-area .sale .sale-title{ height:25px; line-height:25px; position:relative;}
+.depict-index .cw-content .out-ratio-area .sale .sale-title .cw-font-yellow{margin-right:5px;}
+.depict-index .cw-content .out-ratio-area .sale i{position: absolute;top:5px; background:url(http://cdn.huanleguang.com/img/hlg-app/Mfinance/finance.png); background-position:-214px 0px; background-repeat:no-repeat; width:16px; height:16px; display:block; float:left;}
+.depict-index .cw-content .in-ratio-area .sale .area-chart-r{ height:230px;}
+
+.depict-index .cw-footer{ width:100%;border:1px solid #FFFFFF; border-radius: 5px 5px 5px 5px; float:left;background-color:#FFFFFF; border-bottom: 2px solid #E2E3E9;margin-bottom:15px;}
+.depict-index .cw-footer .ui-tab-3 li em{ font-size:12px;color:#ABB3BE; font-weight:normal;}
+.depict-index .cw-footer .ui-tab-3 .more{font-size:12px;color:#ABB3BE; float:right; margin-right:30px;}
+.depict-index .cw-footer .ui-tab-3 .more a{font-size:12px;}
+.depict-index .cw-footer .ui-tab-3 .more a:hover{border-bottom:none;color:#8BD167;}
+.depict-index .cw-footer .profit-rank{ height:200px; padding:30px;}
+.depict-index .cw-footer .profit-rank li{ float:left;}
+.depict-index .cw-footer .profit-rank p{ text-align:center;}
+.depict-index .cw-footer .profit-rank .pho-spacing-icon{ background:url(http://cdn.huanleguang.com/img/hlg-app/Mfinance/finance.png); background-position:-17px 0px; background-repeat:no-repeat; width:34px; height:16px; display:block;}
+.depict-index .cw-footer .profit-rank .earn{ font-size:12px;color: #ABB3BE;}
+.depict-index .cw-footer .profit-rank .earn-money{ font-size:14px; font-family:Georgia; color:#434A54; font-weight:bold;}
+
+.zero{height:64px;width:192px;color:#555555;line-height:24px; padding:13px;}

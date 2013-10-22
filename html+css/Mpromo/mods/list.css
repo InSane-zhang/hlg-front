@@ -4,48 +4,43 @@
  
 **/
 
-.hlg-app .main .content .hd-type-list{ border-bottom:1px dotted #E4E4E4; padding-bottom:15px;}
-.hlg-app .main .content .hd-type li.hd-note{ background:none; cursor:auto;}
-.hlg-app .main .content .editor-promo-time{ position:relative;}
-.hlg-app .main .content .ui-list .list-bd .pauseing{ background:#F6F6F6;}
+.hlg-app .main .Mpromotion .ui-list .list-bd .list-item{ padding:20px 0;}
+.hlg-app .main .Mpromotion .ui-list .list-bd .list-item .promo-list-nama{ padding-bottom:5px;}
+.hlg-app .main .Mpromotion .promo-tiem{ width:130px; display:inline-block; float:left; font-family:arial;}
+.hlg-app .main .Mpromotion .promo-type{ color:#AAB2BD;}
+.hlg-app .main .Mpromotion .promo-flag{ display:inline-block; padding:0 3px; background:#f2726f; color:#fff;}
+.hlg-app .main .Mpromotion .promo-tiem-flag{ width:7px; height:7px; margin:5px 7px; display:inline-block; float:left; background:url(http://cdn.huanleguang.com/img/hlg-app/promo/promo-list-icon.jpg) no-repeat scroll 0 -16px;}
+html.ie6 .hlg-app .main .Mpromotion .promo-tiem-flag{ display:inline;}
+.hlg-app .main .Mpromotion .promo-tip{ clear:both; line-height:12px; padding-top:10px;}
+.hlg-app .main .Mpromotion .promo-tip span{ height:12px; padding-left:17px; color:#ed5564; display:inline-block; background:url(http://cdn.huanleguang.com/img/hlg-app/promo/promo-list-icon.jpg) no-repeat;}
+.hlg-app .main .Mpromotion .promo-tip a{ padding-left:15px;}
+.hlg-app .main .Mpromotion .pauseing .promo-tip span{ background-position:0 -26px; color:#aab2bd;}
+/*活动总数*/
+.hlg-app .main .Mpromotion .data-tip{ height:36px; overflow:hidden; margin-bottom:20px;}
+.hlg-app .main .Mpromotion .data-tip .data-text{ float:left; line-height:36px;}
+.hlg-app .main .Mpromotion .data-tip .data-text span{ color:#fb6e52;}
+/*头部*/
+.hlg-app .main .Mpromotion .ui-tab-1{ float:left; font-family:'宋体';}
+/*活动下拉操作*/
+.hlg-app .main .Mpromotion .more-handle{ width:92px; display:inline-block;} 
+.hlg-app .main .Mpromotion .down-icon{ margin-left:10px; padding-right:23px; display:inline-block; color:#656d78; background:url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat scroll right -30px;}
+.hlg-app .main .Mpromotion .down-more{ width:92px; display:none; border:1px #e5e8ed solid; border-radius:3px; padding-top:30px; position:absolute; right:5px; top:-3px; z-index:100;}
+.hlg-app .main .Mpromotion .ui-list .list-bd .list-item li.list-edit .down-more a{ height:30px; line-height:30px; padding:0 10px; display:block; text-align:left; margin:0; border-top:1px #e5e8ed solid; color:#656d78; background:#fff;}
+.hlg-app .main .Mpromotion .ui-list .list-bd .list-item li.list-edit .down-more a:hover{ background:#f6f7fb; color:#656d78; border-radius:0;}
+/*返回上级*/
+.hlg-app .main .Mpromotion .return-top{ padding-top:5px;}
+/*活动中宝贝加入状态*/
+.hlg-app .main .Mpromotion .ui-select .down-icon-1, .ui-select .down-value{ padding-right:0;}
+/*获取代码弹窗*/
+.pop-getCode{ padding-top:20px;}
+.pop-getCode textarea{ width:380px;height:200px;}
+.get-code-btn{ display:none;}
+/*重启活动弹窗设置时间*/
+.pop-restart{ padding:20px 0 0 50px;}
+.pop-restart .restart-tiem{ padding-bottom:5px;}
+.pop-restart .restart-tiem input{ width:130px;}
+.pop-restart .restart-check{ padding-left:60px;}
 
-/*选择活动类型列表*/
-.hlg-app .main .content .active-list{ background-color:#ececec; border:1px solid #dcdcdc;border-left:0; overflow:hidden;}
-.hlg-app .main .content .active-list li{ background-color:#ececec; border:1px solid #dcdcdc; border-top:0; width:100px; height:26px; line-height:26px; text-align:center; color:#666; float:left; _diaplay:inline; cursor:pointer; margin-bottom:-1px; margin-left:-1px;}	
-.hlg-app .main .content .active-list .current{ background-color:#f4f4f4; color:#333;}
 
-/*编辑活动时间*/
-.hlg-app .main .content .edit-time{ width:170px;}
-.hlg-app .main .content .edit-time .promo-time{ width:150px; float:left;}
-.hlg-app .main .content .edit-time .promo-time span{ display:block; float:left;}
-.hlg-app .main .content .edit-time .promo-time span em{ color:#999;}
-.hlg-app .main .content .edit-activity-hover{ background:#ffffd3; cursor:pointer; overflow:hidden;}
-.hlg-app .main .content .edit-activity-hover .qianbi{ width:12px; height:12px; margin-top:9px; display:block; float:left;}
-.hlg-app .main .content .edit-promo-tiem{ width:170px; overflow:hidden;}
-.hlg-app .main .content .edit-promo-tiem .bianji-shijian span{ display:block; margin-top:2px;}
-.hlg-app .main .content .edit-promo-tiem .restart-note{ margin:0px 2px 0px 16px;}
-.hlg-app .main .content .edit-promo-tiem .gray-btm-h-20{ width:69px; margin:2px 2px 0px 16px; _display:inline; float:left;}
 
-/*编辑活动名称*/
-.hlg-app .main .content .edit_name{ width:160px;}
-.hlg-app .main .content .edit_name .promo-name{ display:block; float:left;}
-.hlg-app .main .content .edit_name .qianbi{ margin:3px 10px 0px 0px; float:right; _diaplay:inline;}
-.hlg-app .main .content .promo-type{ color:#999; clear:both;}
-.hlg-app .main .content .show-promo-name .promo-name-input{ width:90px;}
-.hlg-app .main .content .show-promo-name .gray-btm-h-10{ width:30px;}
 
-/*编辑活动备注*/
-.hlg-app .main .content .edit-note{ color:#999; cursor:pointer; width:120px; display:inline-block; table-layout:fixed; word-break:break-all; word-wrap:break-word; white-space:normal;}
-.hlg-app .main .content .edit-note .edit-qianbi{  width:12px; height:12px; margin:3px 5px 0px 0px; float:left;}
-.hlg-app .main .content .show-note-name .promo-name-input{ width:90px;}
-.hlg-app .main .content .show-note-name .gray-btm-h-10{ width:30px;}
-
-/*编辑活动时间错误提示*/
-.hlg-app .main .content .error-note{ width:320px; background:#fafac3; padding:10px; position:absolute; left:175px; top:5px; color:#FF0000; border-bottom: 1px solid #DEDEDE; border-right: 1px solid #DEDEDE;}
-.hlg-app .main .content .jiantou{ border-color: #fff #fafac3 #fff #fff; left:-10px; border-width:5px; top: 10px; border-style: solid; font-size: 0; height: 0; overflow: hidden; position: absolute; width: 0;}
-
-/*折扣不显示*/
-.hlg-app .main .content .activity-prompt{ height:50px; position:absolute; right:0; bottom:-10px; z-index:10;}
-.hlg-app .main .content .activity-prompt .prompt-contact{ width:94px; height:24px; line-height:24px; cursor:pointer; display:block; border:1px #ffe8bb dashed; border-radius:3px; position:relative; text-align:center; background:#fffadc; color:#d39041;}
-.hlg-app .main .content .activity-prompt .prompt-panel{ width:270px; padding:10px; border:1px #e4e4e4 solid; position:absolute; right:0; top:35px; background:#fff;}
-.hlg-app .main .content .activity-prompt .prompt-panel i{ display:block; width:8px; height:5px; background:url(http://cdn.huanleguang.com/img/hlg/v3/activity-prompt-pic.jpg) no-repeat; position:absolute; right:20px; top:-16px;}

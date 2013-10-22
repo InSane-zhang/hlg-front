@@ -3,4 +3,21 @@
 	list公共样式文件public.css
  
 **/
+.hlg-app .main .Mlist .page-head .data-text{float:left; height:40px; line-height:40px; margin-left:35px;}
+.hlg-app .main .Mlist .page-head .data-text span{font-weight:900; color:#fb6e52; }
+.hlg-app .main .Mlist .page-head .main-header{padding:0 30px;}
+.hlg-app .main .Mlist .btm-add ,.hlg-app .main .Mlist .btm-manage ,.hlg-app .main .Mlist .btm-edit {background:url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/material-icon.png) no-repeat;}
+.hlg-app .main .Mlist .bianji{display:inline-block;margin-right:15px;}
+.hlg-app .main .Mlist .bianji .shanchu,.Mlist .bianji .huoqu,.Mlist .jiantou{background:url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/material-icon.png) no-repeat; vertical-align:top;}
+.hlg-app .main .Mlist .bianji span{display:inline-block;width:16px; height:16px; vertical-align:middle; margin-right:3px;}
+.hlg-app .main .Mlist .bianji .shanchu{background-position:0px -92px;}
+.hlg-app .main .Mlist .bianji .huoqu{background-position:-64px -92px;}
+.hlg-app .main .Mlist .btm-manage{width:107px; height:30px; }
+.hlg-app .main .Mlist .btm-add {background-position: 0px -62px; width:138px; height:30px; vertical-align:top;}
+.hlg-app .main .Mlist .btm-edit{background-position: -107px 0px; width:107px; height:30px;}
+.hlg-app .main .Mlist .jiantou{display:inline-block;width:8px; height:16px;vertical-align: middle; background-position:-64px -92px;} 
 
+.hlg-app .main .content .main-seach-2{ height:30px; line-height:30px; padding:20px 30px; background:#f6f7fb; border-top:1px solid #eaedf2; border-bottom:1px solid #eaedf2; border-left:0; border-right:0;clear:both;}
+.hlg-app .main .content .main-seach-2 .search-promo{ float:left; _display:inline; vertical-align:middle;}
+.hlg-app .main .content .main-seach-2 .search-promo input {width: 160px;height: 28px;line-height: 28px;float: left;margin-right: 10px;border: 1px #E5E8ED solid;border-radius: 3px;color: #AAB2BD;padding: 0 5px;border-image: initial;}
+.hlg-app .main .content .main-seach-2 .search-promo .search-btn {width: 71px;height: 30px;line-height: 30px;text-align: center;background: #4dc1e8;float: left;color: #fff;border-radius: 3px;padding: 0 5px; font-weight:900; font-size:13px;}

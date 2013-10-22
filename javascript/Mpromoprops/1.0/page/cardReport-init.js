@@ -2,7 +2,7 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,showPages) {
+KISSY.add(function (S,showPages,Select) {
     // your code here
 	var DOM = S.DOM, Event = S.Event;	
 return cardReport = {
@@ -22,12 +22,37 @@ return cardReport = {
 						}
 					}
 				})
+					select = new Select.Select({  
+		              render:'#J_SearchTypesBox',
+		              valueField:'#J_SearchTypes',
+		              items:items
+		            });
+		            select.render();
+		            select.on('change', function(ev){
+		            	cardReport.showReportView();
+						cardReport.searchTbItems();
+		            	
+		            });
+		            select1 = new Select.Select({  
+			              render:'#J_DTypesBox',
+			              valueField:'#J_DTypes',
+			              items:[{'text':'获取',value:'1'},{'text':'消费',value:'2'}]
+			            });
+			            select1.render();
+			            select1.on('change', function(ev){
+			            	
+			            });
+		            select2 = new Select.Select({  
+		              render:'#J_SearchStatusBox',
+		              valueField:'#J_SearchStatus',
+		              items:[{'text':'状态',value:'0'},{'text':'成功',value:'2'},{'text':'失败',value:'4'}]
+		            });
+		            select2.render();
+		            select2.on('change', function(ev){
+		            });
+				
 				cardReport.showReportView();
 				cardReport.searchTbItems();
-				Event.on('#J_SearchTypes',"change",function(ev){
-					cardReport.showReportView();
-					cardReport.searchTbItems();
-				});
 	        },
 	        searchTbItems : function() {
 		        
@@ -114,7 +139,9 @@ return cardReport = {
 					            x : 450,
 					            y : 5
 							},
-							 
+							colors: [
+	                                 	'#8bd167','#4dc1e8','#fb6e52','#ffce55','#656d78','#ac92ed','#ec87c1','#4b89dc','#db4453','#d8ad88','#00d39f','#a2b1c7','#5937ae','#bc3783'
+	                                ],
 							xAxis: {
 								categories: o.payload.xdata,
 								labels: {
@@ -167,5 +194,5 @@ return cardReport = {
 
 	
 }, {
-    requires: ['utils/showPages/index']
+    requires: ['utils/showPages/index','bui/select']
 });

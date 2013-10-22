@@ -16,35 +16,58 @@ KISSY.add(function (S,showPages,O) {
                     remind.panel = new O.Dialog({
                         width: 370,
                         headerContent: '提醒手机',
-                        bodyContent: '<div style="padding:30px 0;"><ul><li class="min-height-30"><span class="fl color-red" style="margin-left:20px;_display: inline;">测试会消耗一条短信</span></li><li class="min-height-40"><div class="active-add-edit-title w-80">提醒手机：</div><div class="active-add-edit-edit w-180"><input id="J_MobileText" type="text" value="" class="input-text w-200"></div></li><li class="min-height-40"><div class="active-add-edit-title w-80">提醒方式：</div><div class="active-add-edit-edit w-200">短信少于&nbsp;&nbsp;<input id="J_remindNum" value="" type="text" class="input-text w-70">&nbsp;&nbsp;条提醒我</div></li><li><div class="ui-msg" style="display: none; width:300px; margin: 15px auto;" id="J_ParamsErrorBox"><div class="error-msg"><div class="img-16-1"></div><div class="text-16 color-red" id="J_ParamsErrorMsg"></div></div></div><div class="ui-msg" style="display: none;width:300px;margin: 15px auto;" id="J_ParamsSucessBox"><div class="success-msg"><div class="img-16-6"></div><div class="text-16" id="J_ParamsSucessMsg"></div></div></div></li><li class="min-height-40"><div style="width:160px;_width:170px;" class="btm-content m-auto"><input name="" type="button" value="确定" class="btm-68-orange fl" id="J_determine"/><input type="button" value="测试" class="btm-68-gray fl" id="J_test" /></div></li></ul></div>',
+                        bodyContent: '<ul><li class="min-height-30"><span class="fl color-red">测试会消耗一条短信</span></li><li class="min-height-40"><div class="active-add-edit-title w-80">提醒手机：</div><div class="active-add-edit-edit w-180"><input id="J_MobileText" type="text" value="" class="input-text w-200"></div></li><li class="min-height-40"><div class="active-add-edit-title w-80">提醒方式：</div><div class="active-add-edit-edit w-200">短信少于&nbsp;&nbsp;<input id="J_remindNum" value="" type="text" class="input-text w-70">&nbsp;&nbsp;条提醒我</div></li><li><div class="ui-msg" style="display: none; width:300px; margin: 15px auto;" id="J_ParamsErrorBox"><div class="error-msg"><div class="img-16-1"></div><div class="text-16 color-red" id="J_ParamsErrorMsg"></div></div></div><div class="ui-msg" style="display: none;width:300px;margin: 15px auto;" id="J_ParamsSucessBox"><div class="success-msg"><div class="img-16-6"></div><div class="text-16" id="J_ParamsSucessMsg"></div></div></div></li></ul>',
                         mask: false,
                         align: {
                             points: ['cc', 'cc']
                         },
                         closable :true,
                         draggable: true,
-                        aria:true
-                    }); 
+                        aria:true,
+                        buttons:[
+                                 {
+                                   text:'确定',
+                                   elCls : 'bui-button bui-button-primary',
+                                   handler : function(){
+                                       var phoneNum = DOM.val('#J_phoneNum');
+                                       var MobileText = DOM.val('#J_MobileText');
+                                       var remindNum = DOM.val('#J_remindNum');
+                                       var noteNum = DOM.val('#J_noteNum');
+                                       if(phoneNum == MobileText && remindNum == noteNum){
+                                           this.hide();
+                                       }else{
+                                           remind.determine();
+                                       }
+                                   }
+                                 },{
+                                   text:'测试',
+                                   elCls : 'bui-button',
+                                   handler : function(){
+                                       remind.remindTest();
+                                   }
+                                 }
+                               ]
+                    })
                 };
 				Event.on("#J_remind", "click", function(){
 					remind.panel.show();
 					remind.getData();
-					Event.remove('#J_determine');
-					Event.remove('#J_test');
-					Event.on('#J_determine','click',function(ev){
-						var phoneNum = DOM.val('#J_phoneNum');
-						var MobileText = DOM.val('#J_MobileText');
-						var remindNum = DOM.val('#J_remindNum');
-						var noteNum = DOM.val('#J_noteNum');
-			    	    if(phoneNum == MobileText && remindNum == noteNum){
-			    	        remind.panel.hide();
-			    	    }else{
-			    	    	remind.determine();
-			    	    };
-					});
-					Event.on('#J_test','click',function(ev){
-						remind.remindTest();
-					});
+//					Event.remove('#J_determine');
+//					Event.remove('#J_test');
+//					Event.on('#J_determine','click',function(ev){
+//						var phoneNum = DOM.val('#J_phoneNum');
+//						var MobileText = DOM.val('#J_MobileText');
+//						var remindNum = DOM.val('#J_remindNum');
+//						var noteNum = DOM.val('#J_noteNum');
+//			    	    if(phoneNum == MobileText && remindNum == noteNum){
+//			    	        remind.panel.hide();
+//			    	    }else{
+//			    	    	remind.determine();
+//			    	    };
+//					});
+//					Event.on('#J_test','click',function(ev){
+//						remind.remindTest();
+//					});
 				});
 	        },
 
@@ -69,7 +92,7 @@ KISSY.add(function (S,showPages,O) {
                         content: o.payload,
                         dialogType:"msg",
                         autoClose:true,
-                        timeOut:3000,
+                        timeOut:3000
                     });
                     remind.panel.hide();
 	    	    };
@@ -93,7 +116,7 @@ KISSY.add(function (S,showPages,O) {
 	                        content: o.payload,
 	                        dialogType:"msg",
 	                        autoClose:true,
-	                        timeOut:3000,
+	                        timeOut:3000
 	                    });
 	                    remind.panel.hide();
 	                };
@@ -133,5 +156,5 @@ KISSY.add(function (S,showPages,O) {
 	             }
 	}
 }, {
-    requires: ['utils/showPages/index','overlay']
+    requires: ['utils/showPages/index','bui/overlay']
 });

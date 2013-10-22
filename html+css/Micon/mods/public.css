@@ -3,4 +3,81 @@
 	icon公共样式文件public.css
  
 **/
+/* 图标活动列表*/
+.ks-cal-call{z-index: 1000003}
+.ui-icon-list{margin:auto;}
+.ui-icon-list li,
+.ui-icon-list li{float:left;width:169px; height:286px; overflow:hidden; text-align:center;margin-top:15px;margin-left:-1px;_display:inline-block;border:1px solid #e4e4e4; background:#f0f0f0;}
+.ui-icon-list li{width:163px;}
+.ui-icon-list img{border:1px solid #f2f2f2;}
+.ui-icon-list p{padding:2px 0; background:#F0F0F0;}
+.hlg-app .main .Micon .data-tip {height: 36px;margin-bottom: 20px;}
+.hlg-app .main .Micon .data-tip .data-text {float: left;line-height: 36px;}
+.hlg-app .main .Micon .inner{padding: 20px}
+/* 创建活动*/
+.text-error {border:1px solid #ff0000; color:#ff0000;}
+.bd{ margin: 0 0 0 13px;}
+.hlg-app .main .Micon .icon-set-up {width: 40%;float: left;margin: 35px 15px 0px;}
+.hlg-app .main .Micon .icon-preview {width: 50%;height: 170px;float: left;margin: 10px 0;padding: 20px 0 20px 20px;border-left: 1px #CCC dashed;}
+.hlg-app .main .Micon .calendarImg {width: 150px;height: 27px;border: 1px solid #DDD;vertical-align: middle;background: url(http://cdn.huanleguang.com/img/hlg-app/common/hlg-app-common.png) no-repeat;background-position: 100% -988px;padding: 0 5px;}
+.hlg-app .main .Micon .preview-icon {position: absolute;top: 0;left: 0;}
+.icon-property {clear: left;margin-bottom: 8px;}
+.min-height-70 {min-height: 70px;_height: 70px;}
+.align-left {text-align: left;}
+.icon-preview li span ul {zoom: 1;}
+.icon-preview li span {display: block;overflow: hidden;}
+.icon-preview li span li {float: left;clear: none;margin: 0 20px 0 0;white-space: nowrap;zoom: 1;}
+.ul-position-lump li {overflow: hidden;margin: 0 5px 5px 0!important;line-height: 22px!important;cursor: pointer;}
+.ul-position-lump .selected span {border: 1px solid #F00;}
+.ul-color-lump .selected span {border: 1px solid #F00;}
+.ul-color-lump li span {width: 24px!important;height: 24px;overflow: hidden;text-indent: -9999px;line-height: 1.3;vertical-align: middle;border: 1px solid #E4E4E4;text-align: left;}
+.hlg-app .main .Micon .icon {border: 1px solid #DDD;margin: 9px 6px 9px 9px;padding: 2px;cursor: pointer;}
+.iconDele {display: inline-block;position: relative;}
 
+/* 添加宝贝*/
+.ks-hidden{display:none}
+.hlg-app .main .Micon .item-list .status-pendding { background-position: 0px -60px; background-color:;}
+.hlg-app .main .Micon .item-list .status-success { background-position: 0px -100px; background-color:;}
+.hlg-app .main .Micon .item-list .status-error { background-position: 0px -40px; background-color:;}
+.hlg-app .main .Micon .item-list .status-pendding, .status-success, .status-error { padding: 8px 8px 8px 0px; display:block; color:red;}
+.hlg-app .main .Micon .item-list .hover{background: #FFFFE5; border:#FFCC7F 0px solid}
+
+/*宝贝页面*/
+.hlg-app .main .Micon .page-head .main-header {padding: 0 30px;}
+.hlg-app .main .content .main-seach-2 {height: 30px;line-height: 30px;padding: 20px 30px;background: #F6F7FB;border-top: 1px solid #EAEDF2;border-bottom: 1px solid #EAEDF2;border-left: 0;border-right: 0;clear: both;}
+.hlg-app .main .Micon .uboxstyle-1,.hlg-app .main .Micon .uboxstyle-2{margin-right:10px;}
+.hlg-app .main .Micon .uboxstyle-1 .bui-select{width:116px;}
+.hlg-app .main .Micon .uboxstyle-1 .bui-select .bui-select-input{width:86px;}
+.hlg-app .main .Micon .uboxstyle-1 .bui-select .x-icon{width:18px;}
+.hlg-app .main .Micon .uboxstyle-2 .bui-select{width:96px;}
+.hlg-app .main .Micon .uboxstyle-2 .bui-select .bui-select-input{width:66px;}
+.hlg-app .main .Micon .uboxstyle-2 .bui-select .x-icon{width:18px;}
+.hlg-app .main .Micon .uboxstyle-2 .input-text-1{width: 70px}
+
+.hlg-app .main .Micon .data-tip{ height:45px;line-height:30px;border-bottom: 1px solid #EAEDF2;}
+.hlg-app .main .Micon .data-tip-left{float:left;}
+.hlg-app .main .Micon .data-tip-left .beautify_check{margin-right:20px;font-family: \5fae\8f6f\96c5\9ed1}
+.hlg-app .main .Micon .data-tip-right{float:right;}
+.hlg-app .main .Micon .data-tip-right .down-more{top:0;}
+.hlg-app .main .Micon .data-tip-right .ui-page{padding: 0;}
+.hlg-app .main .Micon .list-item .ui-list .list-bd .list-item ul {padding-left: 0px}
+.hlg-app .main .Micon .list-item .ui-list .list-bd .list-item{line-height: 60px;height: 60px;}
+.hlg-app .main .Micon .list-item .ui-list .list-bd .list-item .summary {width:160px}
+.hlg-app .main .Micon .list-item .ui-list .list-bd .list-item .price em{color: #656d7a;font-weight: bolder;font-size: 20px;}
+.hlg-app .main .Micon .list-item .bottom-opertion{position: relative;line-height: 40px;padding: 15px 0px;height: 40px;}
+.hlg-app .main .Micon .list-item .bottom-opertion .ui-page{height:40px; padding-bottom:15px;position: absolute;top: 0px;right: 0px;}
+/*最底部操作*/
+.hlg-app .main .Micon  .bottom-step{height: 82px;background-color: #f5f7f8;line-height: 82px;text-align: center;}
+.hlg-app .main .Micon  .bottom-step .data-text {float: left;line-height: 82px;margin-left: 30px}
+.hlg-app .main .Micon  .bottom-step .data-text span {color: #FB6E52;}
+.hlg-app .main .Micon  .bottom-step .m-380 {margin-left: 380px}
+
+.hlg-app .main .Micon .jiantou {background: url(http://cdn.huanleguang.com/img/hlg-app/Mmaterial/material-icon.png) no-repeat;vertical-align: top;
+}
+.hlg-app .main .Micon .jiantou {
+display: inline-block;
+width: 8px;
+height: 16px;
+vertical-align: middle;
+background-position: -64px -92px;
+}

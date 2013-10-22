@@ -2,7 +2,7 @@
  * @fileOverview 
  * @author  
  */
-KISSY.add(function (S,showPages) {
+KISSY.add(function (S,showPages,Select) {
     // your code here
 	var DOM = S.DOM, Event = S.Event;	
 	
@@ -11,11 +11,51 @@ KISSY.add(function (S,showPages) {
 	    	recordPaginator : null,
 	    	
 	    	init : function() {
-//				var ruleId = DOM.val('#J_RuleId');
-//				if(ruleId!=''){
-					Point.searchPoints();
-//		    	    Event.on('#J_SearchBtn','click',Point.searchPoints); //搜索符合规则的积分记录
-//				}
+				   
+				   var items = [
+								  {text:'大于',value:'1'},
+								  {text:'等于',value:'0'},
+								  {text:'小于',value:'-1'}
+							    ],
+					select = new Select.Select({  
+						render:'#J_Mtype',
+						valueField:'#J_CompareType',
+						items:items
+					});
+				    select.render();
+				    select.setSelectedValue('1');	
+				    
+	             	
+	 			    var items = [
+								  {text:'不限制',value:'0'},
+								  {text:'赠送积分',value:'1'},
+								  {text:'消费积分',value:'2'}
+							    ],
+					select = new Select.Select({  
+						render:'#J_Mpoint',
+						valueField:'#J_PointType',
+						items:items
+					});
+				    select.render(); 
+				    select.setSelectedValue('0');
+				    
+	 			    var items = [
+								  {text:'不限制',value:'0'},
+								  {text:'赠送',value:'1'},
+								  {text:'消费',value:'2'}
+							    ],
+					select = new Select.Select({  
+						render:'#J_Point',
+						valueField:'#J_DetailPointType',
+						items:items
+					});
+				    select.render(); 
+     	            select.on('change', function(ev){
+     	            	//Point.searchPointRecord();
+     	            });
+				    select.setSelectedValue('0');	
+				    
+				    Point.searchPoints();
 	        },
 	        
 			//搜索
@@ -29,7 +69,11 @@ KISSY.add(function (S,showPages) {
 						DOM.css(DOM.get('#J_LEmpty'), 'display' , '');
 						DOM.css(DOM.query(".J_ItemSelectBtnHolder") , 'display' , 'none');
 					}
-	        	    DOM.html(DOM.get("#J_PointList"), o.payload.body ,true);
+					
+					
+					Point.renderItems(o.payload.body);
+					
+	        	    //DOM.html(DOM.get("#J_PointList"), o.payload.body ,true);
 	        	    pageCount = Math.ceil(totalRecords/o.payload.pageNum); 
 					Point.pointPaginator = new showPages('Point.pointPaginator').setRender(Point.pointPaginationHandle).setPageCount(pageCount).printHtml('#J_PointPaging',2);
   					DOM.hide('#J_LeftLoading');
@@ -46,13 +90,19 @@ KISSY.add(function (S,showPages) {
         	    new H.widget.asyncRequest().setURI(loadPointsUrl).setMethod("GET").setHandle(submitHandle).setData(data).send();
 			},
 			
+			renderItems: function(c) {
+	    	    DOM.html(DOM.get("#J_PointList"), c);  
+	        	
+			},
+			
+			
 			pointPaginationHandle : function(turnTo,flag) {
 				pageId = turnTo;
 	    		var submitHandle = function(o) {
 	    			totalRecords = o.payload.totalRecords;
 		    		pageCount = Math.ceil(totalRecords/o.payload.pageNum); 
 	    			Point.pointPaginator.setPage(pageId).setPageCount(pageCount).printHtml('#J_PointPaging',2);
-	    			DOM.html(DOM.get("#J_PointList"), o.payload.body);
+	    			DOM.html(DOM.get("#J_PointList"), o.payload.body,true);
   					DOM.hide('#J_LeftLoading');
  					DOM.show('#J_MainLeftContent');
 	    		};
@@ -68,15 +118,15 @@ KISSY.add(function (S,showPages) {
 			},
 			
 			showPointContent : function(){
-				DOM.show('#J_PointContent');
-				DOM.hide('#J_RecordContent');
+				DOM.show('.J_PointContent');
+				DOM.hide('.J_RecordContent');
 			},
 			
 			showPointDetail : function(customerNick){
 				DOM.html('#J_CustomerNick',customerNick)
 				Point.searchPointRecord();
-				DOM.hide('#J_PointContent');
-				DOM.show('#J_RecordContent');
+				DOM.hide('.J_PointContent');
+				DOM.show('.J_RecordContent');
 			},
 			
 			//搜索积分记录
@@ -229,5 +279,5 @@ KISSY.add(function (S,showPages) {
 
 	}
 }, {
-    requires: ['utils/showPages/index']
+    requires: ['utils/showPages/index','bui/select']
 });
