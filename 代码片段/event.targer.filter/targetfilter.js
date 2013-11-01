@@ -8,7 +8,7 @@ KISSY.add('targetfilter', function(S){
 	var $ = S.all;
 
 	return function(t, o){
-		var t = $(t), t2 = t, t3 = t;
+		var t = $(t);
 		if (typeof o === 'string'){
 			if (t.test(o)){
 				return t;
@@ -23,6 +23,7 @@ KISSY.add('targetfilter', function(S){
 			if (t.getDomNode() === o){
 				return t;
 			}
+			var t2 = t;
 			while (t2.parent().length > 0) {
 				t2 = t2.parent();
 				if (t2.getDomNode() === o){
@@ -32,10 +33,12 @@ KISSY.add('targetfilter', function(S){
 			return t;
 		}
 		if (o[0].innerHTML){
+			var t3;
 			for (var i =0; i < o.length; i++){
 				if (t.getDomNode() === o[i]){
 					return t;
 				}
+				t3 = t;
 				while (t3.parent().length > 0) {
 					t3 = t3.parent();
 					if (t3.getDomNode() === o[i]){
