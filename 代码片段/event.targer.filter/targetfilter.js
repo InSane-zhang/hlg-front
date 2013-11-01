@@ -37,7 +37,7 @@ KISSY.add('targetfilter', function(S){
 					return t;
 				}
 				while (t3.parent().length > 0) {
-					t = t3.parent();
+					t3 = t3.parent();
 					if (t3.getDomNode() === o[i]){
 						return t3;
 					}
