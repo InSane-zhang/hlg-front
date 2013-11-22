@@ -18,10 +18,17 @@ Calendar组件是bootstrap下的daterangepicker组件的KISSY移植版，供欢�
 ###调用方法
 ***
 
-    <link rel="stylesheet" type="text/css" media="all" href="../daterangepicker-bs3.css" />  
+####CSS
+
+引入文件
+
+    css/v3/utils/ui-calendar2.css
+
+####Javascript
+
     <script type="text/javascript" src="http://g.tbcdn.cn/kissy/k/1.3.0/kissy-min.js" charset="utf-8"></script>  
     <script type="text/javascript">  
-    KISSY.use('gallery/calendar/1.3/index', function(S, Calendar) {
+    KISSY.use('utils/calendar/index', function(S, Calendar) {
        var $ = S.all;
        var _calendar = new Calendar('#reservationtime');  
     });  
@@ -32,7 +39,7 @@ Calendar组件是bootstrap下的daterangepicker组件的KISSY移植版，供欢�
 这个构建函数同时可以接受一个可自定义的选项对象及一个回调函数作为可选参数，回调函数会在日期/时间被更改的时候被调用。回调函数会传递两个moment日期对象作为参数：开始日期和结束日期。您可以使用moment模块里的方法对其进行处理。例如：
 
     <script type="text/javascript">   
-    KISSY.use('gallery/calendar/1.3/index', function(S, Calendar) { 
+    KISSY.use('utils/calendar/index', function(S, Calendar) { 
        var $ = S.all; 
        var _calendar = new Calendar('#reservationtime', {
            format: 'YYYY-MM-DD',
@@ -97,4 +104,8 @@ Calendar组件是bootstrap下的daterangepicker组件的KISSY移植版，供欢�
 
 **locale**：（对象）
 
-允许你为按钮和标签设置本地语言，以及哪一天作为星期的开始  
+允许你为按钮和标签设置本地语言，以及哪一天作为星期的开始
+
+**single**：（布尔值）
+
+只显示一个日历 
