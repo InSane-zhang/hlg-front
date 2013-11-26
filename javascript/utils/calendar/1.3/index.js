@@ -23,12 +23,13 @@ KISSY.add(function(S, Node, Base, moment,Holidays) {
         if (!(self instanceof Calendar)) { 
             return new Calendar(element, options, cb); 
         } 
+		self.trigger = element;
         self.startDate = moment().startOf('day');
-        self.endDate = moment().startOf('day');
+        self.endDate = moment().endOf('day');
         self.minDate = false;
         self.maxDate = false;
         self.dateLimit = false;
-
+		self.delegateTigger = false;
         self.showDropdowns = false;
         self.showWeekNumbers = false;
         self.timePicker = false;
@@ -74,13 +75,12 @@ KISSY.add(function(S, Node, Base, moment,Holidays) {
         
         initializer: function(el, options ,cb) {
             var self = this;
+			self.options = options;
             var hasOptions = typeof options == 'object';
             var localeObject;
                //element that triggered the date range picker
             self.element = $(el);
-            if (this.element.hasClass('pull-right'))
-                self.opens = 'left';
-            
+           
             localeObject = self.locale;
             
             if (hasOptions) {
@@ -129,7 +129,7 @@ KISSY.add(function(S, Node, Base, moment,Holidays) {
 
                 if (typeof options.format == 'string')
                     self.format = options.format;
-
+					
                 if (typeof options.separator == 'string')
                     self.separator = options.separator;
 
@@ -228,7 +228,9 @@ KISSY.add(function(S, Node, Base, moment,Holidays) {
                 if (typeof options.timePicker == 'boolean') {
                     self.timePicker = options.timePicker;
                 }
-
+				if (typeof options.delegateTigger == 'boolean') {
+                    self.delegateTigger = options.delegateTigger;
+                }
                 if (typeof options.timePickerIncrement == 'number') {
                     self.timePickerIncrement = options.timePickerIncrement;
                 }
@@ -260,31 +262,15 @@ KISSY.add(function(S, Node, Base, moment,Holidays) {
                 left.removeClass('left').addClass('right');
                 right.removeClass('right').addClass('left');
             }
-            if (typeof options == 'undefined' || typeof options.ranges == 'undefined') {
-                self.container.all('.calendar').show();
-                self.move();
-            }
+			 self.container.all('.calendar').show();
+//            if (typeof options == 'undefined' || typeof options.ranges == 'undefined') {
+//                self.container.all('.calendar').show();
+//                self.move();
+//            }
             if (typeof cb == 'function')
                 self.cb = cb;
 
             self.container.addClass('opens' + self.opens);
-            
-          //try parse date if in text input
-            if (!hasOptions || (typeof options.startDate == 'undefined' && typeof options.endDate == 'undefined')) {
-                if (self._isInput($(self.element))) {
-                    var val = $(self.element).val();
-                    var split = val.split(self.separator);
-                    var start, end;
-                    if (split.length == 2) {
-                        start = moment(split[0], self.format);
-                        end = moment(split[1], self.format);
-                    }
-                    if (start != null && end != null) {
-                        self.startDate = start;
-                        self.endDate = end;
-                    }
-                }
-            }
             
             //state
             self.oldStartDate = self.startDate.clone();
@@ -321,22 +307,31 @@ KISSY.add(function(S, Node, Base, moment,Holidays) {
          */
         bindUI: function() {
             var self = this;
-            if (self._isInput(self.element)) {
-                 self.element.on('click', self.show, self);
-                 self.element.on('focusin', self.show, self);
-            } else {
-                 self.element.on('click', self.show, self);
-            }
-            
+           // if (self._isInput(self.element)) {
+				if(self.delegateTigger && S.isString(self.trigger)){
+		          $(document).delegate('click focusin',self.trigger,self.show,self);
+				  
+		        }else{
+		           self.element.on('click', self.show, self);
+                   self.element.on('focusin', self.show, self);
+		        }
+           // } else {
+				//if(self.delegateTigger && S.isString(self.trigger)){
+		       //   $(document).delegate(self.trigger,'click',self.show,self);
+		       // }else{
+		       //     self.element.on('click', self.show, self);
+		       // }
+           // }
             //event listeners
+			
             this.container.on('mousedown', this.mousedown, this);
             this.container.all('.calendar').delegate('click', '.prev', self.clickPrev, this);
             this.container.all('.calendar').delegate('click', '.next', this.clickNext, this);
             this.container.one('.ranges').delegate('click', 'button.applyBtn', this.clickApply, this);
             this.container.one('.ranges').delegate('click', 'button.cancelBtn', this.clickCancel, this);
 
-            this.container.one('.ranges').delegate('click', '.daterangepicker_start_input', this.showCalendars, this);
-            this.container.one('.ranges').delegate('click', '.daterangepicker_end_input', this.showCalendars, this);
+            //this.container.one('.ranges').delegate('click', '.daterangepicker_start_input', this.showCalendars, this);
+            //this.container.one('.ranges').delegate('click', '.daterangepicker_end_input', this.showCalendars, this);
 
             this.container.all('.calendar').delegate('click', 'td.available',this.clickDate, this);
             this.container.all('.calendar').delegate('mouseenter', 'td.available', this.enterDate, this);
@@ -447,10 +442,6 @@ KISSY.add(function(S, Node, Base, moment,Holidays) {
 
             this.updateCalendars();
 
-            //abc.leftCalendar.month.hour(13);
-            //console.log(this.startDate);
-            //console.log($(e.target).nodeName());
-           //console.log($(e.target).parent('.fakeselect')[0]);
         },
         mousedown: function (e) {
               e.stopPropagation();
@@ -469,29 +460,6 @@ KISSY.add(function(S, Node, Base, moment,Holidays) {
                 this.container.one('button.applyBtn').attr('disabled', 'disabled');
             }
         },
-        updateFromControl: function () {
-            var self = this ;
-            if (!self._isInput(this.element)) return;
-            if (!this.element.val().length) return;
-
-            var dateString = this.element.val().split(self.separator);
-            var start = moment(dateString[0], self.format);
-            var end = moment(dateString[1], self.format);
-
-            if (start == null || end == null) return;
-            if (end.isBefore(start)) return;
-
-            this.oldStartDate = self.startDate.clone();
-            this.oldEndDate = self.endDate.clone();
-
-            self.startDate = start;
-            self.endDate = end;
-
-            if (!self.startDate.isSame(this.oldStartDate) || !self.endDate.isSame(this.oldEndDate))
-                this.notify();
-
-            this.updateCalendars();
-        },
         notify: function () {
             var self = this ;
             this.updateView();
@@ -501,28 +469,31 @@ KISSY.add(function(S, Node, Base, moment,Holidays) {
         _isBosy: function(v) {
             return v.getDOMNode && v.getDOMNode().tagName.toUpperCase() === 'BODY';
         },
-        move: function () {
+        move: function (e) {
             var self = this ;
             var parentOffset = {
                 top: this.parentEl.offset().top - (self._isBosy(this.parentEl) ? 0 : this.parentEl.scrollTop()),
                 left: this.parentEl.offset().left - (self._isBosy(this.parentEl) ? 0 : this.parentEl.scrollLeft())
             };
             if (this.opens == 'left') {
-                this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
-                    right: $(window).width() - this.element.offset().left - this.element.outerWidth() - parentOffset.left,
-                    left: 'auto'
-                });
-                if (this.container.offset().left < 0) {
-                    this.container.css({
-                        right: 'auto',
-                        left: 9
-                    });
-                }
+//                this.container.css({
+//                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
+//                    right: $(window).width() - this.element.offset().left - this.element.outerWidth() - parentOffset.left,
+//                    left: 'auto'
+//                });
+//                if (this.container.offset().left < 0) {
+//                    this.container.css({
+//                        right: 'auto',
+//                        left: 9
+//                    });
+//                }
             } else {
+				
+				var top = self.curTrigger.offset().top + self.curTrigger.outerHeight() - parentOffset.top,
+					left = self.curTrigger.offset().left - parentOffset.left;
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
-                    left: this.element.offset().left - parentOffset.left,
+                    top: top,
+                    left: left,
                     right: 'auto'
                 });
                 if (this.container.offset().left + this.container.outerWidth() > $(window).width()) {
@@ -536,6 +507,28 @@ KISSY.add(function(S, Node, Base, moment,Holidays) {
         show: function (e) {
             var self = this ;
             self.container.show();
+			
+			self.curTrigger = S.one(e.currentTarget);
+			 var hasOptions = typeof self.options == 'object';
+			 //try parse date if in text input
+            if (!hasOptions || (typeof self.options.startDate == 'undefined' && typeof self.options.endDate == 'undefined')) {
+				if (self._isInput($(e.currentTarget))) {
+                    var val = $(e.currentTarget).val();
+                    var split = val.split(self.separator);
+                    var start, end;
+                    if (split.length == 2) {
+                        start = moment(split[0], self.format);
+                        end = moment(split[1], self.format);
+                    }
+                    if (start != null && end != null) {
+                        self.startDate = start;
+                        self.endDate = end;
+                    }
+					  this.leftCalendar.month.month(self.startDate.month()).year(self.startDate.year()).hour(self.startDate.hour()).minute(self.startDate.minute());
+           			this.rightCalendar.month.month(self.endDate.month()).year(self.endDate.year()).hour(self.endDate.hour()).minute(self.endDate.minute());
+					this.updateCalendars();
+                }
+            }	
             this.move();
             if (e) {
                 e.stopPropagation();
@@ -573,12 +566,11 @@ KISSY.add(function(S, Node, Base, moment,Holidays) {
             this.container.all('.calendar').show();
             this.move();
         },
-
         updateInputText: function() {
             var self = this;
-            if (self._isInput(this.element))
-                this.element.val(this.startDate.format(this.format) + this.separator + this.endDate.format(this.format));
-            this.cb(self.startDate, self.endDate, self.agent);
+            if (self._isInput(self.curTrigger))
+                self.curTrigger.val(this.startDate.format(this.format) + this.separator + this.endDate.format(this.format));
+            this.cb(self.startDate, self.endDate, self.curTrigger);
         },
         clickRange: function (e) {
             var label = e.target.innerHTML;
@@ -705,7 +697,6 @@ KISSY.add(function(S, Node, Base, moment,Holidays) {
             }
 
         },
-
         clickApply: function (e) {
             this.updateInputText();
             this.hide();
