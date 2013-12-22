@@ -105,12 +105,12 @@ var obj = {
             _method.apply(self);
         }, false);
         */
-        _node.addEventListener('click', this.method.bind(this), false);
+        _node.addEventListener('click', bind(this.method, this), false);
     }
 }
 
-Function.prototype.bind = function(obj){ 
-    var method = this;
+function bind = function(method, obj){
+    if (typeof method !== 'function' || typeof obj !== 'object') return false;
     return function(){
         method.apply(obj, arguments);
     }
