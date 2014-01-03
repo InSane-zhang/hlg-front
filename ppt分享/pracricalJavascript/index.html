@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Old World Blues</title>
+
+    <meta name="author" content="Fox Sun" />
+
+    <!--<link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />-->
+
+    <link href="css/impress-demo.css" rel="stylesheet" />
+    <link href="css/custom.css" rel="stylesheet" />
+</head>
+<body>
+
+<div id="impress" class="impress-not-supported">
+
+    <div class="fallback-message">
+        <p>你的浏览器<b>不支持</b> impress.js, 所以当前展示的是简化版。</p>
+        <p>为了获得更好的体验，请使用最新的 <b>Chrome</b>, <b>Safari</b> 或者 <b>Firefox</b> 浏览器。</p>
+    </div>
+
+    <div id="title" class="step" data-x="0" data-y="0" data-scale="4">
+        
+        <h1>Old World Blues<sup>*</sup></h1>
+        <h2>Practical javascript for Web Development</h2>
+    </div>
+
+    <div id="index" class="step" data-x="2000" data-y="0">
+        <h2>Topic</h2>
+        <ul>
+            <li>1. JAVASCRIPT实用技巧</li>
+            <li>2. 前端组件编写示例</li>
+            <li>3. 个人对目前前端方面的一些建议</li>
+        </ul>
+    </div>
+
+    <div id="js1" class="step" data-x="-1200" data-y="900">
+        <h2>1.1 事件冒泡</h2>
+        <h3>1.1.1 事件流的传播</h3>
+        <h3>1.1.2 relatedTarget属性及IE对应的属性toElement/fromElement</h3>
+<pre><code>
+function isMouseLeaveOrEnter(e, handler) {   
+    if (e.type !== 'mouseout' && e.type !== 'mouseover') return false;
+    var reltg = e.relatedTarget ? e.relatedTarget : e.type === 'mouseout' ? e.toElement : e.fromElement;   
+    while (reltg && reltg !== handler)   
+        reltg = reltg.parentNode;
+    return (reltg !== handler);   
+}
+document.getElementsByTagName('p')[0].addEventListener('mouseout', function(e){
+    var evt = e || window.event;
+    if (isMouseLeaveOrEnter(evt, this)){
+        //...
+    }
+}, false);
+</code></pre>
+    </div>
+
+    <div id="js2" class="step" data-x="-1200" data-y="1500">
+        <h2>1.2 适用于IE的浏览器特性检测</h2>
+        <h3>1.2.1 ua检测与特性检测</h3>
+    </div>
+
+    <div id="js2b" class="step" data-x="-1200" data-y="2000">
+        <h2>1.2 适用于IE的浏览器特性检测</h2>
+        <h3>1.2.2 一种简单判断IE版本的方式（供参考）</h3>
+<pre><code>
+function testIE(){
+    if (document.addEventListener){
+        return 9; //IE9以上版本及其他常用浏览器引擎
+    }
+    if (document.querySelector){return 8;}
+    if (window.XMLHttpRequest){return 7;}
+    if (attachEvent){return 6;}
+    return false;
+}
+</code></pre>
+    </div>
+
+    <div id="js3" class="step" data-x="-1200" data-y="2500">
+        <h2>1.3 递增式ID的获取</h2>
+<pre><code>
+function getId(){
+    var _id = 0;
+    return function(){
+        return _id++;
+    }
+}
+</code></pre>
+    </div>
+
+    <div id="js4" class="step" data-x="-1200" data-y="3000">
+        <h2>1.4 this指针丢失的问题</h2>
+<pre style="font-size:75%;"><code>
+var obj = {
+    btn: [DOM NODE],
+    method: function(){this.btn.innerHTML = 'dfsgdf';},
+    event: function(){
+        // _node.addEventListener('click', this.method, false);
+        /*
+        var self = this, _method = this.method;
+        _node.addEventListener('click', function(){
+            _method.apply(self);
+        }, false);
+        */
+        _node.addEventListener('click', bind(this.method, this), false);
+    }
+}
+
+function bind = function(method, obj){
+    if (typeof method !== 'function' || typeof obj !== 'object') return false;
+    return function(){
+        method.apply(obj, arguments);
+    }
+}
+</code></pre>
+    </div>
+
+    <div id="ajax1" class="step" data-x="600" data-y="900">
+        <h2>2 JS组件编写示例（AJAX）</h2>
+        <h3>2.1 达到的目的是什么</h3>
+<pre><code>
+ajax({
+   url: ...,
+   method: ‘get’,
+   dataType: 'json',
+   error: function(m, s){},
+   success: function(callback){
+       // ....
+   }/*,
+   ......
+   */
+});
+</code></pre>
+    </div>
+
+    <div id="ajax2" class="step" data-x="1200" data-y="900">
+        <h2>2.2 需要做些什么？</h2>
+<pre><code>
+A. 参数、选项、方法
+url, method, data, dataType, cache
+success, error
+before...
+
+B. 建立和处理一个AJAX请求
+
+C. 返回一个对象
+</code></pre>
+    </div>
+
+    <div id="ajax3" class="step" data-x="600" data-y="1600">
+        <h2>2.3 代码的基本组成部分</h2>
+<ul>
+<li>createXHR函数，创建和返回一个新的XMLHttpRequest对象</li>
+<li>ajax(option[object], which[object])函数，之前调用的那个
+<div style="color:#999">
+a) 执行option.before，如返回false则终止创建<br>
+b) 混合option与which，如果which为undefined，则混合option和ajax.defaults，并将结果拷贝到一个新的对象<br>
+c) 执行这个对象的create方法进行初始化
+</div>
+</li>
+<li>ajax.defaults对象，初始定义
+<div style="color:#999">
+a) 初始定义<br>
+b) 初始化方法 create()
+</div>
+</li>
+</ul>
+    </div>
+
+    <div id="suggest" class="step" data-x="600" data-y="2200">
+        <h2>3 个人对目前前端方面的一些建议</h2>
+<ul>
+<li>尽可能避免全局变量</li>
+<li>仅为了js使用而存在的标签，特别是空标签，应该动态创建</li>
+<li>链式操作，尽可能使用node，而不是dom/event/animate等</li>
+<li>避免在html标签中绑定事件</li>
+<li>对象的检测如果适当应该使用typeof
+<div style="color:#999">
+a) if (typeof xxx !== 'undefined'){}<br>
+b) if (typeof xxx === 'object' && typeof xxx.aaa === 'number'){}
+</div>
+</li>
+<li>空格 尽量使用=== !== 而非 == !=</li>
+</ul>
+    </div>
+
+    <div id="overview" class="step" data-x="900" data-y="2000" data-scale="10">
+    </div>
+
+</div>
+
+
+<script src="js/impress.js"></script>
+<script>impress();</script>
+
+</body>
+</html>
+
